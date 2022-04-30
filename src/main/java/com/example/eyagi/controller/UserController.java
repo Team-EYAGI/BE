@@ -2,7 +2,7 @@ package com.example.eyagi.controller;
 
 import com.example.eyagi.dto.SignupRequestDto;
 import com.example.eyagi.dto.UserDto;
-import com.example.eyagi.repository.security.UserDetailsImpl;
+import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

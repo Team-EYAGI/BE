@@ -1,8 +1,8 @@
-package com.example.eyagi.repository.security.provider;
+package com.example.eyagi.security.provider;
 
 
 
-import com.example.eyagi.repository.security.UserDetailsImpl;
+import com.example.eyagi.security.UserDetailsImpl;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

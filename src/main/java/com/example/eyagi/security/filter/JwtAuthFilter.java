@@ -1,7 +1,7 @@
-package com.example.eyagi.repository.security.filter;
+package com.example.eyagi.security.filter;
 
-import com.example.eyagi.repository.security.jwt.HeaderTokenExtractor;
-import com.example.eyagi.repository.security.jwt.JwtPreProcessingToken;
+import com.example.eyagi.security.jwt.HeaderTokenExtractor;
+import com.example.eyagi.security.jwt.JwtPreProcessingToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;

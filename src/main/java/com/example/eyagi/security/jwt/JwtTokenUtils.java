@@ -1,8 +1,8 @@
-package com.example.eyagi.repository.security.jwt;
+package com.example.eyagi.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.example.eyagi.repository.security.UserDetailsImpl;
+import com.example.eyagi.security.UserDetailsImpl;
 
 
 import java.util.Date;
