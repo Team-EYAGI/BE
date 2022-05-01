@@ -4,7 +4,6 @@ package com.example.eyagi.service;
 import com.example.eyagi.dto.AudioPreDto;
 import com.example.eyagi.dto.BooksDto;
 import com.example.eyagi.model.AudioBook;
-import com.example.eyagi.model.AudioPreview;
 import com.example.eyagi.model.Books;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,8 +32,16 @@ public class BookDetailService {
                     .build();
             audioPreDtos.add(dto);
         }
-        return new BooksDto(book, audioPreDtos);
-
+        return BooksDto.builder()
+                .bookId(book.getBookId())
+                .title(book.getTitle())
+                .author(book.getAuthor())
+                .publisher(book.getPublisher())
+                .bookImg(book.getBookImg())
+                .category(book.getCategory())
+                .summary(book.getSummary())
+                .audioPreDtoList(audioPreDtos)
+                .build();
     }
 
 }

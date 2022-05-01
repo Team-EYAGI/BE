@@ -6,10 +6,10 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
+
 @NoArgsConstructor
 @Getter
-@Setter
+@Entity
 public class BookRequest extends Timestamped {
 
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)

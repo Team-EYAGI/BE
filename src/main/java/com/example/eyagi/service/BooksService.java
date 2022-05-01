@@ -34,11 +34,19 @@ public class BooksService {
 
     //카테고리 별 책리스트 가져오기
     public List<BooksDto> findBooksByCategory(String category) {
-        List<Books>findBookList = booksRepository.findByCategory(category);
-        List<BooksDto>bookList = new ArrayList<>();
+        List<Books> findBookList = booksRepository.findByCategory(category);
+        List<BooksDto> bookList = new ArrayList<>();
 
-        for(Books books : findBookList){
-            BooksDto booksDto = new BooksDto(books);
+        for (Books books : findBookList) {
+            BooksDto booksDto = BooksDto.builder()
+                    .bookId(books.getBookId())
+                    .title(books.getTitle())
+                    .author(books.getAuthor())
+                    .publisher(books.getPublisher())
+                    .bookImg(books.getBookImg())
+                    .category(books.getCategory())
+                    .build();
+
             bookList.add(booksDto);
         }
         return bookList;
@@ -53,7 +61,14 @@ public class BooksService {
         List<BooksDto>randomBookList = new ArrayList<>();
 
         for(Books books : findAllBook){
-            BooksDto booksDto = new BooksDto(books);
+            BooksDto booksDto = BooksDto.builder()
+                    .bookId(books.getBookId())
+                    .title(books.getTitle())
+                    .author(books.getAuthor())
+                    .publisher(books.getPublisher())
+                    .bookImg(books.getBookImg())
+                    .category(books.getCategory())
+                    .build();
             randomBookList.add(booksDto);
         }
         Collections.shuffle(randomBookList); //리스트 내 값 랜덤으로 순서 재배치
@@ -69,7 +84,14 @@ public class BooksService {
         List<Books> findSelfList = booksRepository.findByCategory(category);
         List<BooksDto> allSelfList = new ArrayList<>();
         for (Books books : findSelfList) {
-            BooksDto booksDto = new BooksDto(books);
+            BooksDto booksDto = BooksDto.builder()
+                    .bookId(books.getBookId())
+                    .title(books.getTitle())
+                    .author(books.getAuthor())
+                    .publisher(books.getPublisher())
+                    .bookImg(books.getBookImg())
+                    .category(books.getCategory())
+                    .build();
             allSelfList.add(booksDto);
         }
         Collections.shuffle(allSelfList);
