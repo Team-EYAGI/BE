@@ -1,7 +1,7 @@
-package com.example.eyagi.repository.security;
+package com.example.eyagi.security;
 
 
-import com.example.eyagi.repository.security.jwt.JwtTokenUtils;
+import com.example.eyagi.security.jwt.JwtTokenUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 

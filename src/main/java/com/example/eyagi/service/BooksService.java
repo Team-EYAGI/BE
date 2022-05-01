@@ -21,6 +21,12 @@ public class BooksService {
 
     private final BooksRepository booksRepository;
 
+    public Books findBook (Long id) {
+        return booksRepository.findById(id).orElseThrow(
+                () -> new NullPointerException("존재하지 않는 책의 페이지를 요청하였습니다.")
+        );
+    }
+
 
     //모든 책 가져오기
     public List<Books> getAllBooks() {

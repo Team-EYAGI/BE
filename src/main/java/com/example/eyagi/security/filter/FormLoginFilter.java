@@ -1,4 +1,4 @@
-package com.example.eyagi.repository.security.filter;
+package com.example.eyagi.security.filter;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;

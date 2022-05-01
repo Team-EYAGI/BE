@@ -1,14 +1,14 @@
 package com.example.eyagi.service;
 
 
-import com.example.eyagi.UserValidator;
+import com.example.eyagi.validator.UserValidator;
 import com.example.eyagi.dto.SignupRequestDto;
 import com.example.eyagi.dto.UserDto;
 import com.example.eyagi.model.User;
 import com.example.eyagi.model.UserRole;
 import com.example.eyagi.repository.UserRepository;
-import com.example.eyagi.repository.security.UserDetailsImpl;
-import com.example.eyagi.repository.security.jwt.JwtDecoder;
+import com.example.eyagi.security.UserDetailsImpl;
+import com.example.eyagi.security.jwt.JwtDecoder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 

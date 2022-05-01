@@ -1,4 +1,4 @@
-package com.example.eyagi;
+package com.example.eyagi.validator;
 
 
 import com.example.eyagi.dto.SignupRequestDto;

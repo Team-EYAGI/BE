@@ -1,4 +1,4 @@
-package com.example.eyagi.repository.security.jwt;
+package com.example.eyagi.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -10,8 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.Optional;
-
-import static com.example.eyagi.repository.security.jwt.JwtTokenUtils.*;
 
 
 @Component
@@ -25,7 +23,7 @@ public class JwtDecoder {
                 .orElseThrow(() -> new IllegalArgumentException("유효한 토큰이 아닙니다."));
 
         Date expiredDate = decodedJWT
-                .getClaim(CLAIM_EXPIRED_DATE)
+                .getClaim(JwtTokenUtils.CLAIM_EXPIRED_DATE)
                 .asDate();
 
         Date now = new Date();
@@ -34,7 +32,7 @@ public class JwtDecoder {
         }
 
         String username = decodedJWT
-                .getClaim(CLAIM_USER_NAME)
+                .getClaim(JwtTokenUtils.CLAIM_USER_NAME)
                 .asString();
 
         return username;
@@ -44,7 +42,7 @@ public class JwtDecoder {
         DecodedJWT jwt = null;
 
         try {
-            Algorithm algorithm = Algorithm.HMAC256(JWT_SECRET);
+            Algorithm algorithm = Algorithm.HMAC256(JwtTokenUtils.JWT_SECRET);
             JWTVerifier verifier = JWT
                     .require(algorithm)
                     .build();

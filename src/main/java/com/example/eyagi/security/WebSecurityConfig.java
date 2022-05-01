@@ -1,12 +1,12 @@
-package com.example.eyagi.repository.security;
+package com.example.eyagi.security;
 
 
 
-import com.example.eyagi.repository.security.filter.FormLoginFilter;
-import com.example.eyagi.repository.security.provider.FormLoginAuthProvider;
-import com.example.eyagi.repository.security.filter.JwtAuthFilter;
-import com.example.eyagi.repository.security.jwt.HeaderTokenExtractor;
-import com.example.eyagi.repository.security.provider.JWTAuthProvider;
+import com.example.eyagi.security.filter.FormLoginFilter;
+import com.example.eyagi.security.provider.FormLoginAuthProvider;
+import com.example.eyagi.security.filter.JwtAuthFilter;
+import com.example.eyagi.security.jwt.HeaderTokenExtractor;
+import com.example.eyagi.security.provider.JWTAuthProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
