@@ -23,7 +23,6 @@ public class UserController {
     // 마이페이지
     @PostMapping("/user/mypage")
     public ResponseEntity<UserDto.MypageDto> viewMyPage(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        System.out.println(userDetails.getUsername());
         return userService.viewMyPage(userDetails);
     }
 
