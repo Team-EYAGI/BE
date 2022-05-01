@@ -7,7 +7,6 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -15,14 +14,16 @@ public class BookRequest extends Timestamped {
 
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookRequestId;
-    @Column
+
+    @Column(nullable = false)
     private String title;
-    @Column
+
+    @Column(nullable = false)
     private String contents;
 
     @ManyToOne
     @JoinColumn(name = "user_Id")
-    User user;
+    private User user;
 
     // 요청생성 생성자
     public BookRequest(BookRequestDto bookRequestDto, User user){

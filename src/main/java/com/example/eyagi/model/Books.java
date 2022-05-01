@@ -3,6 +3,7 @@ package com.example.eyagi.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,7 +16,7 @@ public class Books {
     private Long BookId;
 
     @Column
-    private String  bookImg;
+    private String bookImg;
     @Column
     private String author;
     @Column
@@ -26,6 +27,9 @@ public class Books {
     private String summary;
     @Column
     private String category;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
+    private List<AudioBook> audioBookList;
 
 
 

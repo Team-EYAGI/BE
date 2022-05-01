@@ -37,6 +37,11 @@ public class User extends Timestamped{
     @Column(unique = true)
     private Long kakaoId;
 
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.REMOVE)
+    private List<AudioBook> audioBookList;
+
+
+
     public User(String email, String username, String password, UserRole role) {
         this.email = email;
         this.username = username;

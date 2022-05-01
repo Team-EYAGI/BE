@@ -1,7 +1,7 @@
 package com.example.eyagi.service;
 
 
-import com.example.eyagi.UserValidator;
+import com.example.eyagi.validator.UserValidator;
 import com.example.eyagi.dto.SignupRequestDto;
 import com.example.eyagi.dto.UserDto;
 import com.example.eyagi.model.User;

@@ -1,10 +1,16 @@
 package com.example.eyagi.dto;
 
 
+import com.example.eyagi.model.BookRequest;
+import com.example.eyagi.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,5 +25,28 @@ public class BookRequestDto {
         this.setTitle(bookRequest.getTitle());
         this.setContents(bookRequest.getContents());
     }*/
+    @NoArgsConstructor
+    @Getter
+    public static class ResponesDto {
+
+        private Long bookRequestId;
+
+        private String title;
+
+        private String contents;
+
+        private String userEmail;
+
+        private String modifiedAt;
+
+        public ResponesDto (BookRequest bookRequest){
+            this.bookRequestId = bookRequest.getBookRequestId();
+            this.contents = bookRequest.getContents();
+            this.title = bookRequest.getTitle();
+            this.userEmail = bookRequest.getUser().getEmail();
+            this.modifiedAt = bookRequest.getModifiedAt();
+        }
+
+    }
 
 }

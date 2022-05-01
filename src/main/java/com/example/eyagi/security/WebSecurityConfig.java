@@ -1,7 +1,6 @@
 package com.example.eyagi.security;
 
 
-
 import com.example.eyagi.security.filter.FormLoginFilter;
 import com.example.eyagi.security.provider.FormLoginAuthProvider;
 import com.example.eyagi.security.filter.JwtAuthFilter;
@@ -19,6 +18,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
 import java.util.ArrayList;
@@ -52,6 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationProvider(jwtAuthProvider);
     }
 
+
     @Override
     public void configure(WebSecurity web) {
         // h2-console 사용에 대한 허용 (CSRF, FrameOptions 무시)
@@ -62,12 +65,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+        http.csrf().disable()
+                .headers();
+
 
         // 서버에서 인증은 JWT로 인증하기 때문에 Session의 생성을 막습니다.
         http
+                .cors().and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        //.and().exceptionHandling().authenticationEntryPoint(/*filter 에서의 exception 처리 */);
 
 /*
          * 1.
@@ -128,9 +135,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("POST,/user/signup");
 
         skipPathList.add("GET,/");
+        skipPathList.add("GET,/category/**");
+
         skipPathList.add("GET,/basic.js");
 
         skipPathList.add("GET,/favicon.ico");
+
+        skipPathList.add("GET,/book/detail/**"); //책 상세페이지 조회 허용
+        skipPathList.add("GET,/book/request"); //오디오 요청 페이지 조회 허용
+
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(
                 skipPathList,
@@ -150,5 +163,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    // CORS 처리부분
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+//        configuration.addAllowedOrigin("http://mytodolist1.s3-website.ap-northeast-2.amazonaws.com/*");
+        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.setAllowCredentials(true);
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        configuration.addExposedHeader("Authorization");
+        configuration.addAllowedOriginPattern("*");
+//        configuration.addAllowedOrigin("*");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
