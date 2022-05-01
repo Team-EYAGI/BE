@@ -1,4 +1,4 @@
-package com.example.eyagi.repository.security;
+package com.example.eyagi.security;
 
 
 

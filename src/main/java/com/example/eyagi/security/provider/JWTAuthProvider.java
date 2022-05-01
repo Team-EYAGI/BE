@@ -1,12 +1,12 @@
-package com.example.eyagi.repository.security.provider;
+package com.example.eyagi.security.provider;
 
 
 
 import com.example.eyagi.model.User;
 import com.example.eyagi.repository.UserRepository;
-import com.example.eyagi.repository.security.UserDetailsImpl;
-import com.example.eyagi.repository.security.jwt.JwtDecoder;
-import com.example.eyagi.repository.security.jwt.JwtPreProcessingToken;
+import com.example.eyagi.security.UserDetailsImpl;
+import com.example.eyagi.security.jwt.JwtDecoder;
+import com.example.eyagi.security.jwt.JwtPreProcessingToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

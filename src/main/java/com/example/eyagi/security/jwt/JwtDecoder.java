@@ -1,4 +1,4 @@
-package com.example.eyagi.repository.security.jwt;
+package com.example.eyagi.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.Optional;
 
-import static com.example.eyagi.repository.security.jwt.JwtTokenUtils.*;
+import static com.example.eyagi.security.jwt.JwtTokenUtils.*;
 
 
 @Component
