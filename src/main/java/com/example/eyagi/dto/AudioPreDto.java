@@ -20,5 +20,4 @@ public class AudioPreDto {
     private int totalHeart; //오디오북 찜 갯수
 
 
-
 }
