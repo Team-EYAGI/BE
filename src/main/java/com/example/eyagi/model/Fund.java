@@ -36,7 +36,6 @@ public class Fund extends Timestamped {
     private int heartCnt;
 
     public Fund(FundRequestDto fundRequestDto, AudioFund audioFund , User user, Books books) {
-        this.title = fundRequestDto.getTitle();
         this.content = fundRequestDto.getContent();
         this.user = user;
         this.audioFund = audioFund;

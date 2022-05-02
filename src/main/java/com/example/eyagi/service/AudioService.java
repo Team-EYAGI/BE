@@ -27,7 +27,7 @@ import java.util.UUID;
 public class AudioService {
 
     private final AmazonS3 amazonS3;
-    private final S3Uploader s3Uploader;
+    private final AwsS3Service awsS3Service;
 
     @Transactional
     public void save (FilePath filePath, User seller, Books book, String contents) {
@@ -57,8 +57,10 @@ public class AudioService {
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(multipartFile.getContentType());
+        metadata.setContentLength(multipartFile.getSize());
 
-        String originFileS3Url = s3Uploader.audioUpload(bucket, multipartFile, originFileS3, metadata);
+
+        String originFileS3Url = awsS3Service.audioUpload(bucket, multipartFile, originFileS3, metadata);
 
         FilePath filePath = new FilePath();
         filePath.setOriginFileS3(originFileS3);
@@ -77,14 +79,15 @@ public class AudioService {
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(multipartFile.getContentType());
+        metadata.setContentLength(multipartFile.getSize());
 
         try {
-            String originFileS3Url = s3Uploader.audioUpload(bucket, multipartFile, originFileS3, metadata);
+            String originFileS3Url = awsS3Service.audioUpload(bucket, multipartFile, originFileS3, metadata);
 
             File file = fileConversion(multipartFile, path, localFile);
             copyAudio(file, path + originFile, 1, 60);
 
-            String cutFileS3Url = s3Uploader.copyAudioUpload(bucket,path, originFile, cutFileS3, metadata);
+            String cutFileS3Url = awsS3Service.copyAudioUpload(bucket,path, originFile, cutFileS3, metadata);
 
             removeFile(path, localFile);
             removeFile(path, originFile);

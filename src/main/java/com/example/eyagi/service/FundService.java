@@ -1,6 +1,5 @@
 package com.example.eyagi.service;
 
-import com.example.eyagi.aws.AwsS3Service;
 import com.example.eyagi.dto.FundHeartRequestDto;
 import com.example.eyagi.dto.FundHeartResponseDto;
 import com.example.eyagi.dto.FundRequestDto;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +29,8 @@ public class FundService {
     private final FundHeartRepository fundHeartRepository;
 
 
-    public ResponseEntity<?> saveFund(Long BookId, MultipartFile multipartFile, FundRequestDto fundRequestDto, UserDetailsImpl userDetails) {
+    public ResponseEntity<?> saveFund(Long BookId, MultipartFile multipartFile, FundRequestDto fundRequestDto,
+                                      UserDetailsImpl userDetails) {
         String userEmail = userDetails.getUsername();
 //        FundValidator.validatePostSaveRegister(fundRequestDto, multipartFile, userEmail);
         Map<String, String> map = awsS3Service.uploadFile(multipartFile);
@@ -52,24 +53,24 @@ public class FundService {
         return ResponseEntity.ok().body(requestId);
     }
 
-    public ResponseEntity<?> getAllFund(UserDetailsImpl userDetails) {
+    public ResponseEntity<?> getAllFund() {
         boolean myHeartFund;
         User user = null;
-        if(userDetails != null) {
-            user = userDetails.getUser();
-        }
+//        if(userDetails != null) {
+//            user = userDetails.getUser();
+//        }
         List<Fund> fundList = fundRepository.findAllByOrderByCreatedAtDesc();
         List<FundResponseDto> fundResponse = new ArrayList<>();
 
         for(Fund fund : fundList) {
             // 좋아요 반영해서 myHeart 담아야함.
             myHeartFund = false;
-            boolean existsFundHeart = fundHeartRepository.existsByUserAndFund(user, fund);
-            if(user != null) {
-                if(existsFundHeart) {
-                    myHeartFund = true;
-                }
-            }
+//            boolean existsFundHeart = fundHeartRepository.existsByUserAndFund(user, fund);
+//            if(user != null) {
+//                if(existsFundHeart) {
+//                    myHeartFund = true;
+//                }
+//            }
             FundResponseDto fundResponseDto = FundResponseDto.builder()
                     .fundId(fund.getFundId())
                     .sellerName(fund.getUser().getUsername())

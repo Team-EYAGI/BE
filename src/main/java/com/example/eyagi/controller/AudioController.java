@@ -7,8 +7,8 @@ import com.example.eyagi.model.*;
 import com.example.eyagi.repository.AudioBookRepository;
 import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.AudioService;
+import com.example.eyagi.service.AwsS3Service;
 import com.example.eyagi.service.BooksService;
-import com.example.eyagi.service.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,14 +21,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
 public class AudioController {
 
-    private final S3Uploader s3Uploader;
+    private final AwsS3Service awsS3Service;
     private final AudioBookRepository audioBookRepository;
     private final BooksService booksService;
     private final AudioService audioService;
@@ -42,7 +41,8 @@ public class AudioController {
 
     //오디오북 등록하기.
     @PostMapping("/book/detail/newAudio/{bookId}")
-    public void newAudioBook (@PathVariable Long bookId, @AuthenticationPrincipal UserDetailsImpl userDetails,
+    public void newAudioBook (@PathVariable Long bookId,
+                              @AuthenticationPrincipal UserDetailsImpl userDetails,
                               @RequestPart(name = "audio") MultipartFile multipartFile,
                               @RequestPart(name = "contents" ,required = false )String contents){
         //책 id 값과 오디오 파일 , 목차 들어옴.
@@ -66,14 +66,15 @@ public class AudioController {
 //
 //                ObjectMetadata metadata = new ObjectMetadata();
 //                metadata.setContentType(multipartFile.getContentType());
+//                metadata.setContentLength(multipartFile.getSize());
 //
 //
-//                    String originFileS3Url = s3Uploader.audioUpload(bucket, multipartFile, originFileS3, metadata);
+//                    String originFileS3Url = awsS3Service.audioUpload(bucket, multipartFile, originFileS3, metadata);
 //
 //                    File file = audioService.fileConversion(multipartFile, path, localFile);
 //                audioService.copyAudio(file, path + originFile, 1, 60);
 //
-//                    String cutFileS3Url = s3Uploader.copyAudioUpload(bucket,path, originFile, cutFileS3, metadata);
+//                    String cutFileS3Url = awsS3Service.copyAudioUpload(bucket,path, originFile, cutFileS3, metadata);
 
 
 //                AudioPreview audioPreview = AudioPreview.builder()
@@ -101,6 +102,9 @@ public class AudioController {
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             }
+//            catch (IOException e) {
+//                e.printStackTrace();
+//            }
         } else {
             FilePath filePath = audioService.audioUpload(multipartFile, bucket);
             AudioFile audioFile = AudioFile.builder()

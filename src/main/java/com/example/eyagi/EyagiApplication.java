@@ -10,6 +10,7 @@ public class EyagiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(EyagiApplication.class, args);
+
     }
 
 }

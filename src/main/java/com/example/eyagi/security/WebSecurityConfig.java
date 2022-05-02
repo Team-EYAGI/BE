@@ -143,6 +143,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         skipPathList.add("GET,/book/detail/**"); //책 상세페이지 조회 허용
         skipPathList.add("GET,/book/request"); //오디오 요청 페이지 조회 허용
+        skipPathList.add("GET,/fund"); //펀드 목록 조회 허용
 
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(

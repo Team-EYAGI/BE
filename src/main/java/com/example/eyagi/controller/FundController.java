@@ -11,10 +11,15 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 public class FundController {
     private final FundService fundService;
+
+
+
 
     // 펀딩등록
     @PostMapping("/fund/new/{bookid}")
@@ -28,8 +33,8 @@ public class FundController {
 
     // 펀딩목록
     @GetMapping("/fund")
-    public ResponseEntity<?> getAllFund(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return fundService.getAllFund(userDetails);
+    public ResponseEntity<?> getAllFund() {
+        return fundService.getAllFund();
     }
 
     @PostMapping("/fund/like/{fundid}")
