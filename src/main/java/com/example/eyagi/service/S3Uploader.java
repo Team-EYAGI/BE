@@ -16,6 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 @Slf4j
@@ -28,9 +31,13 @@ public class S3Uploader {
 
     //파일 바로 S3에 업로드
     @Transactional
-    public String audioUpload(String bucket, MultipartFile multipartFile, String fileName,ObjectMetadata metadata) {
+    public String audioUpload(String bucket, MultipartFile multipartFile, String fileName ) {
 
         try {
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType(multipartFile.getContentType());
+            metadata.setContentLength(multipartFile.getSize());
+
             amazonS3.putObject(new PutObjectRequest(bucket,fileName, multipartFile.getInputStream(), metadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
 
@@ -44,14 +51,18 @@ public class S3Uploader {
 
     //로컬에 저장된 파일 s3로 업로드
     @Transactional
-    public String copyAudioUpload(String bucket, String path, String originName,String fileCutNameS3, ObjectMetadata metadata){
+    public String copyAudioUpload(String bucket, String path, String originName,String fileCutNameS3){
 
         try {
             FileInputStream fis = new FileInputStream(path + originName);
             BufferedInputStream bis = new BufferedInputStream(fis);
 
-            amazonS3.putObject(new PutObjectRequest(bucket, fileCutNameS3, bis, metadata)
+            amazonS3.putObject(new PutObjectRequest(bucket, fileCutNameS3, bis, null)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
+
+            Path filePath = Paths.get(path + originName); //로컬에 남은 오디오 삭제.
+            Files.delete(filePath);
+
             return amazonS3.getUrl(bucket, fileCutNameS3).toString();
 
         } catch (IOException e){

@@ -1,27 +1,20 @@
 package com.example.eyagi.controller;
 
 
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.example.eyagi.dto.FilePath;
 import com.example.eyagi.model.*;
 import com.example.eyagi.repository.AudioBookRepository;
+import com.example.eyagi.repository.AudioFileRepository;
+import com.example.eyagi.repository.AudioPreRepository;
 import com.example.eyagi.security.UserDetailsImpl;
-import com.example.eyagi.service.AudioService;
-import com.example.eyagi.service.BooksService;
-import com.example.eyagi.service.S3Uploader;
+import com.example.eyagi.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -30,8 +23,12 @@ public class AudioController {
 
     private final S3Uploader s3Uploader;
     private final AudioBookRepository audioBookRepository;
+    private final AudioFileRepository audioFileRepository;
+    private final AudioPreRepository audioPreRepository;
     private final BooksService booksService;
     private final AudioService audioService;
+
+
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -39,80 +36,94 @@ public class AudioController {
     //자른 오디오 지정 경로
     static String path = "src/main/resources/static/";
 
+    //성우가 해당 책에 오디오북을 처음 만드는 건지 확인해주는 부분.
+    @GetMapping("book/detail/newAudio/check/{bookId}")
+    public boolean newAudioCheck (@PathVariable Long bookId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Books book = booksService.findBook(bookId);
+        User seller = userDetails.getUser();
+        if(audioBookRepository.findByBookAndSeller(book, seller)== null){
+            return true; //첫 등록이면 true
+        } else {
+            return false; //등록한 적이 있다면 false
+        }
+    }
 
     //오디오북 등록하기.
     @PostMapping("/book/detail/newAudio/{bookId}")
     public void newAudioBook (@PathVariable Long bookId, @AuthenticationPrincipal UserDetailsImpl userDetails,
                               @RequestPart(name = "audio") MultipartFile multipartFile,
-                              @RequestPart(name = "contents" ,required = false )String contents){
-        //책 id 값과 오디오 파일 , 목차 들어옴.
+                              @RequestPart(name = "contents" ,required = false )String contents) throws IOException {
+
         Books book = booksService.findBook(bookId);
         User seller = userDetails.getUser();
+
         AudioBook audioBook = audioBookRepository.findByBookAndSeller(book, seller);
+
         if (audioBook == null){
+
+            AudioService2 audioService2 = new AudioService2(multipartFile, path, bucket);
+            audioService2.start();
+
             try {
-//                AudioFile audioFile = new AudioFile();
-//                AudioPreview audioPreview = new AudioPreview();
+                audioService2.join();
 
-                FilePath filePath = audioService.fristAudioBook(multipartFile, path, bucket);
+                String originFileS3Url = s3Uploader.audioUpload(bucket, multipartFile, audioService2.getOriginFileS3());
+                String cutFileS3Url = s3Uploader.copyAudioUpload(bucket,path,
+                        audioService2.getCutFile(), audioService2.getCutFileS3());
 
-                audioService.save(filePath, seller, book, contents);
+                AudioPreview audioPreview = AudioPreview.builder()
+                        .originName(audioService2.getCutFileS3())
+                        .s3FileName(cutFileS3Url)
+                        .build();
+                audioPreRepository.save(audioPreview);
 
-//                String multipartName = multipartFile.getOriginalFilename();
-//                String localFile = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartName);
-//                String originFile = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartName);
-//                String originFileS3 = "audio" +"/" + localFile;
-//                String cutFileS3 = "audioPreview" + "/" + originFile;
-//
-//                ObjectMetadata metadata = new ObjectMetadata();
-//                metadata.setContentType(multipartFile.getContentType());
-//
-//
-//                    String originFileS3Url = s3Uploader.audioUpload(bucket, multipartFile, originFileS3, metadata);
-//
-//                    File file = audioService.fileConversion(multipartFile, path, localFile);
-//                audioService.copyAudio(file, path + originFile, 1, 60);
-//
-//                    String cutFileS3Url = s3Uploader.copyAudioUpload(bucket,path, originFile, cutFileS3, metadata);
+                AudioBook audioBook1 = AudioBook.builder()
+                        .seller(seller)
+                        .book(book)
+                        .preview(audioPreview)
+                        .contents(contents) // 특정 도서에 오디오 개시때만 등록.
+                        .build();
 
+                AudioFile audioFile = AudioFile.builder()
+                        .originName(audioService2.getOriginFileS3())
+                        .s3FileName(originFileS3Url)
+                        .audioBook(audioBook1)
+                        .build();
+                audioFileRepository.save(audioFile);
 
-//                AudioPreview audioPreview = AudioPreview.builder()
-//                        .originName(cutFileS3)
-//                        .s3FileName(cutFileS3Url)
-//                        .build();
-//                AudioBook audioBook1 = AudioBook.builder()
-//                        .seller(seller)
-//                        .book(book)
-//                        .preview(audioPreview)
-//                        .build();
-//                AudioFile audioFile = AudioFile.builder()
-//                        .originName(originFileS3)
-//                        .s3FileName(originFileS3Url)
-//                        .audioBook(audioBook1)
-//                        .num(contents)
-//                        .build();
-//
-//                audioBook1.addAudio(audioFile);
-//                book.addAudioBook(audioBook1);
-//
-//                audioService.removeFile(path, localFile);
-//                audioService.removeFile(path, originFile);
+                audioBook1.addAudio(audioFile);
+                book.addAudioBook(audioBook1);
 
-            } catch (IllegalArgumentException e) {
+                audioBookRepository.save(audioBook1);
+
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            audioService.removeFile(path, audioService2.getLocalFile());
+
         } else {
-            FilePath filePath = audioService.audioUpload(multipartFile, bucket);
+
+            String originFileS3 = "audio" +"/" + UUID.randomUUID() + "."
+                    + StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
+
+            String originFileS3Url = s3Uploader.audioUpload(bucket, multipartFile, originFileS3);
+
             AudioFile audioFile = AudioFile.builder()
-                    .originName(filePath.getOriginFileS3())
-                    .s3FileName(filePath.getOriginFileS3Url())
+                    .originName(originFileS3)
+                    .s3FileName(originFileS3Url)
                     .audioBook(audioBook)
-                    .num(contents)
                     .build();
 
             audioBook.addAudio(audioFile);
-        }
+            audioFileRepository.save(audioFile);
 
+        }
+    }
+
+    //오디오북 상세페이지 조회
+    @GetMapping("audio/detail/{audioBookId}")
+    public void audioBookDetail (@PathVariable Long audioBookId){
 
     }
 

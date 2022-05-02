@@ -14,16 +14,22 @@ public class Books {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long BookId;
 
+    @Column(nullable = false)
     private String bookImg;
 
+    @Column(nullable = false)
     private String author;
 
+    @Column(nullable = false)
     private String publisher;
 
+    @Column(nullable = false)
     private String title;
-    @Column(length=2000)
+
+    @Column(nullable = false,length=2000)
     private String summary;
 
+    @Column(nullable = false)
     private String category;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)

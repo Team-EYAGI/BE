@@ -15,6 +15,8 @@ public class AudioPreDto {
 
     private String previewFile; //미리듣기 파일
 
+    private String contents; //오디오북 설명
+
     private Long sellerId; //셀러 PK
 
     private String sellerName; //셀러 이름

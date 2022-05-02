@@ -28,7 +28,7 @@ public class BookRequestService {
 
     // 요청목록 등록순으로 불러오기
     public List<BookRequestDto.ResponesDto> findAllRequest(){
-        List<BookRequest> bookRequestList = bookRequestRepository.findAllByOrderByModifiedAtAsc();
+        List<BookRequest> bookRequestList = bookRequestRepository.findAllByOrderByModifiedAtDesc();//최신순으로 수정함.
         List<BookRequestDto.ResponesDto> dtoList = new ArrayList<>();
         for (BookRequest b : bookRequestList){
             BookRequestDto.ResponesDto dto = new BookRequestDto.ResponesDto(b);

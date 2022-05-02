@@ -16,11 +16,11 @@ public class AudioFile extends Timestamped {
     @Id
     private Long id;
 
+    @Column(nullable = false)
     private String s3FileName; //S3 경로
 
+    @Column(nullable = false)
     private String originName; //원본 파일명
-
-    private String num; // 목차
 
     //오디오북이랑 조인 manytoone 양방향
     @ManyToOne

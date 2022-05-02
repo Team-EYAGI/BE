@@ -20,7 +20,7 @@ public class BookRequestController {
 
     private final BookRequestService bookRequestService;
 
-    //모든 책 불러오기
+    //모든 요청 불러오기
 @GetMapping("/book/request")
     public ResponseEntity<List<BookRequestDto.ResponesDto>> findAllRequest(){
         return ResponseEntity.ok(bookRequestService.findAllRequest());

@@ -53,14 +53,69 @@ public class BooksService {
     }
 
 
-// 메인 (추천도서)+(자기계발서)
-    public Map<String, Object> showMainBooks(){
+//// 메인 (추천도서)+(자기계발서)
+//    public Map<String, Object> showMainBooks(){
+//
+//        //추천도서 list
+//        List<Books>findAllBook = booksRepository.findAll();
+//        List<BooksDto>randomBookList = new ArrayList<>();
+//
+//        for(Books books : findAllBook){
+//            BooksDto booksDto = BooksDto.builder()
+//                    .bookId(books.getBookId())
+//                    .title(books.getTitle())
+//                    .author(books.getAuthor())
+//                    .publisher(books.getPublisher())
+//                    .bookImg(books.getBookImg())
+//                    .category(books.getCategory())
+//                    .build();
+//            randomBookList.add(booksDto);
+//        }
+//        Collections.shuffle(randomBookList); //리스트 내 값 랜덤으로 순서 재배치
+//
+//        List<BooksDto>BestBooks = new ArrayList<>();
+//
+//        for (int i = 0; i < 10; i++) {
+//            BestBooks.add(randomBookList.get(i));
+//        }
+//
+//        // 자기계발서 책 list
+//        String category = "self";
+//        List<Books> findSelfList = booksRepository.findByCategory(category);
+//        List<BooksDto> allSelfList = new ArrayList<>();
+//        for (Books books : findSelfList) {
+//            BooksDto booksDto = BooksDto.builder()
+//                    .bookId(books.getBookId())
+//                    .title(books.getTitle())
+//                    .author(books.getAuthor())
+//                    .publisher(books.getPublisher())
+//                    .bookImg(books.getBookImg())
+//                    .category(books.getCategory())
+//                    .build();
+//            allSelfList.add(booksDto);
+//        }
+//        Collections.shuffle(allSelfList);
+//        List<BooksDto> selfList = new ArrayList<>();
+//        for (int i = 0; i < 5; i++) {
+//            selfList.add(allSelfList.get(i));
+//        }
+//        Map<String, Object> ShowBookLists = new HashMap<>();
+//        ShowBookLists.put("BestBook", BestBooks);
+//        ShowBookLists.put("self", selfList);
+//
+//        return ShowBookLists;
+//
+//    }
+
+
+    // 메인 (추천도서)
+    public  List<BooksDto> showMainBooks() {
 
         //추천도서 list
-        List<Books>findAllBook = booksRepository.findAll();
-        List<BooksDto>randomBookList = new ArrayList<>();
+        List<Books> findAllBook = booksRepository.findAll();
+        List<BooksDto> randomBookList = new ArrayList<>();
 
-        for(Books books : findAllBook){
+        for (Books books : findAllBook) {
             BooksDto booksDto = BooksDto.builder()
                     .bookId(books.getBookId())
                     .title(books.getTitle())
@@ -73,13 +128,18 @@ public class BooksService {
         }
         Collections.shuffle(randomBookList); //리스트 내 값 랜덤으로 순서 재배치
 
-        List<BooksDto>BestBooks = new ArrayList<>();
+        List<BooksDto> bestBooks = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            BestBooks.add(randomBookList.get(i));
+            bestBooks.add(randomBookList.get(i));
         }
 
-        // 자기계발서 책 list
+        return bestBooks;
+    }
+
+
+    // 자기계발서 책 list
+    public List<BooksDto> mainSeifList () {
         String category = "self";
         List<Books> findSelfList = booksRepository.findByCategory(category);
         List<BooksDto> allSelfList = new ArrayList<>();
@@ -99,14 +159,9 @@ public class BooksService {
         for (int i = 0; i < 5; i++) {
             selfList.add(allSelfList.get(i));
         }
-        Map<String, Object> ShowBookLists = new HashMap<>();
-        ShowBookLists.put("BestBook", BestBooks);
-        ShowBookLists.put("self", selfList);
 
-        return ShowBookLists;
-
+        return selfList;
     }
-
 
 
 }
