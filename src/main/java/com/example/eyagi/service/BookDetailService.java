@@ -17,10 +17,13 @@ public class BookDetailService {
 
     private final BooksService booksService;
 
+    //책 상세 페이지 조회 . 책 정보 + AudioPreDto (오디오 미리듣기에 대한 정보)를 담는다.
     public BooksDto readBookDetail (Long id) {
         Books book = booksService.findBook(id);
+
         List<AudioBook> audioBooks = book.getAudioBookList();
         List<AudioPreDto> audioPreDtos = new ArrayList<>();
+
         for (AudioBook a : audioBooks){
             AudioPreDto dto = AudioPreDto.builder()
                     .audioBookId(a.getId())

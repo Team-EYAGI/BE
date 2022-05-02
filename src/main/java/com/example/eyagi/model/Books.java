@@ -29,6 +29,8 @@ public class Books {
     @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
     private List<AudioBook> audioBookList;
 
-
+    public void addAudioBook (AudioBook audioBook){
+        this.audioBookList.add(audioBook);
+    }
 
 }

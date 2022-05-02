@@ -1,10 +1,7 @@
 package com.example.eyagi.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 import javax.persistence.*;
@@ -12,6 +9,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+//@Setter
 @Getter
 @Entity
 public class AudioPreview extends Timestamped {

@@ -7,6 +7,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+//@Setter
 @Getter
 @Entity
 public class AudioFile extends Timestamped {
@@ -15,11 +16,11 @@ public class AudioFile extends Timestamped {
     @Id
     private Long id;
 
-    //S3 경로
-    private String s3FileName;
+    private String s3FileName; //S3 경로
 
-    //원본 파일명
-    private String originName;
+    private String originName; //원본 파일명
+
+    private String num; // 목차
 
     //오디오북이랑 조인 manytoone 양방향
     @ManyToOne
@@ -27,6 +28,5 @@ public class AudioFile extends Timestamped {
     private AudioBook audioBook;
 
     //책이랑 조인 manytoone 양방향 => 오디오북에 책이랑 조인이 되어있어서, 오디오북을 타고 책 조회가능.
-
 
 }

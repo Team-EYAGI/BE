@@ -1,6 +1,5 @@
 package com.example.eyagi.dto;
 
-import com.example.eyagi.model.AudioBook;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,13 +22,6 @@ public class AudioPreDto {
     private String sellerImg; //셀러 프로필 이미지
 
     private int totalHeart; //오디오북 찜 갯수
-//
-//    public AudioPreDto (AudioBook audioBook) {
-//        this.audioBookId = audioBook.getId();
-//        this.previewFile = audioBook.getPreview().getS3FileName();
-//        this.sellerId = audioBook.getSeller().getId();
-//        this.sellerName =audioBook.getSeller().getUsername();
-//
-//    }
+
 
 }

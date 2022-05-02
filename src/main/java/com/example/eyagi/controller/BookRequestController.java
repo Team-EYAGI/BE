@@ -1,7 +1,6 @@
 package com.example.eyagi.controller;
 
 import com.example.eyagi.dto.BookRequestDto;
-import com.example.eyagi.model.BookRequest;
 import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.BookRequestService;
 import lombok.RequiredArgsConstructor;

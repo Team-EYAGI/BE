@@ -38,8 +38,13 @@ public class AudioBook extends Timestamped {
     @JoinColumn(name = "PREVIEW_ID")
     private AudioPreview preview;
 
+//    private String contents; 오디오북 첫 개시때 소개글 작성할 것인지 물어봐야함.
+
 
 //    private Heart heart;
 
+    public void addAudio (AudioFile audio) {
+        this.getAudioFile().add(audio);
+    }
 
 }
