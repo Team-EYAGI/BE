@@ -9,11 +9,10 @@ import com.example.eyagi.repository.BookRequestRepository;
 import com.example.eyagi.repository.BooksRepository;
 import com.example.eyagi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,24 +27,31 @@ public class BookRequestService {
 
 
     // 요청목록 등록순으로 불러오기
-    public List<BookRequest> findAllRequest(){
-        return bookRequestRepository.findAllByOrderByModifiedAtAsc();
+    public List<BookRequestDto.ResponesDto> findAllRequest(){
+        List<BookRequest> bookRequestList = bookRequestRepository.findAllByOrderByModifiedAtAsc();
+        List<BookRequestDto.ResponesDto> dtoList = new ArrayList<>();
+        for (BookRequest b : bookRequestList){
+            BookRequestDto.ResponesDto dto = new BookRequestDto.ResponesDto(b);
+            dtoList.add(dto);
+        }
+        return dtoList;
     }
 
     // 저장하기
-    public BookRequest save(BookRequestDto bookRequestDto, String userEmail){
+    public Long save(BookRequestDto bookRequestDto, String userEmail){
 
         User user = userRepository.findByEmail(userEmail).orElseThrow(()
         -> new NullPointerException("가입되어있지 않은 user입니다."));
 
         //사용자가 이미 요청을 했는지 여부
-        boolean exists = bookRequestRepository.findByUserEmail(user.getEmail()).isPresent();
-        if(exists){
-            throw new NullPointerException("이미 요청이 등록되어있습니다.");
-        }
+//        boolean exists = bookRequestRepository.findByUserEmail(user.getEmail()).isPresent();
+//        if(exists){
+//            throw new NullPointerException("이미 요청이 등록되어있습니다.");
+//        }
         BookRequest bookRequest = new BookRequest(bookRequestDto,user);
+        bookRequestRepository.save(bookRequest);
 
-        return bookRequestRepository.save(bookRequest);
+        return bookRequest.getBookRequestId();
     }
 
     // 수정하기

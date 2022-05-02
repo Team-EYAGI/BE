@@ -30,11 +30,4 @@ public class BookDetailController {
 
     }
 
-    //오디오북 등록하기.
-    @PostMapping("/newAudio/{bookId}")
-    public void newAudioBook (@PathVariable Long bookId, @RequestPart(name = "audio")MultipartFile file,
-                              @RequestPart(name = "contents")String contents){
-        //책 id 값과 오디오 파일 , 목차 들어옴.
-
-    }
 }

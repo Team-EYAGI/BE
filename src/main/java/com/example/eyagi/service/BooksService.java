@@ -7,7 +7,6 @@ import com.example.eyagi.model.Books;
 import com.example.eyagi.repository.BooksRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -35,11 +34,19 @@ public class BooksService {
 
     //카테고리 별 책리스트 가져오기
     public List<BooksDto> findBooksByCategory(String category) {
-        List<Books>findBookList = booksRepository.findByCategory(category);
-        List<BooksDto>bookList = new ArrayList<>();
+        List<Books> findBookList = booksRepository.findByCategory(category);
+        List<BooksDto> bookList = new ArrayList<>();
 
-        for(Books books : findBookList){
-            BooksDto booksDto = new BooksDto(books);
+        for (Books books : findBookList) {
+            BooksDto booksDto = BooksDto.builder()
+                    .bookId(books.getBookId())
+                    .title(books.getTitle())
+                    .author(books.getAuthor())
+                    .publisher(books.getPublisher())
+                    .bookImg(books.getBookImg())
+                    .category(books.getCategory())
+                    .build();
+
             bookList.add(booksDto);
         }
         return bookList;
@@ -54,29 +61,49 @@ public class BooksService {
         List<BooksDto>randomBookList = new ArrayList<>();
 
         for(Books books : findAllBook){
-            BooksDto booksDto = new BooksDto(books);
+            BooksDto booksDto = BooksDto.builder()
+                    .bookId(books.getBookId())
+                    .title(books.getTitle())
+                    .author(books.getAuthor())
+                    .publisher(books.getPublisher())
+                    .bookImg(books.getBookImg())
+                    .category(books.getCategory())
+                    .build();
             randomBookList.add(booksDto);
         }
         Collections.shuffle(randomBookList); //리스트 내 값 랜덤으로 순서 재배치
 
         List<BooksDto>BestBooks = new ArrayList<>();
 
-        for(int i=0; i<10; i++){
-            BestBooks.add(randomBookList.get(i));}
+        for (int i = 0; i < 10; i++) {
+            BestBooks.add(randomBookList.get(i));
+        }
 
         // 자기계발서 책 list
-            String category ="self";
-            List<Books>findSelfList = booksRepository.findByCategoryContains(category);
-            List<BooksDto>selfList = new ArrayList<>();
-            for(Books books : findSelfList){
-                BooksDto booksDto = new BooksDto(books);
-                selfList.add(booksDto);
-            }
+        String category = "self";
+        List<Books> findSelfList = booksRepository.findByCategory(category);
+        List<BooksDto> allSelfList = new ArrayList<>();
+        for (Books books : findSelfList) {
+            BooksDto booksDto = BooksDto.builder()
+                    .bookId(books.getBookId())
+                    .title(books.getTitle())
+                    .author(books.getAuthor())
+                    .publisher(books.getPublisher())
+                    .bookImg(books.getBookImg())
+                    .category(books.getCategory())
+                    .build();
+            allSelfList.add(booksDto);
+        }
+        Collections.shuffle(allSelfList);
+        List<BooksDto> selfList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            selfList.add(allSelfList.get(i));
+        }
         Map<String, Object> ShowBookLists = new HashMap<>();
-            ShowBookLists.put("BestBook",BestBooks);
-            ShowBookLists.put("self",selfList);
+        ShowBookLists.put("BestBook", BestBooks);
+        ShowBookLists.put("self", selfList);
 
-            return ShowBookLists;
+        return ShowBookLists;
 
     }
 
