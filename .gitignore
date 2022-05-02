@@ -38,3 +38,4 @@ out/
 ### my yml###
 src/main/resources/application.yml
 **/application.properties
+src/main/java/com/example/eyagi/aws

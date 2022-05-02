@@ -54,34 +54,34 @@ public class User extends Timestamped{
         this.originImage = fileName;
     }
 
-    // 현재 유저가 팔로우하는 부분
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userFollowingId")
-    private User userFollowing = this;
+//    // 현재 유저가 팔로우하는 부분
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "userFollowingId")
+//    private User userFollowing = this;
+//
+//    @OneToMany(mappedBy = "userFollowing", cascade = CascadeType.REMOVE)
+//    private List<User> followingList = new ArrayList<User>();
 
-    @OneToMany(mappedBy = "userFollowing", cascade = CascadeType.REMOVE)
-    private List<User> followingList = new ArrayList<User>();
-
-    // 현재 유저가 팔로우 당하는 부분
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userFollowerId")
-    private User userFollower = this;
-
-    @OneToMany(mappedBy = "userFollower", cascade = CascadeType.REMOVE)
-    private List<User> followerList = new ArrayList<User>();
-
-    public void addFollowing(User following) {
-        this.followingList.add(following);
-
-        if(!following.getFollowerList().contains(this)) {
-            following.getFollowerList().add(this);
-        }
-    }
-    public void addFollower(User follower) {
-        this.followerList.add(follower);
-
-        if(follower.getFollowingList().contains(this)) {
-            follower.getFollowingList().add(this);
-        }
-    }
+//    // 현재 유저가 팔로우 당하는 부분
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "userFollowerId")
+//    private User userFollower = this;
+//
+//    @OneToMany(mappedBy = "userFollower", cascade = CascadeType.REMOVE)
+//    private List<User> followerList = new ArrayList<User>();
+//
+//    public void addFollowing(User following) {
+//        this.followingList.add(following);
+//
+//        if(!following.getFollowerList().contains(this)) {
+//            following.getFollowerList().add(this);
+//        }
+//    }
+//    public void addFollower(User follower) {
+//        this.followerList.add(follower);
+//
+//        if(follower.getFollowingList().contains(this)) {
+//            follower.getFollowingList().add(this);
+//        }
+//    }
 }

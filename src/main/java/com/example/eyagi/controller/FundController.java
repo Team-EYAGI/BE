@@ -1,5 +1,7 @@
 package com.example.eyagi.controller;
 
+import com.example.eyagi.dto.FundHeartRequestDto;
+import com.example.eyagi.dto.FundHeartResponseDto;
 import com.example.eyagi.dto.FundRequestDto;
 import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.FundService;
@@ -15,18 +17,27 @@ public class FundController {
     private final FundService fundService;
 
     // 펀딩등록
-    @PostMapping("/fund/new/{id}")
+    @PostMapping("/fund/new/{bookid}")
     public ResponseEntity<?> saveFund(
-            @PathVariable Long BookId,
+            @PathVariable Long bookid,
             @RequestPart("file") MultipartFile multipartFile ,
             @RequestPart("information") FundRequestDto fundRequestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return fundService.saveFund(BookId, multipartFile, fundRequestDto, userDetails);
+        return fundService.saveFund(bookid, multipartFile, fundRequestDto, userDetails);
     }
 
     // 펀딩목록
     @GetMapping("/fund")
-    public ResponseEntity<?> getAllFund() {
-        return fundService.getAllFund();
+    public ResponseEntity<?> getAllFund(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return fundService.getAllFund(userDetails);
+    }
+
+    @PostMapping("/fund/like/{fundid}")
+    public FundHeartResponseDto saveFundHeart(
+            @PathVariable Long fundid,
+            @RequestBody FundHeartRequestDto requestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        return fundService.saveFundHeart(fundid, requestDto, userDetails);
     }
 }

@@ -26,10 +26,10 @@ public class UserController {
         return userService.viewMyPage(userDetails);
     }
 
-    // 팔로잉 팔로우 테스트
-    @PostMapping("/user/follow/{id}")
-    public void followUser(@RequestHeader("AccessAuthorization") String user,
-                             @PathVariable Long id) {
-        userService.addFollow(user, id);
-    }
+//    // 팔로잉 팔로우 테스트
+//    @PostMapping("/user/follow/{id}")
+//    public void followUser(@RequestHeader("AccessAuthorization") String user,
+//                             @PathVariable Long id) {
+//        userService.addFollow(user, id);
+//    }
 }

@@ -13,9 +13,10 @@ public class FundResponseDto {
     private Long fundId;
     private String sellerName;
     private String content;
-    private Long likeCnt;
+    private int likeCnt;
     private String fundFile;
     private String bookTitle;
     private String author;
     private String bookImg;
+    private boolean myHeart;
 }
