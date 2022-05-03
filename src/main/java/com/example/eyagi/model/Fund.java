@@ -17,9 +17,6 @@ public class Fund extends Timestamped {
     private Long fundId;
 
     @Column
-    private String title;
-
-    @Column
     private String content;
 
     @OneToOne
