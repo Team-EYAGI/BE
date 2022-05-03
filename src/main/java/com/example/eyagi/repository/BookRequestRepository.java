@@ -12,6 +12,8 @@ import java.util.Optional;
 
 @Repository
 public interface BookRequestRepository extends JpaRepository<BookRequest,Long> {
-   List<BookRequest> findAllByOrderByModifiedAtAsc();
+   List<BookRequest> findAllByOrderByModifiedAtDesc();
+   List<BookRequest> findAllByOrderByBookRequestIdDesc();
+
    Optional<BookRequest> findByUserEmail(String username);
 }

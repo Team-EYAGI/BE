@@ -18,8 +18,11 @@ public class AudioPreview extends Timestamped {
     @Id
     private Long id;
 
+    @Column(nullable = false)
     private String s3FileName; //S3 경로
 
+    @Column(nullable = false)
     private String originName; //원본 파일명
+
 
 }

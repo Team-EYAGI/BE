@@ -28,7 +28,8 @@ public class BookRequestService {
 
     // 요청목록 등록순으로 불러오기
     public List<BookRequestDto.ResponesDto> findAllRequest(){
-        List<BookRequest> bookRequestList = bookRequestRepository.findAllByOrderByModifiedAtAsc();
+//        List<BookRequest> bookRequestList = bookRequestRepository.findAllByOrderByModifiedAtDesc();//최신순으로 수정함.
+        List<BookRequest> bookRequestList = bookRequestRepository.findAllByOrderByBookRequestIdDesc(); //id 값 역순으로 ..
         List<BookRequestDto.ResponesDto> dtoList = new ArrayList<>();
         for (BookRequest b : bookRequestList){
             BookRequestDto.ResponesDto dto = new BookRequestDto.ResponesDto(b);
@@ -43,11 +44,6 @@ public class BookRequestService {
         User user = userRepository.findByEmail(userEmail).orElseThrow(()
         -> new NullPointerException("가입되어있지 않은 user입니다."));
 
-        //사용자가 이미 요청을 했는지 여부
-//        boolean exists = bookRequestRepository.findByUserEmail(user.getEmail()).isPresent();
-//        if(exists){
-//            throw new NullPointerException("이미 요청이 등록되어있습니다.");
-//        }
         BookRequest bookRequest = new BookRequest(bookRequestDto,user);
         bookRequestRepository.save(bookRequest);
 
@@ -55,23 +51,27 @@ public class BookRequestService {
     }
 
     // 수정하기
-    public void update(Long bookRequestId, BookRequestDto bookRequestDto){
+    public void update(Long bookRequestId, BookRequestDto bookRequestDto, User user){
         BookRequest bookRequest = bookRequestRepository.findById(bookRequestId).orElseThrow(()
         -> new NullPointerException("요청글을 찾을 수가 없습니다."));
 
+        if(!bookRequest.getUser().getId().equals(user.getId())){
+            throw new IllegalArgumentException("사용자가 일치하지 않습니다.");
+        }
         bookRequest.update(bookRequestDto);
     }
 
     //삭제하기
-//    public void delete(Long bookRequestId){
-//        bookRequestRepository.findById(bookRequestId)
-//                .map(bookRequest -> {
-//                    bookRequestRepository.deleteById(bookRequestId);
-//                    return bookRequest;
-//                })
-//                .orElseThrow(()-> new NotFoundException("요청글을 찾지 못했습니다."));
-//    }
-
-
+    public void delete(Long bookRequestId, User user){
+        bookRequestRepository.findById(bookRequestId)
+                .map(bookRequest -> {
+                    if(!bookRequest.getUser().getId().equals(user.getId())){
+                        throw new IllegalArgumentException("사용자가 일치하지 않습니다.");
+                    }
+                    bookRequestRepository.deleteById(bookRequestId);
+                    return bookRequest;
+                })
+                .orElseThrow(()-> new NullPointerException("요청글을 찾지 못했습니다."));
+    }
 }
 

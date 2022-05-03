@@ -16,9 +16,8 @@ import java.io.IOException;
 @RestController
 @RequiredArgsConstructor
 public class FundController {
+
     private final FundService fundService;
-
-
 
 
     // 펀딩등록

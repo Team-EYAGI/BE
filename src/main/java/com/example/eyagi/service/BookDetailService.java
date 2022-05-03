@@ -31,6 +31,7 @@ public class BookDetailService {
                     .sellerId(a.getSeller().getId())
                     .sellerName(a.getSeller().getUsername())
                     .sellerImg(a.getSeller().getUserImage())
+                    .contents(a.getContents())
 //                    .totalHeart(a.) 찜 갯수 해야됨.
                     .build();
             audioPreDtos.add(dto);

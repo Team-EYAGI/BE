@@ -1,12 +1,9 @@
 package com.example.eyagi.service;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.util.IOUtils;
-import com.example.eyagi.dto.FilePath;
 import com.example.eyagi.model.*;
+import com.example.eyagi.repository.AudioBookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,88 +21,99 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class AudioService {
+public class AudioService{
 
-    private final AmazonS3 amazonS3;
     private final AwsS3Service awsS3Service;
+    private final AudioBookRepository audioBookRepository;
 
-    @Transactional
-    public void save (FilePath filePath, User seller, Books book, String contents) {
-        AudioPreview audioPreview = AudioPreview.builder()
-                .originName(filePath.getCutFileS3())
-                .s3FileName(filePath.getCutFileS3Url())
-                .build();
-        AudioBook audioBook1 = AudioBook.builder()
-                .seller(seller)
-                .book(book)
-                .preview(audioPreview)
-                .build();
-        AudioFile audioFile = AudioFile.builder()
-                .originName(filePath.getOriginFileS3())
-                .s3FileName(filePath.getOriginFileS3Url())
-                .audioBook(audioBook1)
-                .num(contents)
-                .build();
-
-        audioBook1.addAudio(audioFile);
-        book.addAudioBook(audioBook1);
+    // 특정 오디오북 찾기
+    public AudioBook findAudioBook (Long id) {
+        return audioBookRepository.findById(id).orElseThrow(
+                () -> new NullPointerException("요청하신 오디오북이 존재하지 않습니다.")
+        );
     }
 
-    public FilePath audioUpload (MultipartFile multipartFile, String bucket) {
-        String originFileS3 = "audio" +"/" + UUID.randomUUID() + "." +
-                StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());;
-
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentType(multipartFile.getContentType());
-        metadata.setContentLength(multipartFile.getSize());
-
-
-        String originFileS3Url = awsS3Service.audioUpload(bucket, multipartFile, originFileS3, metadata);
-
-        FilePath filePath = new FilePath();
-        filePath.setOriginFileS3(originFileS3);
-        filePath.setOriginFileS3Url(originFileS3Url);
-
-        return filePath;
-    }
-
-    @Transactional
-    public FilePath fristAudioBook (MultipartFile multipartFile, String path, String bucket) {
-        String multipartName = multipartFile.getOriginalFilename();
-        String localFile = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartName);
-        String originFile = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartName);
-        String originFileS3 = "audio" +"/" + localFile;
-        String cutFileS3 = "audioPreview" + "/" + originFile;
-
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentType(multipartFile.getContentType());
-        metadata.setContentLength(multipartFile.getSize());
-
-        try {
-            String originFileS3Url = awsS3Service.audioUpload(bucket, multipartFile, originFileS3, metadata);
-
-            File file = fileConversion(multipartFile, path, localFile);
-            copyAudio(file, path + originFile, 1, 60);
-
-            String cutFileS3Url = awsS3Service.copyAudioUpload(bucket,path, originFile, cutFileS3, metadata);
-
-            removeFile(path, localFile);
-            removeFile(path, originFile);
-
-            FilePath filePath = new FilePath();
-            filePath.setOriginFileS3(originFileS3);
-            filePath.setOriginFileS3Url(originFileS3Url);
-            filePath.setCutFileS3(cutFileS3);
-            filePath.setCutFileS3Url(cutFileS3Url);
-
-            return filePath;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+    //
+    public void audioDetailPage(Long id) {
+        findAudioBook(id);
 
     }
+
+
+//
+//    @Transactional
+//    public void save (FilePath filePath, User seller, Books book, String contents) {
+//        AudioPreview audioPreview = AudioPreview.builder()
+//                .originName(filePath.getCutFileS3())
+//                .s3FileName(filePath.getCutFileS3Url())
+//                .build();
+//        AudioBook audioBook1 = AudioBook.builder()
+//                .seller(seller)
+//                .book(book)
+//                .preview(audioPreview)
+//                .build();
+//        AudioFile audioFile = AudioFile.builder()
+//                .originName(filePath.getOriginFileS3())
+//                .s3FileName(filePath.getOriginFileS3Url())
+//                .audioBook(audioBook1)
+//                .num(contents)
+//                .build();
+//
+//        audioBook1.addAudio(audioFile);
+//        book.addAudioBook(audioBook1);
+//    }
+
+//    public FilePath audioUpload (MultipartFile multipartFile, String bucket) {
+//        String originFileS3 = "audio" +"/" + UUID.randomUUID() + "." +
+//                StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());;
+//
+//        ObjectMetadata metadata = new ObjectMetadata();
+//        metadata.setContentType(multipartFile.getContentType());
+//
+//        String originFileS3Url = s3Uploader.audioUpload(bucket, multipartFile, originFileS3);
+//
+//        FilePath filePath = new FilePath();
+//        filePath.setOriginFileS3(originFileS3);
+//        filePath.setOriginFileS3Url(originFileS3Url);
+//
+//        return filePath;
+//    }
+
+//    @Transactional
+//    public FilePath fristAudioBook (MultipartFile multipartFile, String path, String bucket) {
+//        String multipartName = multipartFile.getOriginalFilename();
+//        String localFile = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartName);
+//        String originFile = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartName);
+//        String originFileS3 = "audio" +"/" + localFile;
+//        String cutFileS3 = "audioPreview" + "/" + originFile;
+//
+//        ObjectMetadata metadata = new ObjectMetadata();
+//        metadata.setContentType(multipartFile.getContentType());
+//
+//        try {
+//            String originFileS3Url = s3Uploader.audioUpload(bucket, multipartFile, originFileS3);
+//
+//            File file = fileConversion(multipartFile, path, localFile);
+//            copyAudio(file, path + originFile, 1, 60);
+//
+//            String cutFileS3Url = s3Uploader.copyAudioUpload(bucket,path, originFile, cutFileS3);
+//
+//            FilePath filePath = new FilePath();
+//            filePath.setLocalFile(localFile);
+//            filePath.setOriginFile(originFile);
+//            filePath.setOriginFileS3(originFileS3);
+//            filePath.setOriginFileS3Url(originFileS3Url);
+//            filePath.setCutFileS3(cutFileS3);
+//            filePath.setCutFileS3Url(cutFileS3Url);
+//
+//            return filePath;
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//
+//    }
 
 
 
