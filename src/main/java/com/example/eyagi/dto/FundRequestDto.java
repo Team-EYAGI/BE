@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class FundRequestDto {
-    private String title;
     private String content;
 }
