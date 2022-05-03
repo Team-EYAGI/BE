@@ -34,6 +34,9 @@ public class User extends Timestamped{
 
     private String originImage;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Comment> comments;
+
     @Column(unique = true)
     private Long kakaoId;
 
