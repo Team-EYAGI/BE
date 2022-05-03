@@ -8,6 +8,7 @@ import com.example.eyagi.model.User;
 import com.example.eyagi.repository.BookRequestRepository;
 import com.example.eyagi.repository.BooksRepository;
 import com.example.eyagi.repository.UserRepository;
+import com.example.eyagi.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -63,14 +64,16 @@ public class BookRequestService {
     }
 
     //삭제하기
-//    public void delete(Long bookRequestId){
-//        bookRequestRepository.findById(bookRequestId)
-//                .map(bookRequest -> {
-//                    bookRequestRepository.deleteById(bookRequestId);
-//                    return bookRequest;
-//                })
-//                .orElseThrow(()-> new NotFoundException("요청글을 찾지 못했습니다."));
-//    }
+    public void delete(Long bookRequestId, UserDetailsImpl userDetails){
+        User user = userDetails.getUser();
+        bookRequestRepository.findById(bookRequestId)
+                .map(bookRequest -> {
+                    if(!user.equals(bookRequest.getUser())) throw new IllegalArgumentException("다른사람");
+                    bookRequestRepository.deleteById(bookRequestId);
+                    return bookRequest;
+                })
+                .orElseThrow(()-> new NullPointerException("요청글을 찾지 못했습니다."));
+    }
 
 
 }

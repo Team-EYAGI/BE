@@ -48,10 +48,10 @@ public class BookRequestController {
 }
 
 //책요청게시물 삭제
-//    @DeleteMapping ("/book/request/remove/{bookRequestId}")
-//    public Long deleteBookRequest(@PathVariable Long bookRequestId){
-//    bookRequestService.delete(bookRequestId);
-//    return bookRequestId;
-//    }
+    @DeleteMapping ("/book/request/remove/{bookRequestId}")
+    public Long deleteBookRequest(@PathVariable Long bookRequestId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    bookRequestService.delete(bookRequestId, userDetails);
+    return bookRequestId;
+    }
 }
 
