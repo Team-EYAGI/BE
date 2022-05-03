@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -34,6 +35,15 @@ public class AudioController {
 
     //자른 오디오 지정 경로
     static String path = "src/main/resources/static/";
+
+//    @PostMapping("/test")
+//    public String test (@RequestPart(name = "audio") MultipartFile multipartFile){
+//        File file = audioService.fileConversion(multipartFile,path, );
+//        audioService.copyAudio( file, path + ".mp3", 1, );
+//    }
+
+
+
 
     //성우가 해당 책에 오디오북을 처음 만드는 건지 확인해주는 부분.
     @GetMapping("book/detail/newAudio/check/{bookId}")
