@@ -39,12 +39,12 @@ public class BookRequestService {
     }
 
     // 저장하기
-    public Long save(BookRequestDto bookRequestDto, String userEmail){
+    public Long save(BookRequestDto bookRequestDto, String userEmail, Long bookId){
 
         User user = userRepository.findByEmail(userEmail).orElseThrow(()
         -> new NullPointerException("가입되어있지 않은 user입니다."));
 
-        BookRequest bookRequest = new BookRequest(bookRequestDto,user);
+        BookRequest bookRequest = new BookRequest(bookRequestDto,user,bookId);
         bookRequestRepository.save(bookRequest);
 
         return bookRequest.getBookRequestId();

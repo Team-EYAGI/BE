@@ -21,15 +21,18 @@ public class BookRequest extends Timestamped {
     @Column(nullable = false)
     private String contents;
 
+    private Long bookId;
+
     @ManyToOne
     @JoinColumn(name = "user_Id")
     private User user;
 
     // 요청생성 생성자
-    public BookRequest(BookRequestDto bookRequestDto, User user){
+    public BookRequest(BookRequestDto bookRequestDto, User user, Long bookId){
         this.title = bookRequestDto.getTitle();
         this.contents = bookRequestDto.getContents();
         this.user = user;
+        this.bookId = bookId;
     }
 
 

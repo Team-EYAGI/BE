@@ -39,12 +39,15 @@ public class BookRequestDto {
 
         private String modifiedAt;
 
+        private Long bookId;
+
         public ResponesDto (BookRequest bookRequest){
             this.bookRequestId = bookRequest.getBookRequestId();
             this.contents = bookRequest.getContents();
             this.title = bookRequest.getTitle();
             this.userEmail = bookRequest.getUser().getEmail();
             this.modifiedAt = bookRequest.getModifiedAt();
+            this.bookId = bookRequest.getBookId();
         }
 
     }

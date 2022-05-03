@@ -4,6 +4,7 @@ import com.example.eyagi.dto.BookRequestDto;
 import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.BookRequestService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class BookRequestController {
@@ -28,12 +29,12 @@ public class BookRequestController {
 
 
     //책요청 저장하기
-    @PostMapping("/book/request/new")
-    public ResponseEntity saveRequest(@RequestBody BookRequestDto bookRequestDto,
+    @PostMapping("/book/{bookId}/request/new")
+    public ResponseEntity saveRequest(@PathVariable Long bookId, @RequestBody BookRequestDto bookRequestDto,
                                       @AuthenticationPrincipal UserDetailsImpl userDetails) {
         String userEmail = userDetails.getUsername();
         System.out.println(userDetails.getUsername());
-        Long requestId = bookRequestService.save(bookRequestDto, userEmail);
+        Long requestId = bookRequestService.save(bookRequestDto, userEmail, bookId);
 
         Map<String, Object> message = new HashMap<>();
         message.put("bookRequestId", requestId);
