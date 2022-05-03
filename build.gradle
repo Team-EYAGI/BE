@@ -40,6 +40,8 @@ dependencies {
     //S3
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
+    //jpql
+    implementation group: 'org.qlrm', name: 'qlrm', version: '3.0.1'
 }
 
 tasks.named('test') {
