@@ -1,16 +1,17 @@
 package com.example.eyagi.model;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 @Entity
 public class Comment extends Timestamped {
 
@@ -27,6 +28,6 @@ public class Comment extends Timestamped {
 //    @ManyToOne //단방향
 //    @JoinColumn(name = "AUDIOBOOK_ID")
 //    private AudioBook audioBook;
-
+//
 
 }
