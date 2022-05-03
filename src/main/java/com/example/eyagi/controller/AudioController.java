@@ -7,9 +7,9 @@ import com.example.eyagi.repository.AudioFileRepository;
 import com.example.eyagi.repository.AudioPreRepository;
 import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.AudioService;
-import com.example.eyagi.service.AwsS3Service;
+import com.example.eyagi.service.AudioService2;
 import com.example.eyagi.service.BooksService;
-import com.example.eyagi.service.*;
+import com.example.eyagi.service.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.UUID;
 
 @RequiredArgsConstructor

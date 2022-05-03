@@ -22,6 +22,14 @@ public class UserDetailsImpl implements UserDetails {
         return user;
     }
 
+    public String getUserNikName(){
+        return user.getUsername();
+    }
+
+    public String getUserRole(){
+        return user.getRole().getAuthority();
+    }
+
     @Override
     public String getPassword() {
         return user.getPassword();
