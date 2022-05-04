@@ -19,12 +19,12 @@ public class BookDetailController {
             return bookDetailService.readBookDetail(bookId);
     }
 
-
-    //오디오에 찜 누르기
-    @PostMapping("/{bookId}/heart/{audioId}")
-    public void audioLike(@PathVariable Long bookId , @PathVariable Long audioId){
-
-
-    }
+//
+//    //오디오에 찜 누르기
+//    @PostMapping("/{bookId}/heart/{audioId}")
+//    public void audioLike(@PathVariable Long bookId , @PathVariable Long audioId){
+//
+//
+//    }
 
 }
