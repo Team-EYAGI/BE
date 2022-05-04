@@ -31,8 +31,12 @@ public class AudioDetailController {
 
     //오디오북 상세페이지 -> 후기 목록
     @GetMapping("/{audioBookId}/comment")
-    public ResponseEntity<List<CommentDto>> getComment (@PathVariable Long audioBookId){
-        return ResponseEntity.ok(audioDetailService.commentList(audioBookId));
+    public ResponseEntity getComment (@PathVariable Long audioBookId){
+        List<CommentDto> commentDtoList = audioDetailService.commentList(audioBookId);
+        if (commentDtoList.isEmpty()){
+            return new ResponseEntity("아직 등록된 후기가 없습니다.",HttpStatus.OK);
+        }
+        return new ResponseEntity(commentDtoList,HttpStatus.OK);
     }
 
     //후기 등록

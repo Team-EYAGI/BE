@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 public class CommentDto {
 
    private String content;
-   private String username; //사용자 닉네임
    private String title;
+   private String username; //사용자 닉네임
 
    public CommentDto (String content, String username, String title){
       this.title = title;

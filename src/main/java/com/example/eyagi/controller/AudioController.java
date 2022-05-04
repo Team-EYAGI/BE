@@ -36,9 +36,9 @@ public class AudioController {
     private String bucket;
 
     //자른 오디오 지정 경로
-//    static String path = "src/main/resources/static/";
+    static String path = "src/main/resources/static/"; //로컬테스트
 //
-    static String path = "/home/ubuntu/eyagi/audio/";
+//    static String path = "/home/ubuntu/eyagi/audio/";  //배포시
 
 
         //성우가 해당 책에 오디오북을 처음 만드는 건지 확인해주는 부분.
@@ -101,12 +101,11 @@ public class AudioController {
 
 
                 book.addAudioBook(audioBook1);
-
+                audioService.removeFile(path, audioService2.getLocalFile());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            audioService.removeFile(path, audioService2.getLocalFile());
             return ResponseEntity.ok("오디오북 첫 개시에 성공하였습니다!");
         }
         else {
