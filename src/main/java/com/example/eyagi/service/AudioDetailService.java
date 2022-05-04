@@ -49,27 +49,32 @@ public class AudioDetailService {
                  .build();
     }
 
-//
-//    //오디오북 상세 페이지 조회 2. 후기 목록
-//    public void commentList(Long audioBookDetailId){
-//
-//        List<Comment> commentList = commentRepository.findAllByAudioBook(findAudioBook(audioBookDetailId));
-//         // 작성하는중
-//    }
-//
-//
-//    //후기 등록
-//    public Long newComment(Long audioBookDetailId, CommentDto commentDto, User user) {
-//
-//        Comment comment = Comment.builder()
-//                .content(commentDto.getContent())
-//                .user(user)
-//                .audioBook(audioService.findAudioBook(audioBookDetailId))
-//                .build();
-//        commentRepository.save(comment);
-//
-//        return comment.getId();
-//    }
+
+    //오디오북 상세 페이지 조회 2. 후기 목록
+    public List<CommentDto> commentList(Long audioBookDetailId){
+
+        List<Comment> commentList = commentRepository.findAllByAudioBook_Id(audioBookDetailId);
+        List<CommentDto> commentDtoList = new ArrayList<>();
+        for (Comment c : commentList){
+            CommentDto commentDto = new CommentDto(c.getContent(), c.getUser().getUsername());
+            commentDtoList.add(commentDto);
+        }
+        return commentDtoList;
+    }
+
+
+    //후기 등록
+    public Long newComment(Long audioBookDetailId, CommentDto commentDto, User user) {
+
+        Comment comment = Comment.builder()
+                .content(commentDto.getContent())
+                .user(user)
+                .audioBook(audioService.findAudioBook(audioBookDetailId))
+                .build();
+        commentRepository.save(comment);
+
+        return comment.getId();
+    }
 
 
 

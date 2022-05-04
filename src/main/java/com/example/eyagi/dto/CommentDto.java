@@ -1,16 +1,19 @@
 package com.example.eyagi.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-
+@NoArgsConstructor
 @Getter
 public class CommentDto {
 
    private String content;
+   private String username; //사용자 닉네임
 
-   class CommentResponesDto {
-      private String content;
 
-//      private String 이메일로 할지 이름을 -> 닉네임 개념으로 바꿔서 닉네임으로 할지 ?
+   public CommentDto (String content, String username){
+      this.content = content;
+      this.username = username;
    }
+
 }

@@ -30,17 +30,16 @@ public class User extends Timestamped{
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
 
-    private String userImage;
-
-    private String originImage;
-
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE) //프로필은 회원이 탈퇴하면 함께 사라짐.
+//    private UserProfile userProfile;
+//
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE) //회원이 단 후기는 회원이 탈퇴하면 함께 사라짐.
 //    private List<Comment> comments;
 
     @Column(unique = true)
     private Long kakaoId;
 
-    @OneToMany(mappedBy = "seller", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.REMOVE) //해당 셀러가 등록한 오디오북은 셀러가 탈퇴하면 함께 사라짐.
     private List<AudioBook> audioBookList;
 
 
@@ -52,18 +51,18 @@ public class User extends Timestamped{
         this.role = role;
     }
 
-    public void update(String imgurl, String fileName) {
-        this.userImage = imgurl;
-        this.originImage = fileName;
-    }
+//    public void update(String imgurl, String fileName) {
+//        this.userImage = imgurl;
+//        this.originImage = fileName;
+//    }
 
-    // 현재 유저가 팔로우하는 부분
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userFollowingId")
-    private User userFollowing = this;
-
-    @OneToMany(mappedBy = "userFollowing", cascade = CascadeType.REMOVE)
-    private List<User> followingList = new ArrayList<User>();
+//    // 현재 유저가 팔로우하는 부분
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "userFollowingId")
+//    private User userFollowing = this;
+//
+//    @OneToMany(mappedBy = "userFollowing", cascade = CascadeType.REMOVE)
+//    private List<User> followingList = new ArrayList<User>();
 
     // 현재 유저가 팔로우 당하는 부분
 //    @ManyToOne(fetch = FetchType.LAZY)
