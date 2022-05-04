@@ -20,8 +20,8 @@ public class User extends Timestamped{
     @Column(nullable = false, unique = true)
     private String email; //이메일
 
-    @Column(nullable = false)
-    private String username; //이름
+    @Column(nullable = false, unique = true)
+    private String username; //닉네임
 
     @Column(nullable = false)
     private String password;

@@ -1,6 +1,7 @@
 package com.example.eyagi.controller;
 
 
+import com.example.eyagi.dto.AudioFileDto;
 import com.example.eyagi.model.*;
 import com.example.eyagi.repository.AudioBookRepository;
 import com.example.eyagi.repository.AudioFileRepository;
@@ -55,9 +56,9 @@ public class AudioController {
     //오디오북 등록하기.
     @PostMapping("/book/detail/newAudio/{bookId}")
     public ResponseEntity<String> newAudioBook (@PathVariable Long bookId,
-                                        @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                        @RequestPart(name = "audio") MultipartFile multipartFile,
-                                        @RequestPart(name = "contents" ,required = false )String contents) throws IOException {
+                                                @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                @RequestPart(name = "audio") MultipartFile multipartFile,
+                                                @RequestPart(name = "contents" ,required = false )String contents) throws IOException {
 
         Books book = booksService.findBook(bookId);
         User seller = userDetails.getUser();

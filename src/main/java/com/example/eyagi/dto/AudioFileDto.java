@@ -1,5 +1,8 @@
 package com.example.eyagi.dto;
 
+import lombok.Getter;
+
+@Getter
 public class AudioFileDto {
 
     private Long id;

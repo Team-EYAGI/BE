@@ -20,6 +20,13 @@ public class UserController {
         return userService.registerUser(signupRequestDto);
     }
 
+    //닉네임 중복확인
+    @PostMapping("/user/userName/check")
+    public String usernameCheck (@RequestBody SignupRequestDto signupRequestDto) {
+        return userService.userNameCheck(signupRequestDto.getUsername());
+    }
+
+
     // 마이페이지
     @PostMapping("/user/mypage")
     public ResponseEntity<UserDto.MypageDto> viewMyPage(@AuthenticationPrincipal UserDetailsImpl userDetails){
