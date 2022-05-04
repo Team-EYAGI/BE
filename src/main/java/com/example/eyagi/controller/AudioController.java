@@ -1,7 +1,5 @@
 package com.example.eyagi.controller;
 
-
-import com.example.eyagi.dto.AudioFileDto;
 import com.example.eyagi.model.*;
 import com.example.eyagi.repository.AudioBookRepository;
 import com.example.eyagi.repository.AudioFileRepository;
@@ -33,6 +31,7 @@ public class AudioController {
     private final BooksService booksService;
     private final AudioService audioService;
 
+
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
@@ -42,8 +41,8 @@ public class AudioController {
     static String path = "/home/ubuntu/eyagi/audio/";
 
 
-    //성우가 해당 책에 오디오북을 처음 만드는 건지 확인해주는 부분.
-    @PostMapping("book/detail/newAudio/check/{bookId}")
+        //성우가 해당 책에 오디오북을 처음 만드는 건지 확인해주는 부분.
+    @GetMapping("/book/detail/newAudio/check/{bookId}")
     public boolean newAudioCheck (@PathVariable Long bookId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Books book = booksService.findBook(bookId);
         User seller = userDetails.getUser();
@@ -56,18 +55,19 @@ public class AudioController {
 
     //오디오북 등록하기.
     @PostMapping("/book/detail/newAudio/{bookId}")
-    public ResponseEntity<String> newAudioBook (@PathVariable Long bookId,
-                                                @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                @RequestPart(name = "audio") MultipartFile multipartFile,
-                                                @RequestPart(name = "contents" ,required = false )String contents) throws IOException {
+
+    public ResponseEntity<String> newAudioBook(@PathVariable Long bookId,
+                                               @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                               @RequestPart(name = "audio") MultipartFile multipartFile,
+                                               @RequestPart(name = "contents", required = false) String contents) throws IOException {
 
         Books book = booksService.findBook(bookId);
         User seller = userDetails.getUser();
 
         AudioBook audioBook = audioBookRepository.findByBookAndSeller(book, seller);
 
-        if (audioBook == null){
 
+        if (audioBook == null) {
             AudioService2 audioService2 = new AudioService2(multipartFile, path, bucket);
             audioService2.start();
 
@@ -99,18 +99,17 @@ public class AudioController {
                         .build();
                 audioFileRepository.save(audioFile);
 
-                audioBook1.addAudio(audioFile);
-                book.addAudioBook(audioBook1);
 
-                audioService.removeFile(path, audioService2.getLocalFile());
+                book.addAudioBook(audioBook1);
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            return ResponseEntity.ok("첫 게시물 등록에 성공하였습니다.");
-
-        } else {
+            audioService.removeFile(path, audioService2.getLocalFile());
+            return ResponseEntity.ok("오디오북 첫 개시에 성공하였습니다!");
+        }
+        else {
 
             String originFileS3 = "audio" +"/" + UUID.randomUUID() + "."
                     + StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
@@ -126,13 +125,9 @@ public class AudioController {
             audioBook.addAudio(audioFile);
             audioFileRepository.save(audioFile);
 
-            return ResponseEntity.ok("등록완료!");
-        }
-    }
+            return ResponseEntity.ok("오디오 등록 성공!");
 
-    //오디오북 상세페이지 조회
-    @GetMapping("audio/detail/{audioBookId}")
-    public void audioBookDetail (@PathVariable Long audioBookId){
+        }
 
     }
 

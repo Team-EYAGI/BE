@@ -39,4 +39,19 @@ public class UserController {
 //                             @PathVariable Long id) {
 //        userService.addFollow(user, id);
 //    }
+
+
+    //팔로잉하기 .  사용자 -> 셀러
+    @PostMapping("/user/follow")
+    public void userFollowing(){
+
+    }
+
+
+    //언팔로잉.  팔로우취소
+    @DeleteMapping("/user/unfollow")
+    public void userUnfollow(){
+
+    }
+
 }

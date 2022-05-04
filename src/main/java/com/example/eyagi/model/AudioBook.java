@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.persistence.*;
@@ -30,7 +31,7 @@ public class AudioBook extends Timestamped {
     private User seller;
 
     //챕터별 오디오북 리스트
-    @OneToMany(mappedBy = "audioBook", cascade = CascadeType.REMOVE)  // 양방향
+    @OneToMany(mappedBy = "audioBook", cascade = CascadeType.REMOVE)// 양방향
     private List<AudioFile> audioFile;
 
     //해당 셀러의 오디오북 미리듣기 . (한권의 오디오북에는 하나의 미리듣기만 존재 => oneToone)
@@ -42,8 +43,9 @@ public class AudioBook extends Timestamped {
 
 //    private Heart heart;
 
+
     public void addAudio (AudioFile audio) {
-        this.audioFile.add(audio);
+         this.getAudioFile().add(audio);
     }
 
 }

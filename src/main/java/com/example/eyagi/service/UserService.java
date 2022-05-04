@@ -68,8 +68,8 @@ public class UserService {
         UserDto.MypageDto mypageDto = UserDto.MypageDto.builder()
                 .email(userDetails.getUsername())
                 .username(user.getUsername())
-                .userimgurl(user.getUserImage())
-                .userimgname(user.getOriginImage())
+//                .userimgurl(user.getUserImage())
+//                .userimgname(user.getOriginImage())
                 .build();
         return ResponseEntity.ok().body(mypageDto);
     }
