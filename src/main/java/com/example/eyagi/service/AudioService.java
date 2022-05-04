@@ -35,10 +35,10 @@ public class AudioService{
     }
 
     //
-    public void audioDetailPage(Long id) {
-        findAudioBook(id);
-
-    }
+//    public void audioDetailPage(Long id) {
+//        findAudioBook(id);
+//
+//    }
 
 
 //
@@ -122,7 +122,7 @@ public class AudioService{
     @Transactional
     public File fileConversion (MultipartFile multipartFile, String path, String localFile) throws IOException {
 
-            File file = new File(path + localFile);
+            File file = new File(path + localFile + ".wav");
             file.createNewFile();
             FileOutputStream fos = new FileOutputStream(file);
             BufferedOutputStream bos = new BufferedOutputStream(fos);

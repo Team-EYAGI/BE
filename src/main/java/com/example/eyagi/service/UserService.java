@@ -64,18 +64,18 @@ public class UserService {
     }
 
     //팔로우 팔로잉
-    public void addFollow(String users, Long userId) {
-        String username = jwtDecoder.decodeUsername(users);
-        User followerUser = userRepository.findFollowUserByEmail(username);
-
-        User user = userRepository.findUserById(userId)
-                .orElseThrow(() -> new NullPointerException("무야호"));
-
-        //객체지향적으로 추가(연관관계의 주인으로도 삽입)
-        followerUser.getUserFollowing().getFollowingList().add(user);
-        followerUser.getFollowingList().add(user);
-
-        user.getUserFollower().getFollowerList().add(followerUser);
-        user.getFollowerList().add(followerUser);
-    }
+//    public void addFollow(String users, Long userId) {
+//        String username = jwtDecoder.decodeUsername(users);
+//        User followerUser = userRepository.findFollowUserByEmail(username);
+//
+//        User user = userRepository.findUserById(userId)
+//                .orElseThrow(() -> new NullPointerException("무야호"));
+//
+//        //객체지향적으로 추가(연관관계의 주인으로도 삽입)
+//        followerUser.getUserFollowing().getFollowingList().add(user);
+//        followerUser.getFollowingList().add(user);
+//
+//        user.getUserFollower().getFollowerList().add(followerUser);
+//        user.getFollowerList().add(followerUser);
+//    }
 }

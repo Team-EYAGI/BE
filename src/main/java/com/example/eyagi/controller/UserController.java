@@ -28,9 +28,9 @@ public class UserController {
     }
 
     // 팔로잉 팔로우 테스트
-    @PostMapping("/user/follow/{id}")
-    public void followUser(@RequestHeader("AccessAuthorization") String user,
-                             @PathVariable Long id) {
-        userService.addFollow(user, id);
-    }
+//    @PostMapping("/user/follow/{id}")
+//    public void followUser(@RequestHeader("AccessAuthorization") String user,
+//                             @PathVariable Long id) {
+//        userService.addFollow(user, id);
+//    }
 }

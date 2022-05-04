@@ -14,9 +14,16 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.UUID;
+
+import static com.example.eyagi.converter.AudioConverter.convertFrom;
 
 @RequiredArgsConstructor
 @RestController
@@ -36,16 +43,36 @@ public class AudioController {
     //자른 오디오 지정 경로
     static String path = "src/main/resources/static/";
 
-//    @PostMapping("/test")
-//    public String test (@RequestPart(name = "audio") MultipartFile multipartFile){
-//        File file = audioService.fileConversion(multipartFile,path, );
-//        audioService.copyAudio( file, path + ".mp3", 1, );
-//    }
+    @PostMapping("/test")
+    public void test (@RequestPart MultipartFile multipartFile) throws IOException {
+        try (
+                final InputStream inputStream = getClass().getResourceAsStream("/test.mp3");
+                final ByteArrayOutputStream output = new ByteArrayOutputStream();
+        ) {
+            final AudioFormat audioFormat = new AudioFormat(44100, 8, 1, false, false);
 
+            convertFrom(inputStream).withTargetFormat(audioFormat).to(output);
 
+            final byte[] wavContent = output.toByteArray();
 
+            final AudioFileFormat actualFileFormat = AudioSystem
+                    .getAudioFileFormat(new ByteArrayInputStream(wavContent));
 
-    //성우가 해당 책에 오디오북을 처음 만드는 건지 확인해주는 부분.
+            Files.write(Paths.get("/tmp/bla.wav"), wavContent);
+            Files.write(Paths.get("/tmp/output.wav"), output.toByteArray());
+
+            String a = multipartFile.getOriginalFilename();
+            String b = a.substring(a.lastIndexOf(".") + 1);
+            String name = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(b);
+            File file = audioService.fileConversion(multipartFile, path, name);
+            audioService.copyAudio(file, path + name, 1, 60);
+
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        }
+    }
+
+        //성우가 해당 책에 오디오북을 처음 만드는 건지 확인해주는 부분.
     @GetMapping("book/detail/newAudio/check/{bookId}")
     public boolean newAudioCheck (@PathVariable Long bookId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Books book = booksService.findBook(bookId);

@@ -76,7 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         //.and().exceptionHandling().authenticationEntryPoint(/*filter 에서의 exception 처리 */);
 
-/*
+        /*
          * 1.
          * UsernamePasswordAuthenticationFilter 이전에 FormLoginFilter, JwtFilter 를 등록합니다.
          * FormLoginFilter : 로그인 인증을 실시합니다.
@@ -136,6 +136,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         skipPathList.add("GET,/");
         skipPathList.add("GET,/category/**");
+        skipPathList.add("GET,/category");
 
         skipPathList.add("GET,/basic.js");
 
@@ -143,6 +144,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         skipPathList.add("GET,/book/detail/**"); //책 상세페이지 조회 허용
         skipPathList.add("GET,/book/request"); //오디오 요청 페이지 조회 허용
+        skipPathList.add("GET,/fund"); //펀드 목록 조회 허용
 
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(
