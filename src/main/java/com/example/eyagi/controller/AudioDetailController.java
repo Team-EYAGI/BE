@@ -21,6 +21,8 @@ public class AudioDetailController {
 
     private final AudioDetailService audioDetailService;
 
+
+
     //오디오북 상세페이지 조회
     @GetMapping("/{audioBookId}")
     public ResponseEntity<AudioDetailDto> audioBookDetail (@PathVariable Long audioBookId){
@@ -33,26 +35,33 @@ public class AudioDetailController {
         return ResponseEntity.ok(audioDetailService.commentList(audioBookId));
     }
 
-    //오디오북 상세페이지 , 후기 등록
+    //후기 등록
     @PostMapping("/{audioBookId}/comment/new")
     public ResponseEntity newComment (@PathVariable Long audioBookId, @RequestBody CommentDto commentDto,
                             @AuthenticationPrincipal UserDetailsImpl userDetails){
         Long commentId = audioDetailService.newComment(audioBookId,commentDto,userDetails.getUser());
         Map<String, Object> message = new HashMap<>();
-        message.put("commentId", commentId);
+        message.put("newCommentId", commentId);
         return new ResponseEntity(message, HttpStatus.OK);
     }
 
     //후기 수정
     @PutMapping("/comment/edit/{commentId}")
-    public void editComment () {
-
+    public ResponseEntity editComment (@PathVariable Long commentId, @RequestBody CommentDto commentDto,
+                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Long editCommentId = audioDetailService.editComment(commentId, userDetails.getUser() , commentDto);
+        Map<String, Object> message = new HashMap<>();
+        message.put("editCommentId", editCommentId);
+        return new ResponseEntity(message, HttpStatus.OK);
     }
 
     //후기 삭제
     @DeleteMapping("/comment/remove/{commentId}")
-    public void removeComment(){
-
+    public ResponseEntity removeComment(@PathVariable Long commentId,@AuthenticationPrincipal UserDetailsImpl userDetails){
+        Long removeCommentId = audioDetailService.removeComment(commentId, userDetails.getUser());
+        Map<String, Object> message = new HashMap<>();
+        message.put("removeCommentId", removeCommentId);
+        return new ResponseEntity(message, HttpStatus.OK);
     }
 
 

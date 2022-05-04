@@ -10,12 +10,12 @@ public class Follow {
     @Id
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "following")
-    private User following;
-
-    @ManyToOne
-    @JoinColumn(name = "follower")
-    private User follower;
+//    @ManyToOne
+//    @JoinColumn(name = "following")
+//    private User following;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "follower")
+//    private User follower;
 
 }

@@ -15,9 +15,9 @@ public class BooksDto {
     private String category;
     private String bookImg;
 
+
     //책 소개 글
     private String summary;
-
     //뷰로 내보내 줄 오디오북 미리보기 정보. 미리듣기 파일, 셀러 정보, ...
     private List<AudioPreDto> audioPreDtoList;
 

@@ -17,6 +17,10 @@ public class AudioDetailDto {
 
     private String author;  //저자
 
+    private String sellerName; //셀러 닉네임
+
+    private String audioInfo;   // 오디오북 소개글
+
     private List<AudioFileDto> audioFileDtoList;  //오디오 파일 목록
 
 

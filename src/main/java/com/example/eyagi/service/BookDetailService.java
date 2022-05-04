@@ -5,6 +5,7 @@ import com.example.eyagi.dto.AudioPreDto;
 import com.example.eyagi.dto.BooksDto;
 import com.example.eyagi.model.AudioBook;
 import com.example.eyagi.model.Books;
+import com.example.eyagi.repository.AudioBookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.List;
 public class BookDetailService {
 
     private final BooksService booksService;
+    private final AudioBookRepository audioBookRepository;
 
     //책 상세 페이지 조회 . 책 정보 + AudioPreDto (오디오 미리듣기에 대한 정보)를 담는다.
     public BooksDto readBookDetail (Long id) {
@@ -24,13 +26,13 @@ public class BookDetailService {
         List<AudioBook> audioBooks = book.getAudioBookList();
         List<AudioPreDto> audioPreDtos = new ArrayList<>();
 
-        for (AudioBook a : audioBooks){
+        for (AudioBook a : audioBooks) {
             AudioPreDto dto = AudioPreDto.builder()
                     .audioBookId(a.getId())
                     .previewFile(a.getPreview().getS3FileName())
                     .sellerId(a.getSeller().getId())
                     .sellerName(a.getSeller().getUsername())
-                    .sellerImg(a.getSeller().getUserImage())
+                    .sellerImg(a.getSeller().getUserProfile().getUserImage())
                     .contents(a.getContents())
 //                    .totalHeart(a.) 찜 갯수 해야됨.
                     .build();
