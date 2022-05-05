@@ -1,7 +1,7 @@
 package com.example.eyagi.controller;
 
 
-import com.example.eyagi.dto.BookSearchDto;
+
 import com.example.eyagi.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +30,7 @@ public class SearchController {
         try{
             map.put("book",searchService.findBooks(search));
             map.put("user",searchService.findSeller(search));
+            map.put("author",searchService.findBooks22(search));
         }catch (Exception e){
             log.warn("전체 검색 에러 : {}", e.getMessage());
             status = HttpStatus.NOT_FOUND;

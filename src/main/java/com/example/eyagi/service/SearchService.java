@@ -27,6 +27,14 @@ public class SearchService {
          }
          return bookSearchDtoList;
     }
+    public List<BookSearchDto> findBooks22(String search){
+        List<Books> booksList = searchRepository.searchAuthor(search);
+        List<BookSearchDto> bookSearchDtoList = new ArrayList<>();
+        for(Books b : booksList){
+            bookSearchDtoList.add(new BookSearchDto(b));
+        }
+        return bookSearchDtoList;
+    }
 
     public List<UserSearchDto> findSeller(String search) {
         List<User> userList = searchRepository.searchSeller(search);
