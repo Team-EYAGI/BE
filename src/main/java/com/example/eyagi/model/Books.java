@@ -3,6 +3,7 @@ package com.example.eyagi.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -34,6 +35,9 @@ public class Books {
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
     private List<AudioBook> audioBookList;
+
+    @OneToMany
+    private List<Library_Books> userLibrary; // 내 서재
 
     public void addAudioBook (AudioBook audioBook){
         this.audioBookList.add(audioBook);

@@ -1,8 +1,10 @@
 package com.example.eyagi.service;
 
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.eyagi.model.AudioPreview;
@@ -86,13 +88,15 @@ public class AwsS3Service {
     }
 
 
-
-
-    //오디오파일 바로 S3에 업로드
+   //파일 바로 S3에 업로드
     @Transactional
-    public String audioUpload(String bucket, MultipartFile multipartFile, String fileName,ObjectMetadata metadata) {
+    public String fileUpload(String bucket, MultipartFile multipartFile, String fileName ) {
 
         try {
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType(multipartFile.getContentType());
+            metadata.setContentLength(multipartFile.getSize());
+
             amazonS3.putObject(new PutObjectRequest(bucket,fileName, multipartFile.getInputStream(), metadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
 
@@ -104,16 +108,18 @@ public class AwsS3Service {
         }
     }
 
-    //로컬에 저장된 파일 s3로 업로드
+
+//    //로컬에 저장된 파일 s3로 업로드
     @Transactional
-    public String copyAudioUpload(String bucket, String path, String originName,String fileCutNameS3, ObjectMetadata metadata){
+    public String copyAudioUpload(String bucket, String path, String originName,String fileCutNameS3){
 
         try {
             FileInputStream fis = new FileInputStream(path + originName);
             BufferedInputStream bis = new BufferedInputStream(fis);
 
-            amazonS3.putObject(new PutObjectRequest(bucket, fileCutNameS3, bis, metadata)
+            amazonS3.putObject(new PutObjectRequest(bucket, fileCutNameS3, bis, null)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
+
             return amazonS3.getUrl(bucket, fileCutNameS3).toString();
 
         } catch (IOException e){
@@ -121,4 +127,17 @@ public class AwsS3Service {
             return e.getMessage();
         }
     }
+
+
+    //S3 파일 삭제
+    public void removeImage (String fileName){
+        log.info("S3파일 삭제 시도 file name : "+ fileName);
+        try {
+            amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
+        } catch (AmazonServiceException e) {
+            System.err.println(e.getErrorMessage());
+        }
+        log.info("S3파일 삭제 완료 file name : "+ fileName);
+    }
+
 }

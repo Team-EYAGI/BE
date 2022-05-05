@@ -7,7 +7,7 @@ import java.util.List;
 @Getter
 @Builder
 public class BooksDto {
-
+//오디오 리스트 없애고 서비스에서 맵으로 묶어서 뷰로 내려주도록 수정!!!
     private Long bookId;
     private String title;
     private String publisher;

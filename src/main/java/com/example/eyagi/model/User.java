@@ -30,15 +30,18 @@ public class User extends Timestamped{
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE) //프로필은 회원이 탈퇴하면 함께 사라짐.
+    @OneToOne
+    private UserLibrary userLibrary;
+
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)//프로필은 회원이 탈퇴하면 함께 사라짐.
     private UserProfile userProfile;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE) //회원이 단 후기는 회원이 탈퇴하면 함께 사라짐.
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL) //회원이 단 후기는 회원이 탈퇴하면 함께 사라짐.
     private List<Comment> comments;
 
 
-    @OneToMany(mappedBy = "seller", cascade = CascadeType.REMOVE) //해당 셀러가 등록한 오디오북은 셀러가 탈퇴하면 함께 사라짐.
-    private List<AudioBook> audioBookList;
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL) //해당 셀러가 등록한 오디오북은 셀러가 탈퇴하면 함께 사라짐.
+    private List<AudioBook> audioBookList;  //셀러 마이페이지 -> 내가 등록한 오디오북
 
     @Column(unique = true)
     private Long kakaoId;

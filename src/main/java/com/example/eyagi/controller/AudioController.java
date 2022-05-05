@@ -7,8 +7,8 @@ import com.example.eyagi.repository.AudioPreRepository;
 import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.AudioService;
 import com.example.eyagi.service.AudioService2;
+import com.example.eyagi.service.AwsS3Service;
 import com.example.eyagi.service.BooksService;
-import com.example.eyagi.service.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ import java.util.UUID;
 @RestController
 public class AudioController {
 
-    private final S3Uploader s3Uploader;
+    private final AwsS3Service awsS3Service;
     private final AudioBookRepository audioBookRepository;
     private final AudioFileRepository audioFileRepository;
     private final AudioPreRepository audioPreRepository;
@@ -74,9 +74,9 @@ public class AudioController {
             try {
                 audioService2.join();
 
-                String originFileS3Url = s3Uploader.audioUpload(bucket, multipartFile, audioService2.getOriginFileS3());
-                String cutFileS3Url = s3Uploader.copyAudioUpload(bucket,path,
-                        audioService2.getCutFile(), audioService2.getCutFileS3());
+                String originFileS3Url = awsS3Service.fileUpload(bucket, multipartFile, audioService2.getOriginFileS3());
+                String cutFileS3Url = awsS3Service.copyAudioUpload(bucket, path, audioService2.getCutFile(),
+                                        audioService2.getCutFileS3());
 
                 AudioPreview audioPreview = AudioPreview.builder()
                         .originName(audioService2.getCutFileS3())
@@ -113,7 +113,7 @@ public class AudioController {
             String originFileS3 = "audio" +"/" + UUID.randomUUID() + "."
                     + StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
 
-            String originFileS3Url = s3Uploader.audioUpload(bucket, multipartFile, originFileS3);
+            String originFileS3Url = awsS3Service.fileUpload(bucket, multipartFile, originFileS3);
 
             AudioFile audioFile = AudioFile.builder()
                     .originName(originFileS3)

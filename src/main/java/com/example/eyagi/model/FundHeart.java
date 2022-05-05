@@ -1,8 +1,12 @@
 package com.example.eyagi.model;
 
-import lombok.*;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
 
 @Getter
 @Entity

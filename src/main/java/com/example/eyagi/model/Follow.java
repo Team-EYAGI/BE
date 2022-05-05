@@ -17,5 +17,6 @@ public class Follow {
     @JoinColumn(name = "follower")
     private User follower;
 
+
 }
 
