@@ -19,6 +19,7 @@ import java.util.List;
 @Service
 public class AudioDetailService {
 
+    private final UserPageService userPageService;
     private final AudioBookRepository audioBookRepository;
     private final CommentRepository commentRepository;
     private final AudioService audioService;
@@ -31,7 +32,7 @@ public class AudioDetailService {
     }
 
     //오디오북 상세 페이지 조회 1. 책 정보 + 오디오 목록   ++ 셀러 닉네임, 오디오북 소개글 추가
-    public AudioDetailDto getAudioDetail (Long id) {
+    public AudioDetailDto getAudioDetail (Long id, User user) {
         AudioBook audioBook = findAudioBook(id);
 
         List<AudioFile>audioFileList = audioBook.getAudioFile();
@@ -44,6 +45,9 @@ public class AudioDetailService {
                     .build();
             audioFileDtoList.add(audioFileDto);
         }
+
+        userPageService.listenBook(id,user); // 마이페이지 > 내가 듣고 있는 오디오북에 추가!
+
         return AudioDetailDto.builder()
                 .title(audioBook.getBook().getTitle())
                 .author(audioBook.getBook().getAuthor())
@@ -61,7 +65,7 @@ public class AudioDetailService {
         List<Comment> commentList = commentRepository.findAllByAudioBook_Id(audioBookDetailId);
         List<CommentDto> commentDtoList = new ArrayList<>();
         for (Comment c : commentList){
-            CommentDto commentDto = new CommentDto(c.getContent(),c.getUser().getUsername(), c.getTitle() );
+            CommentDto commentDto = new CommentDto(c.getId(), c.getTitle(), c.getContent(),c.getUser().getUsername() );
             commentDtoList.add(commentDto);
         }
         return commentDtoList;

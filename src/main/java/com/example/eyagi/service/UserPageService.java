@@ -2,11 +2,8 @@ package com.example.eyagi.service;
 
 import com.example.eyagi.dto.SellerProfileDto;
 import com.example.eyagi.dto.UserProfileDto;
-import com.example.eyagi.model.User;
-import com.example.eyagi.model.UserProfile;
-import com.example.eyagi.model.UserRole;
-import com.example.eyagi.repository.UserProfileRepository;
-import com.example.eyagi.repository.UserRepository;
+import com.example.eyagi.model.*;
+import com.example.eyagi.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,14 +17,57 @@ import java.util.UUID;
 public class UserPageService {
 
     private final UserProfileRepository userProfileRepository;
-    private final UserRepository userRepository;
+    private final UserLibraryRepository userLibraryRepository;
+    private final Library_AudioRepository library_audioRepository;
+    private final Library_BooksRepository library_booksRepository;
     private final AwsS3Service awsS3Service;
     private final UserService userService;
+    private final BooksService booksService;
+    private final AudioService audioService;
 
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
+    //듣고 있는 오디오북에 추가
+    public void listenBook (Long audioBookId, User user){
+        AudioBook audioBook = audioService.findAudioBook(audioBookId);
+        UserLibrary library = userLibraryRepository.findByUserId(user.getId());
+        if (library == null){
+            UserLibrary userLibrary = new UserLibrary(user);
+            Library_Audio library_audio = new Library_Audio(userLibrary,audioBook);
+            userLibrary.addAuidoBook(library_audio);
+            userLibraryRepository.save(userLibrary);
+            user.addLibrary(userLibrary);
+            library_audioRepository.save(library_audio);
+        } else {
+            Library_Audio library_audio = new Library_Audio(library,audioBook);
+            library.addAuidoBook(library_audio);
+            library_audioRepository.save(library_audio);
+            userLibraryRepository.save(library);
+        }
+    }
+
+    //내 서재에 책 담기
+    public void heartBook(String email, Long id){
+        User user = userService.findUser(email);
+        Books books = booksService.findBook(id);
+        UserLibrary library = userLibraryRepository.findByUserId(user.getId());
+        if (library == null){
+            UserLibrary userLibrary = new UserLibrary(user);
+            Library_Books library_books = new Library_Books(userLibrary, books);
+            userLibrary.addBook(library_books);
+            userLibraryRepository.save(userLibrary);
+            user.addLibrary(userLibrary);
+            library_booksRepository.save(library_books);
+
+        } else {
+            Library_Books library_books = new Library_Books(library, books);
+            library.addBook(library_books);
+            library_booksRepository.save(library_books);
+            userLibraryRepository.save(library);
+        }
+    }
 
     //사용자 프로필 등록
     public UserProfileDto newProfile(MultipartFile file, String email){
@@ -53,29 +93,30 @@ public class UserPageService {
 
         String imageName = "Image" + "/" + UUID.randomUUID() + "." + StringUtils.getFilenameExtension(file.getOriginalFilename());
         String s3Path = awsS3Service.fileUpload(bucket, file, imageName);
-        // 이미지 파일만 올릴 수 있게 예외처리하는 코드 추가해주자!!!!
 
         UserProfile userProfile = UserProfile.builder()
-                .originImage(imageName)
-                .userImage(s3Path)
-                .introduce(dto.getIntroduce())
-                .user(user)
-                .build();
-        userProfileRepository.save(userProfile);
+                    .originImage(imageName)
+                    .userImage(s3Path)
+                    .introduce(dto.getIntroduce())
+                    .user(user)
+                    .build();
+            userProfileRepository.save(userProfile);
 
+        // 이미지 파일만 올릴 수 있게 예외처리하는 코드 추가해주자!!!!
         return new SellerProfileDto.ResponseDto(userProfile);
     }
 
 
     //프로필 수정
-    public void editProfile (MultipartFile file, String email, SellerProfileDto dto) {
-        User user = userService.findUser(email);
+//    public void editProfile (MultipartFile file, String email, SellerProfileDto dto) {
+//        User user = userService.findUser(email);
+//
+//        if (user.getRole()== UserRole.USER){
+//            awsS3Service.removeImage();
+//        }
+//
+//    }
 
-        if (user.getRole()== UserRole.USER){
-
-        }
-
-    }
 
 
 }

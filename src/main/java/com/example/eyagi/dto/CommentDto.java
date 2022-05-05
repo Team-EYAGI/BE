@@ -7,11 +7,13 @@ import lombok.NoArgsConstructor;
 @Getter
 public class CommentDto {
 
+   private Long commentId;
    private String content;
    private String title;
    private String username; //사용자 닉네임
 
-   public CommentDto (String content, String username, String title){
+   public CommentDto (Long id, String title,String content, String username){
+      this.commentId = id;
       this.title = title;
       this.content = content;
       this.username = username;

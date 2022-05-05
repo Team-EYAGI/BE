@@ -1,12 +1,12 @@
-//package com.example.eyagi.repository;
-//
-//import com.example.eyagi.model.Follow;
-//import org.springframework.data.jpa.repository.JpaRepository;
-//import org.springframework.data.jpa.repository.Modifying;
-//import org.springframework.data.jpa.repository.Query;
-//
-//public interface FollowRepository extends JpaRepository<Follow, Long> {
-//
+package com.example.eyagi.repository;
+
+import com.example.eyagi.model.Follow;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+
+public interface FollowRepository extends JpaRepository<Follow, Long> {
+
 //    Follow findFollowByFromUserIdAndToUserId(Long from_user_id, Long to_user_id);
 //
 //    @Query(value = "SELECT count(*) FROM follow WHERE toUserId = ?1", nativeQuery = true)
@@ -26,4 +26,6 @@
 //    @Modifying
 //    @Query(value = "DELETE FROM follow WHERE from_user_id = :fromId AND to_user_id = :toId", nativeQuery = true)
 //    void unFollow(Long fromId, Long toId);
-//}
+
+
+}

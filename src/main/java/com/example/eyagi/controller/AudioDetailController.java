@@ -4,7 +4,9 @@ import com.example.eyagi.dto.AudioDetailDto;
 import com.example.eyagi.dto.CommentDto;
 import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.AudioDetailService;
+import com.example.eyagi.service.UserPageService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,28 +16,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RequestMapping("/audio/detail")
 @RequiredArgsConstructor
 @RestController
 public class AudioDetailController {
 
     private final AudioDetailService audioDetailService;
+    private final UserPageService userPageService;
 
 
 
-    //오디오북 상세페이지 조회
+    //오디오북 상세페이지 조회 & 조회한 오디오북을 마이페이지 > 내가 듣고 있는 오디오북에 추가
     @GetMapping("/{audioBookId}")
-    public ResponseEntity<AudioDetailDto> audioBookDetail (@PathVariable Long audioBookId){
-        return ResponseEntity.ok(audioDetailService.getAudioDetail(audioBookId));
+    public ResponseEntity<AudioDetailDto> audioBookDetail (@PathVariable Long audioBookId,
+                                                           @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return ResponseEntity.ok(audioDetailService.getAudioDetail(audioBookId, userDetails.getUser()));
     }
 
     //오디오북 상세페이지 -> 후기 목록
     @GetMapping("/{audioBookId}/comment")
     public ResponseEntity getComment (@PathVariable Long audioBookId){
+
         List<CommentDto> commentDtoList = audioDetailService.commentList(audioBookId);
-        if (commentDtoList.isEmpty()){
-            return new ResponseEntity("아직 등록된 후기가 없습니다.",HttpStatus.OK);
-        }
+
         return new ResponseEntity(commentDtoList,HttpStatus.OK);
     }
 

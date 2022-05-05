@@ -43,6 +43,11 @@ public class AudioBook extends Timestamped {
     private AudioPreview preview;
 
 
-    @OneToMany
+    @OneToMany(mappedBy = "audioBook")
     private List<Library_Audio> userLibrary;  // 내가 듣고 있는 오디오북 리스트
+
+
+    public void addAudio (AudioFile audio) {
+        this.getAudioFile().add(audio);
+    }
 }

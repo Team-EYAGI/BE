@@ -1,7 +1,10 @@
 package com.example.eyagi.model;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
+@Getter
 @Entity
 public class Follow {
 

@@ -15,7 +15,9 @@ import javax.persistence.*;
 public class AudioFund extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long fundAudioId;
     private String fundFile;
     private String originName;
+
 }

@@ -36,7 +36,7 @@ public class Books {
     @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
     private List<AudioBook> audioBookList;
 
-    @OneToMany
+    @OneToMany(mappedBy = "Book")
     private List<Library_Books> userLibrary; // 내 서재
 
     public void addAudioBook (AudioBook audioBook){
