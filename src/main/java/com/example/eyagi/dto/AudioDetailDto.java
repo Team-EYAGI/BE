@@ -23,5 +23,11 @@ public class AudioDetailDto {
 
     private List<AudioFileDto> audioFileDtoList;  //오디오 파일 목록
 
+    @Getter
+    public static class Request {
+        private String contents;
+    }
+
+
 
 }

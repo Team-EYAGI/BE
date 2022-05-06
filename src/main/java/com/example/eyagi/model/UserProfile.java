@@ -9,7 +9,6 @@ import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Getter
 @Entity
 public class UserProfile extends Timestamped{
@@ -32,4 +31,18 @@ public class UserProfile extends Timestamped{
     @JoinColumn(name = "USER_ID") //유저테이블과 프로필 테이블중 프로필 테이블에 작업수행이 더 빈번할 것으로 판단되어 프로필에 외래키를 관리하도록 줌.
     private User user;
 
+    public UserProfile (User user){
+        this.user = user;
+    }
+
+    public void editProfile(String userImage, String originImage){
+        this.userImage =userImage;
+        this.originImage = originImage;
+    }
+
+    public void editSellerProfile(String userImage, String originImage, String introduce){
+        this.userImage =userImage;
+        this.originImage = originImage;
+        this.introduce = introduce;
+    }
 }

@@ -3,7 +3,11 @@ package com.example.eyagi.service;
 
 import com.example.eyagi.dto.SignupRequestDto;
 import com.example.eyagi.model.User;
+import com.example.eyagi.model.UserLibrary;
+import com.example.eyagi.model.UserProfile;
 import com.example.eyagi.model.UserRole;
+import com.example.eyagi.repository.UserLibraryRepository;
+import com.example.eyagi.repository.UserProfileRepository;
 import com.example.eyagi.repository.UserRepository;
 import com.example.eyagi.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +24,8 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final UserProfileRepository profileRepository;
+    private final UserLibraryRepository libraryRepository;
 
     public User findUser (String email){
         return userRepository.findByEmail(email).orElseThrow(
@@ -27,7 +33,14 @@ public class UserService {
         );
     }
 
-
+    //이메일 중복체크
+    public String userEmailCheck(String email){
+        Optional<User> found = userRepository.findByEmail(email);
+        if (found.isPresent()){
+            throw new IllegalArgumentException("중복된 이메일입니다.");
+        }
+        return email;
+    }
 
 
     //닉네임 중복체크
@@ -59,7 +72,10 @@ public class UserService {
         // 유저 생성 후 DB 저장
         User user = new User(email, username, enPassword, role);
         userRepository.save(user);
-
+        UserLibrary userLibrary = new UserLibrary(user);
+        UserProfile userProfile = new UserProfile(user);
+        libraryRepository.save(userLibrary);
+        profileRepository.save(userProfile);
         return ResponseEntity.ok().body("회원가입 완료");
     }
 

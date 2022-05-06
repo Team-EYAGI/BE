@@ -10,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -20,12 +22,11 @@ public class BookDetailService {
     private final AudioBookRepository audioBookRepository;
 
     //책 상세 페이지 조회 . 책 정보 + AudioPreDto (오디오 미리듣기에 대한 정보)를 담는다.
-    public BooksDto readBookDetail (Long id) {
+    public Map<String, Object> readBookDetail (Long id) {
         Books book = booksService.findBook(id);
 
         List<AudioBook> audioBooks = book.getAudioBookList();
         List<AudioPreDto> audioPreDtos = new ArrayList<>();
-
         for (AudioBook a : audioBooks) {
             AudioPreDto dto = AudioPreDto.builder()
                     .audioBookId(a.getId())
@@ -38,16 +39,17 @@ public class BookDetailService {
                     .build();
             audioPreDtos.add(dto);
         }
-        return BooksDto.builder()
-                .bookId(book.getBookId())
-                .title(book.getTitle())
-                .author(book.getAuthor())
-                .publisher(book.getPublisher())
-                .bookImg(book.getBookImg())
-                .category(book.getCategory())
-                .summary(book.getSummary())
-                .audioPreDtoList(audioPreDtos)
-                .build();
+        Map<String, Object> bookDetail = new HashMap<>();
+        bookDetail.put("bookId",book.getBookId());
+        bookDetail.put("title",book.getTitle());
+        bookDetail.put("publisher",book.getPublisher());
+        bookDetail.put("author",book.getAuthor());
+        bookDetail.put("category",book.getCategory());
+        bookDetail.put("bookImg",book.getBookImg());
+        bookDetail.put("summary",book.getSummary());
+        bookDetail.put("audio",audioPreDtos);
+
+        return bookDetail;
     }
 
 }

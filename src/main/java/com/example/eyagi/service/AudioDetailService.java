@@ -3,18 +3,19 @@ package com.example.eyagi.service;
 import com.example.eyagi.dto.AudioDetailDto;
 import com.example.eyagi.dto.AudioFileDto;
 import com.example.eyagi.dto.CommentDto;
-import com.example.eyagi.model.AudioBook;
-import com.example.eyagi.model.AudioFile;
-import com.example.eyagi.model.Comment;
-import com.example.eyagi.model.User;
+import com.example.eyagi.model.*;
 import com.example.eyagi.repository.AudioBookRepository;
 import com.example.eyagi.repository.CommentRepository;
+import com.example.eyagi.repository.Library_AudioRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class AudioDetailService {
@@ -23,6 +24,7 @@ public class AudioDetailService {
     private final AudioBookRepository audioBookRepository;
     private final CommentRepository commentRepository;
     private final AudioService audioService;
+    private final Library_AudioRepository library_audioRepository;
 
     //특정 오디오북 찾기
     public AudioBook findAudioBook (Long id) {
@@ -45,9 +47,11 @@ public class AudioDetailService {
                     .build();
             audioFileDtoList.add(audioFileDto);
         }
-
-        userPageService.listenBook(id,user); // 마이페이지 > 내가 듣고 있는 오디오북에 추가!
-
+        Optional<Library_Audio> library_audio = library_audioRepository.findByAudioBook_IdAndUserLibrary_Id(audioBook.getId(),user.getUserLibrary().getId());
+        if(!library_audio.isPresent()){ //해당 오디오북이 듣고 있는 오디오북 목록에 없다면, ->서버 테스트 완
+            userPageService.listenBook(audioBook,user); // 마이페이지 > 내가 듣고 있는 오디오북에 추가!
+            log.info(id + "번 오디오북을 내 서재에 추가!");
+        }
         return AudioDetailDto.builder()
                 .title(audioBook.getBook().getTitle())
                 .author(audioBook.getBook().getAuthor())
