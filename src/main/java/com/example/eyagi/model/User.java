@@ -1,9 +1,7 @@
 package com.example.eyagi.model;
 
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -30,10 +28,7 @@ public class User extends Timestamped{
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private UserLibrary userLibrary;
-
-    @OneToOne(mappedBy = "user",cascade = CascadeType.REMOVE)//프로필은 회원이 탈퇴하면 함께 사라짐.
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE) //프로필은 회원이 탈퇴하면 함께 사라짐.
     private UserProfile userProfile;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE) //회원이 단 후기는 회원이 탈퇴하면 함께 사라짐.
@@ -41,7 +36,7 @@ public class User extends Timestamped{
 
 
     @OneToMany(mappedBy = "seller", cascade = CascadeType.REMOVE) //해당 셀러가 등록한 오디오북은 셀러가 탈퇴하면 함께 사라짐.
-    private List<AudioBook> audioBookList;  //셀러 마이페이지 -> 내가 등록한 오디오북
+    private List<AudioBook> audioBookList;
 
     @Column(unique = true)
     private Long kakaoId;
@@ -53,10 +48,15 @@ public class User extends Timestamped{
         this.password = password;
         this.role = role;
     }
-
-    public void addLibrary(UserLibrary library){
-        this.userLibrary = library;
+    public User(String email,String username,String password,UserRole role,Long kakaoId){
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.kakaoId = kakaoId;
     }
+
+
 //    public void update(String imgurl, String fileName) {
 //        this.userImage = imgurl;
 //        this.originImage = fileName;
