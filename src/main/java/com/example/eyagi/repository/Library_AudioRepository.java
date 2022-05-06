@@ -6,10 +6,12 @@ import com.example.eyagi.model.UserLibrary;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface Library_AudioRepository extends JpaRepository<Library_Audio,Long> {
 
-    Library_Audio findByAudioBookAndUserLibrary(AudioBook audioBook, UserLibrary userLibrary);
+
+    Optional<Library_Audio> findByAudioBook_IdAndUserLibrary_Id(Long audioBook, Long userLibrary);
 //
 //    List<Library_Audio> findAllByOrderByUserLibraryDesc(UserLibrary userLibrary);
 }

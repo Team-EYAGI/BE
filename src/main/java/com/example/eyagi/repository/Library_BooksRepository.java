@@ -9,5 +9,7 @@ import java.util.List;
 public interface Library_BooksRepository extends JpaRepository<Library_Books, Long> {
 
 
-//    List<Library_Books> findAllByOrderByUserLibraryDesc(UserLibrary userLibrary);
+    List<Library_Books> findAllByUserLibraryOrderByIdDesc(UserLibrary userLibrary);
+
+
 }

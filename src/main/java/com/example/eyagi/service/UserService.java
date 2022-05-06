@@ -3,7 +3,11 @@ package com.example.eyagi.service;
 
 import com.example.eyagi.dto.SignupRequestDto;
 import com.example.eyagi.model.User;
+import com.example.eyagi.model.UserLibrary;
+import com.example.eyagi.model.UserProfile;
 import com.example.eyagi.model.UserRole;
+import com.example.eyagi.repository.UserLibraryRepository;
+import com.example.eyagi.repository.UserProfileRepository;
 import com.example.eyagi.repository.UserRepository;
 import com.example.eyagi.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +24,8 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final UserProfileRepository profileRepository;
+    private final UserLibraryRepository libraryRepository;
 
     public User findUser (String email){
         return userRepository.findByEmail(email).orElseThrow(
@@ -66,7 +72,10 @@ public class UserService {
         // 유저 생성 후 DB 저장
         User user = new User(email, username, enPassword, role);
         userRepository.save(user);
-
+        UserLibrary userLibrary = new UserLibrary(user);
+        UserProfile userProfile = new UserProfile(user);
+        libraryRepository.save(userLibrary);
+        profileRepository.save(userProfile);
         return ResponseEntity.ok().body("회원가입 완료");
     }
 

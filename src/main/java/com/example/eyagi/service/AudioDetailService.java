@@ -8,11 +8,14 @@ import com.example.eyagi.repository.AudioBookRepository;
 import com.example.eyagi.repository.CommentRepository;
 import com.example.eyagi.repository.Library_AudioRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class AudioDetailService {
@@ -44,9 +47,10 @@ public class AudioDetailService {
                     .build();
             audioFileDtoList.add(audioFileDto);
         }
-        Library_Audio library_audio = library_audioRepository.findByAudioBookAndUserLibrary(audioBook,user.getUserLibrary());
-        if(library_audio == null){ //해당 오디오북이 듣고 있는 오디오북 목록에 없다면, ->서버 테스트 완
+        Optional<Library_Audio> library_audio = library_audioRepository.findByAudioBook_IdAndUserLibrary_Id(audioBook.getId(),user.getUserLibrary().getId());
+        if(!library_audio.isPresent()){ //해당 오디오북이 듣고 있는 오디오북 목록에 없다면, ->서버 테스트 완
             userPageService.listenBook(audioBook,user); // 마이페이지 > 내가 듣고 있는 오디오북에 추가!
+            log.info(id + "번 오디오북을 내 서재에 추가!");
         }
         return AudioDetailDto.builder()
                 .title(audioBook.getBook().getTitle())
