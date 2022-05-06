@@ -27,7 +27,14 @@ public class UserService {
         );
     }
 
-
+    //이메일 중복체크
+    public String userEmailCheck(String email){
+        Optional<User> found = userRepository.findByEmail(email);
+        if (found.isPresent()){
+            throw new IllegalArgumentException("중복된 이메일입니다.");
+        }
+        return email;
+    }
 
 
     //닉네임 중복체크

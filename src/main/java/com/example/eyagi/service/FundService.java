@@ -13,10 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static com.example.eyagi.service.AwsS3Path.pathFund;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class FundService {
                                       UserDetailsImpl userDetails) {
         String userEmail = userDetails.getUsername();
 //        FundValidator.validatePostSaveRegister(fundRequestDto, multipartFile, userEmail);
-        Map<String, String> map = awsS3Service.uploadFile(multipartFile);
+        Map<String, String> map = awsS3Service.uploadFile(multipartFile,pathFund);
         User joinUser = userRepository.findByEmail(userEmail).orElseThrow(
                 () -> new IllegalArgumentException("유효한 회원을 찾을 수 없습니다."));
         Books books = booksRepository.findById(BookId).orElseThrow(

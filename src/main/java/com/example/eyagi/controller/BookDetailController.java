@@ -1,10 +1,11 @@
 package com.example.eyagi.controller;
 
 
-import com.example.eyagi.dto.BooksDto;
 import com.example.eyagi.service.BookDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RequestMapping("/book/detail")
 @RequiredArgsConstructor
@@ -15,7 +16,7 @@ public class BookDetailController {
 
     //책 상세페이지 불러오기
     @GetMapping("/{bookId}")
-        public BooksDto bookDetail (@PathVariable Long bookId){
+        public Map<String, Object> bookDetail (@PathVariable Long bookId){
             return bookDetailService.readBookDetail(bookId);
     }
 

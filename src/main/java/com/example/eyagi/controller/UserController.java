@@ -1,17 +1,14 @@
 package com.example.eyagi.controller;
 
 import com.example.eyagi.dto.SignupRequestDto;
-import com.example.eyagi.dto.UserDto;
-import com.example.eyagi.dto.UserProfileDto;
 import com.example.eyagi.model.UserLibrary;
-import com.example.eyagi.security.UserDetailsImpl;
-import com.example.eyagi.service.UserPageService;
 import com.example.eyagi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,10 +23,15 @@ public class UserController {
         return userService.registerUser(signupRequestDto);
     }
 
+    //이메일 중복확인
+    @PostMapping("/user/email/check")
+    public String userEmailCheck (@RequestBody SignupRequestDto signupRequestDto) {
+        return userService.userEmailCheck(signupRequestDto.getEmail());
+    }
+
     //닉네임 중복확인
     @PostMapping("/user/userName/check")
     public String usernameCheck (@RequestBody SignupRequestDto signupRequestDto) {
-        UserLibrary userLibrary = new UserLibrary();
         return userService.userNameCheck(signupRequestDto.getUsername());
     }
 

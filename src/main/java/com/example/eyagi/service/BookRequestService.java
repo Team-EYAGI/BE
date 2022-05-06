@@ -6,7 +6,6 @@ import com.example.eyagi.dto.BookRequestDto;
 import com.example.eyagi.model.BookRequest;
 import com.example.eyagi.model.User;
 import com.example.eyagi.repository.BookRequestRepository;
-import com.example.eyagi.repository.BooksRepository;
 import com.example.eyagi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,6 @@ import java.util.List;
 public class BookRequestService {
 
     private final BookRequestRepository bookRequestRepository;
-    private final BooksRepository booksRepository;
     private final UserRepository userRepository;
 
 

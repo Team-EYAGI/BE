@@ -1,6 +1,8 @@
 package com.example.eyagi.service;
 
+import com.example.eyagi.dto.BooksDto;
 import com.example.eyagi.dto.SellerProfileDto;
+import com.example.eyagi.dto.UserLibraryAudiosDto;
 import com.example.eyagi.dto.UserProfileDto;
 import com.example.eyagi.model.*;
 import com.example.eyagi.repository.*;
@@ -10,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -30,8 +32,8 @@ public class UserPageService {
     private String bucket;
 
     //듣고 있는 오디오북에 추가
-    public void listenBook (Long audioBookId, User user){
-        AudioBook audioBook = audioService.findAudioBook(audioBookId);
+    public void listenBook (AudioBook audioBook, User user){
+
         UserLibrary library = userLibraryRepository.findByUserId(user.getId());
         if (library == null){
             UserLibrary userLibrary = new UserLibrary(user);
@@ -69,6 +71,31 @@ public class UserPageService {
         }
     }
 
+    //todo:서재 불러오기 1. 내 서재에 담긴 책 목록
+    public List<BooksDto> loadMyLibraryBooks(User user){
+        List<Library_Books> library_booksList = user.getUserLibrary().getMyBook(); //담은 도서.
+        List<BooksDto> booksDtoList = new ArrayList<>();
+        for(Library_Books lb : library_booksList){
+            BooksDto booksDto = new BooksDto(lb.getBook());
+            booksDtoList.add(booksDto);
+        }
+        return booksDtoList;
+    }
+
+/*
+책제목, 책이미지, 책 아이디, 카테고리, 저자이름, 크리에이터 이름, 오디오북 아이디
+ */
+    //todo:서재 불러오기 2. 내가 듣고 있는 오디오북
+    public void loadMyLibraryAudios(User user){
+//        List<Library_Audio> library_audioList = user.getUserLibrary().getMyAuidoBook(); //듣고 있는 오디오북.
+//        List<UserLibraryAudiosDto> libraryAudiosDtoList = new ArrayList<>();
+//        for(Library_Audio la : library_audioList){
+//            UserLibraryAudiosDto dto = new UserLibraryAudiosDto();
+//
+//        }
+    }
+
+
     //사용자 프로필 등록
     public UserProfileDto newProfile(MultipartFile file, String email){
         User user = userService.findUser(email);
@@ -102,16 +129,16 @@ public class UserPageService {
                     .build();
             userProfileRepository.save(userProfile);
 
-        // 이미지 파일만 올릴 수 있게 예외처리하는 코드 추가해주자!!!!
+        // 이미지 파일만 올릴 수 있게 처리하는 코드 추가해주자!!!!
         return new SellerProfileDto.ResponseDto(userProfile);
     }
 
 
-    //프로필 수정
+    //todo:프로필 수정
 //    public void editProfile (MultipartFile file, String email, SellerProfileDto dto) {
 //        User user = userService.findUser(email);
 //
-//        if (user.getRole()== UserRole.USER){
+//        if (user.getRole() == UserRole.USER){
 //            awsS3Service.removeImage();
 //        }
 //

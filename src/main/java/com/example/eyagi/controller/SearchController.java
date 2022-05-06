@@ -23,7 +23,7 @@ public class SearchController {
     private final SearchService searchService;
     @GetMapping("/search")
     public ResponseEntity<Map<String,Object>> SearchData(@RequestParam("search") String search, HttpServletRequest request){
-        log.info("검색"+search);
+        log.info("검색어 : "+search);
 
         Map<String,Object> map = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;

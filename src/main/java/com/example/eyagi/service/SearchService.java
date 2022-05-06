@@ -1,6 +1,6 @@
 package com.example.eyagi.service;
 
-import com.example.eyagi.dto.BookSearchDto;
+import com.example.eyagi.dto.BooksDto;
 import com.example.eyagi.dto.UserSearchDto;
 import com.example.eyagi.model.Books;
 
@@ -19,19 +19,20 @@ import java.util.List;
 public class SearchService {
     private final SearchRepository searchRepository;
 
-    public List<BookSearchDto> findBooks(String search){
+    public List<BooksDto> findBooks(String search){
         List<Books> booksList = searchRepository.searchBooks(search);
-        List<BookSearchDto> bookSearchDtoList = new ArrayList<>();
+        List<BooksDto> bookSearchDtoList = new ArrayList<>();
          for(Books b : booksList){
-             bookSearchDtoList.add(new BookSearchDto(b));
+             bookSearchDtoList.add(new BooksDto(b));
          }
          return bookSearchDtoList;
     }
-    public List<BookSearchDto> findBooks22(String search){
+
+    public List<BooksDto> findBooks22(String search){
         List<Books> booksList = searchRepository.searchAuthor(search);
-        List<BookSearchDto> bookSearchDtoList = new ArrayList<>();
+        List<BooksDto> bookSearchDtoList = new ArrayList<>();
         for(Books b : booksList){
-            bookSearchDtoList.add(new BookSearchDto(b));
+            bookSearchDtoList.add(new BooksDto(b));
         }
         return bookSearchDtoList;
     }

@@ -38,15 +38,7 @@ public class BooksService {
         List<BooksDto> bookList = new ArrayList<>();
 
         for (Books books : findBookList) {
-            BooksDto booksDto = BooksDto.builder()
-                    .bookId(books.getBookId())
-                    .title(books.getTitle())
-                    .author(books.getAuthor())
-                    .publisher(books.getPublisher())
-                    .bookImg(books.getBookImg())
-                    .category(books.getCategory())
-                    .build();
-
+            BooksDto booksDto = new BooksDto(books);
             bookList.add(booksDto);
         }
         return bookList;
@@ -116,14 +108,7 @@ public class BooksService {
         List<BooksDto> randomBookList = new ArrayList<>();
 
         for (Books books : findAllBook) {
-            BooksDto booksDto = BooksDto.builder()
-                    .bookId(books.getBookId())
-                    .title(books.getTitle())
-                    .author(books.getAuthor())
-                    .publisher(books.getPublisher())
-                    .bookImg(books.getBookImg())
-                    .category(books.getCategory())
-                    .build();
+            BooksDto booksDto = new BooksDto(books);
             randomBookList.add(booksDto);
         }
         Collections.shuffle(randomBookList); //리스트 내 값 랜덤으로 순서 재배치
@@ -144,14 +129,7 @@ public class BooksService {
         List<Books> findSelfList = booksRepository.findByCategory(category);
         List<BooksDto> allSelfList = new ArrayList<>();
         for (Books books : findSelfList) {
-            BooksDto booksDto = BooksDto.builder()
-                    .bookId(books.getBookId())
-                    .title(books.getTitle())
-                    .author(books.getAuthor())
-                    .publisher(books.getPublisher())
-                    .bookImg(books.getBookImg())
-                    .category(books.getCategory())
-                    .build();
+            BooksDto booksDto = new BooksDto(books);
             allSelfList.add(booksDto);
         }
         Collections.shuffle(allSelfList);
