@@ -47,6 +47,10 @@ public class AwsS3Service {
                 && getFileExtension(multipartFile.getOriginalFilename()).equals(".wav")) {
             objectMetadata.setContentType("audio/basic");
         }
+        if (multipartFile.getContentType().equals("multipart/form-data")
+                && getFileExtension(multipartFile.getOriginalFilename()).equals(".m4a")) {
+            objectMetadata.setContentType("audio/basic");
+        }
 
         //objectMetaData에 파라미터로 들어온 파일의 타입 , 크기를 할당.
         objectMetadata.setContentLength(multipartFile.getSize());
@@ -76,6 +80,7 @@ public class AwsS3Service {
         ArrayList<String> fileValidate = new ArrayList<>();
         fileValidate.add(".wav");
         fileValidate.add(".mp3");
+        fileValidate.add(".m4a");
         String idxFileName = fileName.substring(fileName.lastIndexOf("."));
         if (!fileValidate.contains(idxFileName)) {
             System.out.println("idxFileName = " + idxFileName);
@@ -126,15 +131,14 @@ public class AwsS3Service {
     }
 
 
-    //S3 파일 삭제
-    public void removeImage(String fileName) {
+    //S3 파일 삭제  //파일이 삭제가 안됨.....
+    public void removeS3File(String fileName) {
         log.info("S3파일 삭제 시도 file name : " + fileName);
         try {
             amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
         } catch (AmazonServiceException e) {
             System.err.println(e.getErrorMessage());
         }
-        log.info("S3파일 삭제 완료 file name : " + fileName);
     }
 
 }

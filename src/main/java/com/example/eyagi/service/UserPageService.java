@@ -1,9 +1,6 @@
 package com.example.eyagi.service;
 
-import com.example.eyagi.dto.BooksDto;
-import com.example.eyagi.dto.LibraryAudiosDto;
-import com.example.eyagi.dto.SellerProfileDto;
-import com.example.eyagi.dto.UserProfileDto;
+import com.example.eyagi.dto.*;
 import com.example.eyagi.model.*;
 import com.example.eyagi.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +10,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
+
+import static com.example.eyagi.service.AwsS3Path.pathImage;
+import static com.example.eyagi.service.AwsS3Path.pathInfo;
 
 @RequiredArgsConstructor
 @Service
@@ -32,15 +32,12 @@ public class UserPageService {
     private String bucket;
 
     //마이페이지 첫 로드 시 내려주는 데이터 / 유저 닉네임, 유저 이메일, 프로필 이미지, 판매자인 경우 녹음 파일
-    public Map<String, Object> getMyPage (User user){
-        Map<String, Object> myPage = new HashMap<>();
-        myPage.put("userEmail", user.getEmail());
-        myPage.put("username", user.getUsername());
-        myPage.put("image", user.getUserProfile().getUserImage());
-        if(user.getRole()==UserRole.SELLER){
-            myPage.put("voice", user.getUserProfile().getUserVoice().getS3FileName());
-        }
-        return myPage;
+    public UserPageDto loadUserPage(User user) {
+        return new UserPageDto(user);
+    }
+
+    public SellerPageDto loadSellerPage(User user) {
+        return new SellerPageDto(user);
     }
 
     //듣고 있는 오디오북에 추가
@@ -83,7 +80,7 @@ public class UserPageService {
 //        }
     }
 
-    //todo:서재 불러오기 1. 내 서재에 담긴 책 목록 - 프론트 확인 전
+    //todo:서재 불러오기 1. 내 서재에 담긴 책 목록 - 포스트맨 테스트 완료
     public List<BooksDto> loadMyLibraryBooks(User user){
         //키값 역순 리스트
         List<Library_Books> library_booksList = library_booksRepository.findAllByUserLibraryOrderByIdDesc(user.getUserLibrary());
@@ -99,23 +96,43 @@ public class UserPageService {
 /*
 책제목, 책이미지, 책 아이디, 카테고리, 저자이름, 크리에이터 이름, 오디오북 아이디
  */
-    //todo:서재 불러오기 2. 내가 듣고 있는 오디오북 - 프론트 확인 전
+    //todo:서재 불러오기 2. 내가 듣고 있는 오디오북 - 포스트맨 테스트 완료
     public List<LibraryAudiosDto> loadMyLibraryAudios(User user){
-        List<Library_Audio> library_audioList = user.getUserLibrary().getMyAuidoBook(); //듣고 있는 오디오북.
+//        List<Library_Audio> library_audioList = user.getUserLibrary().getMyAuidoBook(); //듣고 있는 오디오북.
+        List<Library_Audio> library_audioList =library_audioRepository.findAllByUserLibraryOrderByIdDesc(user.getUserLibrary());
         List<LibraryAudiosDto> libraryAudiosDtoList = new ArrayList<>();
-        for(Library_Audio la : library_audioList){
-            LibraryAudiosDto dto = new LibraryAudiosDto(la.getAudioBook().getBook(), la.getAudioBook());
-            libraryAudiosDtoList.add(dto);
-        }
-        return libraryAudiosDtoList;
+            for(Library_Audio la : library_audioList){
+                LibraryAudiosDto dto = new LibraryAudiosDto(la.getAudioBook().getBook(), la.getAudioBook());
+                libraryAudiosDtoList.add(dto);
+            }
+            return libraryAudiosDtoList;
     }
+
+
+    //todo:서재 불러오기 1-2. 내 서재에 담긴 책 목록 > 목록에서 책 삭제
+    public void removeLibraryBook (){
+
+    }
+
+    //todo:서재 불러오기 2-2. 내가 듣고 있는 오디오북 > 목록에서 오디오북 삭제
+    public void removeLibraryAudio(){
+
+    }
+
+
+    //todo:마이페이지 조회 .3-1 판매자 전용 버튼, 내가 등록한 오디오북
+    public void sellerMyAudioBook(User user){
+        //셀러 닉네임, 오디오북 키, 책 표지, 책 제목 , 저자 ,
+    }
+
+    //todo:마이페이지 조회 .3-2 판매자 전용 버튼, 내가 등록한 펀딩 목록 / 펀딩제목 ,책 아이디, 책 이미지, 판매자 녹음파일
 
 
     //사용자 프로필 등록
     public UserProfileDto newProfile(MultipartFile file, String email){
         User user = userService.findUser(email);
 
-        String imageName = "Image" + "/" + UUID.randomUUID() + "." + StringUtils.getFilenameExtension(file.getOriginalFilename());
+        String imageName = pathImage + UUID.randomUUID() + "." + StringUtils.getFilenameExtension(file.getOriginalFilename());
         String s3Path = awsS3Service.fileUpload(bucket, file, imageName);
         // 이미지 파일만 올릴 수 있게 예외처리하는 코드 추가해주자!!!!
 
@@ -128,7 +145,7 @@ public class UserPageService {
     public SellerProfileDto.ResponseDto newProfileSeller(MultipartFile file, String email, SellerProfileDto dto){
         User user = userService.findUser(email);
 
-        String imageName = "Image" + "/" + UUID.randomUUID() + "." + StringUtils.getFilenameExtension(file.getOriginalFilename());
+        String imageName = pathImage + UUID.randomUUID() + "." + StringUtils.getFilenameExtension(file.getOriginalFilename());
         String s3Path = awsS3Service.fileUpload(bucket, file, imageName);
 
         user.getUserProfile().editSellerProfile(s3Path, imageName, dto.getIntroduce());
@@ -147,6 +164,17 @@ public class UserPageService {
 //        }
 //
 //    }
+
+    //todo: 판매자 음성 등록 및 수정
+    public void sellerMyVoice(MultipartFile file, User user){
+        UserProfile profile = user.getUserProfile();
+        if (profile.getS3FileName()!=null) {  //S3에 파일이 삭제가 안됨 ㅡ,.ㅡ
+            awsS3Service.removeS3File(profile.getOriginName());
+        }
+        Map<String, String> fileName = awsS3Service.uploadFile(file, pathInfo);
+        profile.addMyVoice(fileName.get("url"), fileName.get("fileName"));
+        userProfileRepository.save(profile);
+    }
 
 
 

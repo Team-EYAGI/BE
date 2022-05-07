@@ -2,21 +2,18 @@ package com.example.eyagi.service;
 
 
 import com.example.eyagi.dto.KakaoUserInfoDto;
-import com.example.eyagi.dto.SignupRequestDto;
-import com.example.eyagi.dto.UserDto;
 import com.example.eyagi.model.User;
+import com.example.eyagi.model.UserLibrary;
+import com.example.eyagi.model.UserProfile;
 import com.example.eyagi.model.UserRole;
-import com.example.eyagi.repository.UserRepository;
+import com.example.eyagi.repository.*;
 import com.example.eyagi.security.UserDetailsImpl;
-import com.example.eyagi.security.jwt.JwtDecoder;
 import com.example.eyagi.security.jwt.JwtTokenUtils;
-import com.example.eyagi.validator.UserValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -27,14 +24,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -48,6 +43,8 @@ public class KakaoUserService {
     private String kakaoClientId;
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final UserLibraryRepository libraryRepository;
+    private final UserProfileRepository profileRepository;
 
     // 카카오 로그인하기
     public KakaoUserInfoDto kakaoLogin(String code, HttpServletResponse res) throws JsonProcessingException {
@@ -69,8 +66,6 @@ public class KakaoUserService {
     }
 
 
-
-
     private String getAccessToken (String code) throws JsonProcessingException {
                 // HTTP Header 생성
         HttpHeaders headers = new HttpHeaders();
@@ -80,7 +75,7 @@ public class KakaoUserService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", kakaoClientId);
-        body.add("redirect_uri", "http://localhost:8080/user/kakao/callback");
+        body.add("redirect_uri", "http://localhost:3000/user/kakao/callback");
         body.add("code", code);
 
                 // HTTP 요청 보내기
@@ -138,7 +133,7 @@ public class KakaoUserService {
         User kakaoUser = userRepository.findByKakaoId(kakaoId)
                 .orElse(null);
         //가입된 유저 확인
-        Optional<User>userCheck = userRepository.findByEmail(kakaoUser.getEmail());
+        Optional<User>userCheck = userRepository.findByEmail(kakaoUserInfoDto.getEmail());
         if(userCheck.isPresent()){
             throw new IllegalArgumentException("이미 가입된 유저입니다.");
         }
@@ -150,7 +145,12 @@ public class KakaoUserService {
             String email = kakaoUserInfoDto.getEmail();
             UserRole role = UserRole.USER;
 
-    kakaoUser = new User(email,nickname,password,role,kakaoId);
+            kakaoUser = new User(email, nickname, password, role, kakaoId);
+            userRepository.save(kakaoUser);
+            UserLibrary userLibrary = new UserLibrary(kakaoUser);
+            UserProfile userProfile = new UserProfile(kakaoUser);
+            libraryRepository.save(userLibrary);
+            profileRepository.save(userProfile);
         }
         return kakaoUser;
     }
