@@ -1,5 +1,6 @@
 package com.example.eyagi.dto.request;
 
+import com.example.eyagi.model.ChatMessage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,8 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatJoinRequestDto {
+public class ChatMessageDto {
+    private ChatMessage.MessageType type;
+    private Long chatMessageId;
     private String username;
-    private Long roomId;
-    private String message;
 }

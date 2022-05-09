@@ -1,6 +1,7 @@
 package com.example.eyagi.service;
 
 import com.example.eyagi.dto.request.ChatRoomCreateRequestDto;
+import com.example.eyagi.dto.response.ChatRoomCreateResponseDto;
 import com.example.eyagi.dto.response.ChatRoomListResponseDto;
 import com.example.eyagi.model.ChatRoom;
 import com.example.eyagi.model.User;
@@ -34,11 +35,11 @@ public class ChatRoomService {
     public static final String USER_INFO = "USER_INFO";
 
     //채팅방생성
-    public void createChatRoom(ChatRoomCreateRequestDto requestDto, User user) {
+    public ChatRoomCreateResponseDto createChatRoom(ChatRoomCreateRequestDto requestDto, User user) {
         ChatRoom chatRoom = new ChatRoom(requestDto.getChatRoomName(), requestDto.getUuid(), user);
         chatRoomRepository.save(chatRoom);
-//        Long chatRoomId = chatRoomRepository.findByUser(user).getRoomId();
-//        return chatRoomId;
+        ChatRoomCreateResponseDto chatRoomCreateResponseDto = new ChatRoomCreateResponseDto(chatRoom);
+        return chatRoomCreateResponseDto;
     }
 
     // 사용자별 채팅방 목록 조회

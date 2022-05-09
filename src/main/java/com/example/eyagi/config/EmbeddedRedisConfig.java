@@ -7,8 +7,8 @@ import redis.embedded.RedisServer;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-//@Profile("ec2주소")
-@Profile("local")
+@Profile("54.180.115.121")
+//@Profile("local")
 @Configuration
 public class EmbeddedRedisConfig {
 
@@ -17,6 +17,7 @@ public class EmbeddedRedisConfig {
     @PostConstruct
     public void start() {
         redisServer = new RedisServer(6379);
+        System.out.println("레디스 시작");
         redisServer.start();
     }
 

@@ -1,6 +1,7 @@
 package com.example.eyagi.controller;
 
 import com.example.eyagi.dto.request.ChatRoomCreateRequestDto;
+import com.example.eyagi.dto.response.ChatRoomCreateResponseDto;
 import com.example.eyagi.dto.response.ChatRoomListResponseDto;
 import com.example.eyagi.model.ChatMessage;
 import com.example.eyagi.security.UserDetailsImpl;
@@ -26,9 +27,9 @@ public class ChatRoomController {
 
     // 채팅 방 입장 내맘대로 수정한부분 : 이유는 POST아이디를 쓰기때문에
     @PostMapping("/chat/rooms")
-    public void createChatRoom(@RequestBody ChatRoomCreateRequestDto requestDto,
+    public ChatRoomCreateResponseDto createChatRoom(@RequestBody ChatRoomCreateRequestDto requestDto,
                                                     @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        chatRoomService.createChatRoom(requestDto, userDetails.getUser());
+        return chatRoomService.createChatRoom(requestDto, userDetails.getUser());
     }
 
     // 사용자별 채팅방 목록 조회

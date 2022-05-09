@@ -12,11 +12,11 @@ public class ChatRoomCreateResponseDto {
 
     private  Long roomId;
     private String chatRoomName;
-    private Long ownUserId;
+    private Long userId;
 
     public ChatRoomCreateResponseDto(ChatRoom chatRoom) {
         this.roomId = chatRoom.getRoomId();
         this.chatRoomName = chatRoom.getChatRoomName();
-        this.ownUserId = chatRoom.getOwnUserId();
+        this.userId = chatRoom.getOwnUserId();
     }
 }

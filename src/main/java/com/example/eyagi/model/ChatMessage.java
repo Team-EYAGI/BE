@@ -3,6 +3,7 @@ package com.example.eyagi.model;
 import com.example.eyagi.dto.request.ChatMessageRequestDto;
 import com.example.eyagi.service.UserService;
 import lombok.*;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -27,25 +28,25 @@ public class ChatMessage extends Timestamped {
     @Column
     private String roomId;
 
-    @ManyToOne
-    private User sender;
+    @Column
+    private Long senderId;
 
     @Column
     private String message;
 
     @Builder
-    public ChatMessage(MessageType type, String roomId, User sender, String message){
+    public ChatMessage(MessageType type, String roomId, Long senderId, String message){
         this.type = type;
         this.roomId = roomId;
-        this.sender = sender;
+        this.senderId = senderId;
         this.message = message;
     }
 
     @Builder
-    public ChatMessage(ChatMessageRequestDto chatMessageRequestDto, UserService userService){
+    public ChatMessage(ChatMessageRequestDto chatMessageRequestDto){
         this.type = chatMessageRequestDto.getType();
         this.roomId = chatMessageRequestDto.getRoomId();
-        this.sender = userService.getUser(chatMessageRequestDto.getSenderId());
+        this.senderId = chatMessageRequestDto.getSenderId();
         this.message = chatMessageRequestDto.getMessage();
     }
 }

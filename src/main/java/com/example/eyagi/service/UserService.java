@@ -109,10 +109,10 @@ public class UserService {
 //        user.getFollowerList().add(followerUser);
 //    }
 
-
-    // 유저의 pk 값으로 유저 조회
-    public User getUser(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("회원이 아닙니다."));
-    }
+//
+//    // 유저의 pk 값으로 유저 조회
+//    public User getUser(Long id) {
+//        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("회원이 아닙니다."));
+//    }
 
 }

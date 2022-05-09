@@ -34,7 +34,8 @@ public class StompHandler implements ChannelInterceptor {
         if (StompCommand.CONNECT == accessor.getCommand()){
             String jwtToken = accessor.getFirstNativeHeader("token");
             log.info("CONNECT {}", jwtToken);
-            jwtDecoder.decodeUsername(jwtToken);
+            String[] newJwtToken = jwtToken.split("BEARER ");
+            jwtDecoder.decodeUsername(newJwtToken[1]);
         } else if (StompCommand.SUBSCRIBE == accessor.getCommand()){// 채팅룸 구독요청
             // header정보에서 구독 destination정보를 얻고, roomId를 추출한다.
             String roomId = chatService.getRoomId(Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId"));
@@ -44,10 +45,11 @@ public class StompHandler implements ChannelInterceptor {
             // 클라이언트 입장 메시지를 채팅방에 발송한다.(redis publish)
             //토큰 가져옴
             String jwtToken = accessor.getFirstNativeHeader("token");
+            String[] newJwtToken = jwtToken.split("BEARER ");
             User user;
-            if (jwtToken != null) {
+            if (newJwtToken[1] != null) {
                 //토큰으로 user 가져옴
-                user = userRepository.findByEmail(jwtDecoder.decodeUsername(jwtToken))
+                user = userRepository.findByEmail(jwtDecoder.decodeUsername(newJwtToken[1]))
                         .orElseThrow(()->new IllegalArgumentException("user 가 존재하지 않습니다."));
             }else {
                 throw new IllegalArgumentException("유효하지 않은 token 입니다.");
@@ -57,7 +59,7 @@ public class StompHandler implements ChannelInterceptor {
             chatService.sendChatMessage(ChatMessage.builder()
                     .type(ChatMessage.MessageType.ENTER)
                     .roomId(roomId)
-                    .sender(user)
+                    .senderId(user.getId())
                     .build());
             log.info("SUBSCRIBED {}, {}", user.getEmail(), roomId);
         } else if (StompCommand.DISCONNECT == accessor.getCommand()) { // Websocket 연결 종료
@@ -69,7 +71,7 @@ public class StompHandler implements ChannelInterceptor {
             chatService.sendChatMessage(ChatMessage.builder()
                     .type(ChatMessage.MessageType.QUIT)
                     .roomId(roomId)
-                    .sender(user)
+                    .senderId(user.getId())
                     .build());
             // 퇴장한 클라이언트의 roomId 맵핑 정보를 삭제한다.
             chatRoomService.removeUserEnterInfo(sessionId);
