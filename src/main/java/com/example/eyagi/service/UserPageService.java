@@ -149,7 +149,7 @@ public class UserPageService {
         String s3Path = awsS3Service.fileUpload(bucket, file, imageName);
 
         user.getUserProfile().editSellerProfile(s3Path, imageName, dto.getIntroduce());
-
+        userProfileRepository.save(user.getUserProfile());
         // 이미지 파일만 올릴 수 있게 처리하는 코드 추가해주자!!!!
         return new SellerProfileDto.ResponseDto(user.getUserProfile());
     }

@@ -9,12 +9,14 @@ import lombok.NoArgsConstructor;
 public class SellerPageDto extends UserPageDto {
 
     private String sellerVoice; //s3 오디오 파일 경로
+    private String introduce; //자기소개
 
     public SellerPageDto(User user){
         this.userEmail = user.getEmail();
         this.userName = user.getUsername();
         this.userImage = user.getUserProfile().getUserImage();
         this.sellerVoice = user.getUserProfile().getS3FileName();
+        this.introduce = user.getUserProfile().getIntroduce();
     }
 
 
