@@ -35,7 +35,7 @@ public class BookRequestDto {
 
         private String contents;
 
-        private String userEmail;
+        private String userName;
 
         private String createdAt; //수정일 -> 등록일로 변경.
 
@@ -45,7 +45,7 @@ public class BookRequestDto {
             this.bookRequestId = bookRequest.getBookRequestId();
             this.contents = bookRequest.getContents();
             this.title = bookRequest.getTitle();
-            this.userEmail = bookRequest.getUser().getEmail();
+            this.userName = bookRequest.getUser().getUsername();
             this.bookId = bookRequest.getBookId();
             this.createdAt = bookRequest.getCreatedAt();
         }
