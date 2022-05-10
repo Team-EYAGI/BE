@@ -19,6 +19,8 @@ public class AudioDetailDto {
 
     private String sellerName; //셀러 닉네임
 
+    private String sellerImage; //샐러 프로필 이미지
+
     private String audioInfo;   // 오디오북 소개글
 
     private List<AudioFileDto> audioFileDtoList;  //오디오 파일 목록

@@ -96,7 +96,7 @@ public class AwsS3Service {
 
         try {
             ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentType(multipartFile.getContentType());
+//            metadata.setContentType(multipartFile.getContentType());
             metadata.setContentLength(multipartFile.getSize());
 
             amazonS3.putObject(new PutObjectRequest(bucket, fileName, multipartFile.getInputStream(), metadata)
@@ -135,7 +135,9 @@ public class AwsS3Service {
     public void removeS3File(String fileName) {
         log.info("S3파일 삭제 시도 file name : " + fileName);
         try {
-            amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
+            DeleteObjectRequest request = new DeleteObjectRequest(bucket, fileName);
+            amazonS3.deleteObject(request);
+//            amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
         } catch (AmazonServiceException e) {
             System.err.println(e.getErrorMessage());
         }
