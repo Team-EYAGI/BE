@@ -1,19 +1,20 @@
 package com.example.eyagi.service;
 
-import com.example.eyagi.dto.FundHeartRequestDto;
-import com.example.eyagi.dto.FundHeartResponseDto;
-import com.example.eyagi.dto.FundRequestDto;
-import com.example.eyagi.dto.FundResponseDto;
+import com.example.eyagi.dto.*;
 import com.example.eyagi.model.*;
 import com.example.eyagi.repository.*;
 import com.example.eyagi.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,11 @@ public class FundService {
 
     public ResponseEntity<?> saveFund(Long BookId, MultipartFile multipartFile, FundRequestDto fundRequestDto,
                                       UserDetailsImpl userDetails) {
+        // 최소 펀딩 수량 제한 체킹다시.
+        if(fundRequestDto.getFundingGoals() < 5) {
+            return new ResponseEntity("최소 목표량은 5가 넘어야합니다.", HttpStatus.BAD_REQUEST);
+        }
+
         String userEmail = userDetails.getUsername();
 //        FundValidator.validatePostSaveRegister(fundRequestDto, multipartFile, userEmail);
         Map<String, String> map = awsS3Service.uploadFile(multipartFile,pathFund);
@@ -45,6 +51,7 @@ public class FundService {
                 .originName(map.get("fileName"))
                 .build();
         audioFundRepository.save(audioFund);
+
         // 펀딩 등록
         Fund fund = new Fund(fundRequestDto, audioFund, joinUser, books);
         fundRepository.save(fund);
@@ -54,24 +61,31 @@ public class FundService {
         return ResponseEntity.ok().body(requestId);
     }
 
-    public ResponseEntity<?> getAllFund() {
+    public ResponseEntity<?> getAllFund(FundUserRequestDto requestDto) {
         boolean myHeartFund;
+        boolean successGoals;
         User user = null;
-//        if(userDetails != null) {
-//            user = userDetails.getUser();
-//        }
-        List<Fund> fundList = fundRepository.findAllByOrderByCreatedAtDesc();
+        if(requestDto != null) {
+            user = userRepository.findByEmail(requestDto.getUseremail()).orElseThrow(() -> new NullPointerException("유저 X"));
+        }
+        List<Fund> fundList = fundRepository.findAllByOrderByFundIdDesc();
         List<FundResponseDto> fundResponse = new ArrayList<>();
 
         for(Fund fund : fundList) {
             // 좋아요 반영해서 myHeart 담아야함.
             myHeartFund = false;
-//            boolean existsFundHeart = fundHeartRepository.existsByUserAndFund(user, fund);
-//            if(user != null) {
-//                if(existsFundHeart) {
-//                    myHeartFund = true;
-//                }
-//            }
+            boolean existsFundHeart = fundHeartRepository.existsByUserAndFund(user, fund);
+            System.out.println(existsFundHeart);
+            if(user != null) {
+                if(existsFundHeart) {
+                    myHeartFund = true;
+                }
+            }
+            // 펀딩 성공 여부.
+            successGoals = false;
+            if(fund.getHeartCnt() >= fund.getFundingGoals()) {
+                successGoals = true;
+            }
             FundResponseDto fundResponseDto = FundResponseDto.builder()
                     .fundId(fund.getFundId())
                     .sellerName(fund.getUser().getUsername())
@@ -82,13 +96,15 @@ public class FundService {
                     .author(fund.getBooks().getAuthor())
                     .bookImg(fund.getBooks().getBookImg())
                     .myHeart(myHeartFund)
+                    .fundingGoals(fund.getFundingGoals())
+                    .successFunding(successGoals)
                     .build();
             fundResponse.add(fundResponseDto);
         }
         return ResponseEntity.ok().body(fundResponse);
     }
 
-    // funding 응원
+    // funding 후원
     @Transactional
     public FundHeartResponseDto saveFundHeart(Long fundid, FundHeartRequestDto requestDto, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
@@ -100,7 +116,7 @@ public class FundService {
         // 펀딩 후원 취소
         if(requestDto.isFundHeartBool()) {
             if (existsFundHeart) {
-                throw new NullPointerException("펀딩을 후원한적없음");
+                throw new NullPointerException("펀딩을 후원한 적이 있습니다.");
             }
             FundHeart fundHeart = FundHeart.builder()
                     .fund(foundFund)
@@ -111,16 +127,78 @@ public class FundService {
         // 펀딩 후원 하기
         } else { // false
             if (!existsFundHeart) {
-                throw new NullPointerException("펀딩을 후원한 적이 있습니다.");
+                throw new NullPointerException("펀딩 후원 내역을 찾을 수 없습니다.");
             }
             fundHeartRepository.deleteByUserAndFund(user, foundFund);
         }
         // 펀딩응원 수 늘리기
         foundFund.updateHeartCnt(requestDto.isFundHeartBool());
 
+        // 여기
         return FundHeartResponseDto.builder()
                 .fundHeartBool(requestDto.isFundHeartBool())
                 .fundHeartCnt(foundFund.getHeartCnt())
                 .build();
+
+
+    }
+
+    public ResponseEntity<?> mainFundList() {
+    /*    Long qty = fundRepository.countAll();
+        int idx = (int)(Math.random() * qty);
+        boolean myHeartFund;
+        List<Fund> setFundList = new ArrayList<>();
+        List<FundResponseDto> fundResponse = new ArrayList<>();
+        // 데이터 개수 지정 5
+        Page<Fund> fundMainPage = fundRepository.findAll(PageRequest.of(idx, 1));
+        if(fundMainPage.hasContent()) {
+            setFundList.add(fundMainPage.getContent().get(0));
+        }
+
+        for(Fund fund : setFundList) {
+            myHeartFund = false;
+            FundResponseDto fundResponseDto = FundResponseDto.builder()
+                    .fundId(fund.getFundId())
+                    .sellerName(fund.getUser().getUsername())
+                    .fundFile(fund.getAudioFund().getFundFile())
+                    .bookTitle(fund.getBooks().getTitle())
+                    .bookImg(fund.getBooks().getBookImg())
+                    .myHeart(myHeartFund)
+                    .build();
+            fundResponse.add(fundResponseDto);
+        }
+        return ResponseEntity.ok().body(fundResponse);
+    }
+    */
+        //추천도서 list
+        List<Fund> findAllFund = fundRepository.findAllByOrderByFundIdDesc();
+        List<FundMainResponseDto> randomFundList = new ArrayList<>();
+
+        for (Fund fund : findAllFund) {
+            FundMainResponseDto fundMainResponseDto = FundMainResponseDto.builder()
+                    .fundId(fund.getFundId())
+                    .sellerName(fund.getUser().getUsername())
+                    .likeCnt(fund.getHeartCnt())
+                    .fundFile(fund.getAudioFund().getFundFile())
+                    .bookTitle(fund.getBooks().getTitle())
+                    .bookImg(fund.getBooks().getBookImg())
+                    .build();
+            randomFundList.add(fundMainResponseDto);
+        }
+        Collections.shuffle(randomFundList); //리스트 내 값 랜덤으로 순서 재배치
+
+        // 초기에  개수가 적을시
+        List<FundMainResponseDto> bestFund = new ArrayList<>();
+        if(bestFund.size() < 10) {
+            for (int i = 0; i < randomFundList.size(); i++) {
+                bestFund.add(randomFundList.get(i));
+            }
+        } else {
+            for (int i = 0; i < 10; i++) {
+                bestFund.add(randomFundList.get(i));
+            }
+        }
+
+        return ResponseEntity.ok().body(bestFund);
     }
 }

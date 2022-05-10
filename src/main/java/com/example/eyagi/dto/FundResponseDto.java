@@ -1,9 +1,6 @@
 package com.example.eyagi.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor
@@ -19,4 +16,6 @@ public class FundResponseDto {
     private String author;
     private String bookImg;
     private boolean myHeart;
+    private int fundingGoals;
+    private boolean successFunding;
 }
