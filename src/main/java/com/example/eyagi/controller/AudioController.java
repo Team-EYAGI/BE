@@ -60,7 +60,7 @@ public class AudioController {
     public ResponseEntity<String> newAudioBook(@PathVariable Long bookId,
                                                @AuthenticationPrincipal UserDetailsImpl userDetails,
                                                @RequestPart(name = "audio") MultipartFile multipartFile,
-                                               @RequestPart(name = "contents", required = false)AudioDetailDto.Request contents) throws IOException {
+                                               @RequestPart(name = "contents", required = false)AudioDetailDto.Request contents) throws IOException, InterruptedException {
 
         Books book = booksService.findBook(bookId);
         User seller = userDetails.getUser();
@@ -102,6 +102,9 @@ public class AudioController {
 
 
                 book.addAudioBook(audioBook1);
+
+                Thread.sleep(1000);
+                audioService.removeFile(path, audioService2.getCutFile());
                 audioService.removeFile(path, audioService2.getLocalFile());
             } catch (InterruptedException e) {
                 e.printStackTrace();

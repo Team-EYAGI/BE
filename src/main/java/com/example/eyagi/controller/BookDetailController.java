@@ -1,6 +1,7 @@
 package com.example.eyagi.controller;
 
-
+import com.example.eyagi.model.Library_Books;
+import com.example.eyagi.repository.Library_BooksRepository;
 import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.BookDetailService;
 import com.example.eyagi.service.UserPageService;
@@ -18,6 +19,7 @@ public class BookDetailController {
 
     private final BookDetailService bookDetailService;
     private final UserPageService userPageService;
+    private final Library_BooksRepository library_booksRepository;
 
     //책 상세페이지 불러오기
     @GetMapping("/{bookId}")
@@ -28,8 +30,7 @@ public class BookDetailController {
     //내 서재에 책 담기
     @PostMapping("/{bookId}/heart")
     public ResponseEntity<String> heartBook(@PathVariable Long bookId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        userPageService.heartBook(userDetails.getUsername(), bookId);
-        return ResponseEntity.ok("도서가 서재에 쏙 담겼습니다!");
+        return ResponseEntity.ok( userPageService.heartBook(userDetails.getUsername(), bookId));
     }
 
 }

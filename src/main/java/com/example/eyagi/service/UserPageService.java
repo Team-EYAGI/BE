@@ -6,6 +6,7 @@ import com.example.eyagi.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +27,7 @@ public class UserPageService {
     private final UserService userService;
     private final BooksService booksService;
     private final AudioService audioService;
+    private final FundRepository fundRepository;
 
 
     @Value("${cloud.aws.s3.bucket}")
@@ -60,7 +62,7 @@ public class UserPageService {
     }
 
     //내 서재에 책 담기
-    public void heartBook(String email, Long id){
+    public String heartBook(String email, Long id){
         User user = userService.findUser(email);
         Books books = booksService.findBook(id);
         UserLibrary library = userLibraryRepository.findByUserId(user.getId());
@@ -73,11 +75,16 @@ public class UserPageService {
 //            library_booksRepository.save(library_books);
 //
 //        } else {
+        Library_Books bookCheck = library_booksRepository.findByBookAndUserLibrary(books, library);
+        if(bookCheck != null){
+           return "이미 등록된 도서입니다.";
+        } else {
             Library_Books library_books = new Library_Books(library, books);
             library.addBook(library_books);
             library_booksRepository.save(library_books);
             userLibraryRepository.save(library);
-//        }
+            return "도서가 서재에 쏙 담겼습니다!";
+        }
     }
 
     //todo:서재 불러오기 1. 내 서재에 담긴 책 목록 - 포스트맨 테스트 완료
@@ -110,22 +117,60 @@ public class UserPageService {
 
 
     //todo:서재 불러오기 1-2. 내 서재에 담긴 책 목록 > 목록에서 책 삭제
-    public void removeLibraryBook (){
-
+    @Transactional
+    public Long removeLibraryBook (Long bookId, User user){
+        Books book = booksService.findBook(bookId);
+        try {
+//            Library_Books library_books = library_booksRepository.findByUserLibraryAndBook(user.getUserLibrary(), book);
+            Library_Books library_books = library_booksRepository.findByBookAndUserLibrary(book, user.getUserLibrary());
+            library_booksRepository.delete(library_books);
+        }catch (NullPointerException e){
+            e.getMessage();
+        }
+       return bookId;
     }
 
     //todo:서재 불러오기 2-2. 내가 듣고 있는 오디오북 > 목록에서 오디오북 삭제
-    public void removeLibraryAudio(){
-
+    public Long removeLibraryAudio(Long audioId, User user){
+        AudioBook audioBook = audioService.findAudioBook(audioId);
+        try{
+            Library_Audio library_audio = library_audioRepository.findByUserLibraryAndAudioBook(user.getUserLibrary(), audioBook);
+            library_audioRepository.delete(library_audio);
+        } catch (NullPointerException e){
+           e.getMessage();
+        }
+        return audioId;
     }
 
 
     //todo:마이페이지 조회 .3-1 판매자 전용 버튼, 내가 등록한 오디오북
-    public void sellerMyAudioBook(User user){
-        //셀러 닉네임, 오디오북 키, 책 표지, 책 제목 , 저자 ,
+    @Transactional
+    public List<SellerAudioBook> sellerMyAudioBook(User user){
+
+        List<AudioBook> audioBookList = user.getAudioBookList();
+        List<SellerAudioBook> sellerAudioBookList = new ArrayList<>();
+        int i = 0;   //최신순으로 뽑아주기 위한 반복문.
+        for (i = audioBookList.size() ; i > 0; i--){
+            SellerAudioBook sa = new SellerAudioBook(audioBookList.get(i-1));
+            sellerAudioBookList.add(sa);
+        }
+//        for(AudioBook a : audioBookList){
+//            SellerAudioBook sa = new SellerAudioBook(a);
+//            sellerAudioBookList.add(sa);
+//        }
+        return sellerAudioBookList;
     }
 
-    //todo:마이페이지 조회 .3-2 판매자 전용 버튼, 내가 등록한 펀딩 목록 / 펀딩제목 ,책 아이디, 책 이미지, 판매자 녹음파일
+    //todo:마이페이지 조회 .3-2 판매자 전용 버튼, 내가 등록한 펀딩 목록 / 책 아이디, 책 이미지, 판매자 녹음파일
+    public List<SellerFundDto> myFund(User seller){
+        List<Fund> myFundList = fundRepository.findAllByUserIdOrderByFundIdDesc(seller.getId());
+        List<SellerFundDto> sellerFundDtoList = new ArrayList<>();
+        for(Fund f : myFundList) {
+            SellerFundDto dto = new SellerFundDto(f);
+            sellerFundDtoList.add(dto);
+        }
+        return sellerFundDtoList;
+    }
 
 
     //사용자 프로필 등록
@@ -137,7 +182,7 @@ public class UserPageService {
         // 이미지 파일만 올릴 수 있게 예외처리하는 코드 추가해주자!!!!
 
         user.getUserProfile().editProfile(s3Path, imageName);
-
+        userProfileRepository.save(user.getUserProfile());
         return new UserProfileDto(user.getUserProfile());
     }
 
@@ -175,7 +220,5 @@ public class UserPageService {
         profile.addMyVoice(fileName.get("url"), fileName.get("fileName"));
         userProfileRepository.save(profile);
     }
-
-
 
 }

@@ -1,6 +1,5 @@
 package com.example.eyagi.controller;
 
-
 import com.example.eyagi.dto.SellerProfileDto;
 import com.example.eyagi.dto.UserProfileDto;
 import com.example.eyagi.model.UserRole;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 
 @RequiredArgsConstructor
 @RestController

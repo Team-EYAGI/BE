@@ -133,10 +133,10 @@ public class KakaoUserService {
         User kakaoUser = userRepository.findByKakaoId(kakaoId)
                 .orElse(null);
         //가입된 유저 확인
-        Optional<User>userCheck = userRepository.findByEmail(kakaoUserInfoDto.getEmail());
-        if(userCheck.isPresent()){
-            throw new IllegalArgumentException("이미 가입된 유저입니다.");
-        }
+//        Optional<User>userCheck = userRepository.findByEmail(kakaoUserInfoDto.getEmail());
+//        if(userCheck.isPresent()){
+//            throw new IllegalArgumentException("이미 가입된 유저입니다.");
+//        }
         if(kakaoUser == null){
 // username: kakao nickname
             String nickname = kakaoUserInfoDto.getUsername();

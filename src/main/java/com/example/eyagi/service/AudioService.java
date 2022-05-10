@@ -29,7 +29,7 @@ public class AudioService{
 
 
     @Transactional
-    public void removeFile (String path, String originalFile) throws IOException {
+    public void removeFile (String path, String originalFile) throws IOException, InterruptedException {
         Path filePath = Paths.get(path + originalFile); //로컬에 남은 오디오 삭제.
         Files.delete(filePath);
     }

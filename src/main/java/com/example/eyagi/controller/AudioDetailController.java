@@ -1,5 +1,6 @@
 package com.example.eyagi.controller;
 
+
 import com.example.eyagi.dto.AudioDetailDto;
 import com.example.eyagi.dto.CommentDto;
 import com.example.eyagi.security.UserDetailsImpl;
@@ -40,7 +41,7 @@ public class AudioDetailController {
 
         List<CommentDto> commentDtoList = audioDetailService.commentList(audioBookId);
 
-        return new ResponseEntity(commentDtoList,HttpStatus.OK);
+        return new ResponseEntity(commentDtoList, HttpStatus.OK);
     }
 
     //후기 등록

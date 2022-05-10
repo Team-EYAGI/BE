@@ -19,11 +19,11 @@ public class Library_Books {   //다대다 관계를 위한 중간 테이블
 
     @ManyToOne
     @JoinColumn(name = "Book_ID")
-    private Books Book;
+    private Books book;
 
     public Library_Books (UserLibrary library, Books book){
         this.userLibrary = library;
-        this.Book = book;
+        this.book = book;
     }
 
 

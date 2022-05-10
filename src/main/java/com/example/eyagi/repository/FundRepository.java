@@ -7,4 +7,7 @@ import java.util.List;
 
 public interface FundRepository extends JpaRepository<Fund, Long> {
     List<Fund> findAllByOrderByCreatedAtDesc();
+    List<Fund> findAllByUserIdOrderByFundIdDesc(Long user_id);
+    List<Fund> findAllByOrderByFundIdDesc();
+
 }
