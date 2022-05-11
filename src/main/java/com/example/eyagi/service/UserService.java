@@ -44,6 +44,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtDecoder jwtDecoder;
 
+
+    public User findUser (String email){
+        return userRepository.findByEmail(email).orElseThrow(
+                ()-> new NullPointerException("등록되지 않은 사용자 입니다.")
+        );
+    }
+
+
     //닉네임 중복체크
     public String userNameCheck(String username) {
         Optional<User> found = userRepository.findByUsername(username);
@@ -98,30 +106,35 @@ public class UserService {
 
         List<TodayCreatorDto> todayCreatorDtoList= new ArrayList<>();
 
-
         for (User u : userList) {
-            TodayCreatorDto todayCreator = TodayCreatorDto.builder()
+            try {
+                String image = u.getUserProfile().getUserImage();
+                TodayCreatorDto todayCreator = TodayCreatorDto.builder()
                         .id(u.getId())
                         .email(u.getEmail())
-                    .userImage(u.getUserProfile().getUserImage())
+                        .userImage(image)
                         .username(u.getUsername())
                         .build();
-
-            todayCreatorDtoList.add(todayCreator);
+                todayCreatorDtoList.add(todayCreator);
+            } catch (NullPointerException e) {
+                TodayCreatorDto todayCreator = TodayCreatorDto.builder()
+                        .id(u.getId())
+                        .email(u.getEmail())
+                        .username(u.getUsername())
+                        .build();
+                todayCreatorDtoList.add(todayCreator);
+            }
+//            TodayCreatorDto todayCreator = new TodayCreatorDto(u);
         }
-
 
         //creator가 6명보다 적다면 null값 넣기
-        if(todayCreatorDtoList.size()<6){
-            for(int i = todayCreatorDtoList.size(); i<6; i++)
+        if(todayCreatorDtoList.size() < 5){
+            for(int i = todayCreatorDtoList.size(); i < 5; i++)
             todayCreatorDtoList.add(null);
         }
-
         List<TodayCreatorDto>todayCreatorList = new ArrayList<>();
-        for(int i = 0; i<6; i++){
+        for(int i = 0; i < 5; i++){
                 todayCreatorList.add(todayCreatorDtoList.get(i));
-
-
         }
 
         return todayCreatorList;

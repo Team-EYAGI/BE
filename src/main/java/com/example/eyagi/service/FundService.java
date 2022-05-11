@@ -218,7 +218,7 @@ public class FundService {
 
         // 초기에  개수가 적을시
         List<FundMainResponseDto> bestFund = new ArrayList<>();
-        if(bestFund.size() < 5) {
+        if(randomFundList.size() < 5) {
             for (int i = 0; i < randomFundList.size(); i++) {
                 bestFund.add(randomFundList.get(i));
             }
