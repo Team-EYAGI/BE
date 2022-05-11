@@ -6,9 +6,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -51,9 +54,14 @@ public class ChatMessageService {
         chatMessageRepository.save(message);
     }
 
-    public Page<ChatMessage> getChatMessageByRoomId(String roomId, Pageable pageable) {
-        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() -1);
-        pageable = PageRequest.of(page, 150);
-        return chatMessageRepository.findByRoomId(roomId, pageable);
+    // 채팅방의 마지막 100개 메세지를 페이징하여 리턴함
+//    public Page<ChatMessage> getChatMessageByRoomId(String roomId, Pageable pageable) {
+//        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() -1);
+//        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt" );
+//        pageable = PageRequest.of(page, 100, sort);
+//        return chatMessageRepository.findByRoomId(roomId, pageable);
+//    }
+    public List<ChatMessage> getChatMessageByRoomId(String roomId) {
+        return chatMessageRepository.findByRoomId(roomId);
     }
 }

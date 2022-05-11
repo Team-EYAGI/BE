@@ -16,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -83,7 +85,7 @@ public class ChatRoomService {
         for(ChatRoom cR : AllChatRoom) {
             ChatRoomListAdminResponseDto chatRoomListAdminResponseDto = new ChatRoomListAdminResponseDto().builder()
                     .roomId(cR.getRoomId())
-                    .CreatedAt(cR.getCreatedAt().toString())
+                    .CreatedAt(formmater(cR.getCreatedAt()))
                     .nickname(cR.getUuid())
                     .build();
             chatRoomList.add(chatRoomListAdminResponseDto);
@@ -96,5 +98,9 @@ public class ChatRoomService {
     public User chkSessionUser(String sessionId) {
         Long userId = Long.parseLong(Objects.requireNonNull(hashOpsUserInfo.get(USER_INFO, sessionId)));
         return userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자"));
+    }
+
+    public String formmater(LocalDateTime localDateTime) {
+        return DateTimeFormatter.ofPattern("yyyy.MM.dd").format(localDateTime);
     }
 }

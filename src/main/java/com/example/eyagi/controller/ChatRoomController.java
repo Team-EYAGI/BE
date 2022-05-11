@@ -41,10 +41,15 @@ public class ChatRoomController {
         return chatRoomService.getOnesChatRoom(userDetails.getUser());
     }
 
+//    // 해당 채팅방의 메세지 조회
+//    @GetMapping("/chat/{roomId}/messages")
+//    public Page<ChatMessage> getRoomMessage(@PathVariable String roomId, @PageableDefault Pageable pageable){
+//        return chatMessageService.getChatMessageByRoomId(roomId, pageable);
+//    }
     // 해당 채팅방의 메세지 조회
     @GetMapping("/chat/{roomId}/messages")
-    public Page<ChatMessage> getRoomMessage(@PathVariable String roomId, @PageableDefault Pageable pageable){
-        return chatMessageService.getChatMessageByRoomId(roomId, pageable);
+    public List<ChatMessage> getRoomMessage(@PathVariable String roomId){
+        return chatMessageService.getChatMessageByRoomId(roomId);
     }
 
     // 전체 채팅방 목록 조회
