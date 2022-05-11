@@ -1,63 +1,72 @@
-//package com.example.eyagi.service;
-//
-//import com.example.eyagi.dto.FollowDto;
-//import com.example.eyagi.repository.FollowRepository;
-//import com.example.eyagi.security.UserDetailsImpl;
-//import lombok.RequiredArgsConstructor;
-//import org.qlrm.mapper.JpaResultMapper;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.stereotype.Service;
-//
-//import javax.persistence.EntityManager;
-//import javax.persistence.Query;
-//import javax.transaction.Transactional;
-//import java.util.List;
-//
-//@RequiredArgsConstructor
-//@Service
-//public class FollowService {
-//
-//    private final FollowRepository followRepository;
-//    private final EntityManager em;
-//
-//    @Transactional
-//    public ResponseEntity<?> follow(UserDetailsImpl userDetails, Long toUserId) {
-//        if(followRepository.findFollowByFromUserIdAndToUserId(userDetails.getUser().getId(), toUserId) != null) throw new IllegalArgumentException("이미 팔로우 하였습니다.");
-//        followRepository.follow(userDetails.getUser().getId(), toUserId);
-//        return new ResponseEntity<>("팔로우 성공", HttpStatus.OK);
-//    }
-//
-//    @Transactional
-//    public ResponseEntity<?> unFollow(UserDetailsImpl userDetails, Long toUserId) {
-//        followRepository.unFollow(userDetails.getUser().getId(), toUserId);
-//        return new ResponseEntity<>("언팔로우 성공", HttpStatus.OK);
-//    }
-//
-//
-////    public List<FollowDto> getFollower(long profileId, long loginId) {
-////        StringBuffer sb = new StringBuffer();
-////        sb.append("SELECT u.id, u.email, u.user_image, ");
-////        sb.append("if ((SELECT 1 FROM follow WHERE from_user_id = ? AND to_user_id = u.id), TRUE, FALSE) AS followState, ");
-////        sb.append("if ((?=u.id), TRUE, FALSE) AS loginUser ");
-////        sb.append("FROM user u, follow f ");
-////        sb.append("WHERE u.id = f.from_user_id AND f.to_user_id = ?");
-////        // 쿼리 완성
-////        Query query = em.createNativeQuery(sb.toString())
-////                .setParameter(1, loginId)
-////                .setParameter(2, loginId)
-////                .setParameter(3, profileId);
-////
-////        //JPA 쿼리 매핑 - DTO에 매핑
-////        JpaResultMapper result = new JpaResultMapper();
-////        List<FollowDto> followDtoList = result.list(query, FollowDto.class);
-////        return followDtoList;
-////    }
-////
-////    @Transactional
-////    public List<FollowDto> getFollowing(long profileId, long loginId) {
-////
-////
-////        return followDtoList;
-////    }
-//}
+package com.example.eyagi.service;
+
+
+import com.example.eyagi.model.Follow;
+import com.example.eyagi.model.User;
+import com.example.eyagi.repository.FollowRepository;
+import com.example.eyagi.repository.UserRepository;
+import com.example.eyagi.security.UserDetailsImpl;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class FollowService {
+   private final FollowRepository followRepository;
+   private final UserRepository userRepository;
+
+/*
+// 팔로우 목록 가져오기
+    public List<Follow> showFollowerList(String email) {
+        User user = userRepository.findByEmail(email).orElse(null);
+        userRepository.findByFollowingList(user.getEmail());
+        return userRepository.findByFollowingList(user.getEmail());
+    }
+    public List<Follow>showFollowedList(String email){
+        User user = userRepository.findByEmail(email).orElse(null);
+        return userRepository.findByFollowedList(user.getEmail());
+    }
+*/
+
+//팔로우 하기
+    public boolean startFollow(UserDetailsImpl userDetails, String sellerEmail){
+        //유저정보찾기
+        String username = userDetails.getUsername();
+        User user = userRepository.findByEmail(username).orElse(null);
+        User seller = userRepository.findByEmail(sellerEmail).orElse(null);
+
+        //자기자신 팔로우 금지
+        if(user == seller){ return false;}
+
+
+        assert user != null;
+        List<Follow>follower = seller.getFollowedList();
+
+        for (Follow f : follower){
+            if(f.getFollower() == user){
+                followRepository.deleteById(f.getId());
+                return false ;
+            }
+        }
+
+        Follow following = Follow.builder()
+                .followed(seller)
+                .follower(user)
+                .build();
+
+
+        followRepository.save(following);
+
+        return true;
+    }
+
+
+
+}
