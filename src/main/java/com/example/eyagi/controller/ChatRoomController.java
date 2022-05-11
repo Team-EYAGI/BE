@@ -2,8 +2,10 @@ package com.example.eyagi.controller;
 
 import com.example.eyagi.dto.request.ChatRoomCreateRequestDto;
 import com.example.eyagi.dto.response.ChatRoomCreateResponseDto;
+import com.example.eyagi.dto.response.ChatRoomListAdminResponseDto;
 import com.example.eyagi.dto.response.ChatRoomListResponseDto;
 import com.example.eyagi.model.ChatMessage;
+import com.example.eyagi.model.ChatRoom;
 import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.ChatMessageService;
 import com.example.eyagi.service.ChatRoomService;
@@ -11,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,4 +47,12 @@ public class ChatRoomController {
         return chatMessageService.getChatMessageByRoomId(roomId, pageable);
     }
 
+    // 전체 채팅방 목록 조회
+    @GetMapping("/rooms")
+    public List<ChatRoomListAdminResponseDto> getAllChatRooms(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if(!userDetails.getUserRole().equals("ROLE_ADMIN")) {
+            throw new IllegalArgumentException("이 계정은 관리자 권한이 아닙니다." + userDetails.getUsername());
+        }
+        return chatRoomService.getAllChatRooms(userDetails);
+    }
 }

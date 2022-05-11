@@ -2,6 +2,7 @@ package com.example.eyagi.service;
 
 import com.example.eyagi.dto.request.ChatRoomCreateRequestDto;
 import com.example.eyagi.dto.response.ChatRoomCreateResponseDto;
+import com.example.eyagi.dto.response.ChatRoomListAdminResponseDto;
 import com.example.eyagi.dto.response.ChatRoomListResponseDto;
 import com.example.eyagi.model.ChatRoom;
 import com.example.eyagi.model.User;
@@ -11,6 +12,7 @@ import com.example.eyagi.repository.UserRepository;
 import com.example.eyagi.repository.AllChatInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -75,8 +77,19 @@ public class ChatRoomService {
 
 
     //채팅방전부찾기
-    public List<ChatRoom> getAll() {
-        return chatRoomRepository.findAll();
+    public List<ChatRoomListAdminResponseDto> getAllChatRooms(UserDetails userDetails) {
+        List<ChatRoom> AllChatRoom = chatRoomRepository.findAll();
+        List<ChatRoomListAdminResponseDto> chatRoomList = new ArrayList<>();
+        for(ChatRoom cR : AllChatRoom) {
+            ChatRoomListAdminResponseDto chatRoomListAdminResponseDto = new ChatRoomListAdminResponseDto().builder()
+                    .roomId(cR.getRoomId())
+                    .CreatedAt(cR.getCreatedAt().toString())
+                    .nickname(cR.getUuid())
+                    .build();
+            chatRoomList.add(chatRoomListAdminResponseDto);
+        }
+        //  날짜 이름 방번호
+        return chatRoomList;
     }
 
     // redis 에 저장했던 sessionId 로 userId 를 얻어오고 해당 userId 로 User 객체를 찾아 리턴함
