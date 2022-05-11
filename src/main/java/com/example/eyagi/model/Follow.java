@@ -1,25 +1,26 @@
 package com.example.eyagi.model;
 
-import lombok.Getter;
+import lombok.*;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
-public class Follow {
+public class Follow extends AbstractPersistable<Long> {
+//pk Long으로 자동생성
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    private Long id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "following")
-//    private User following;  //사용자 ->  판매자  //사용자 //user
-//
-//    @ManyToOne
-//    @JoinColumn(name = "follower")
-//    private User follower; //판매자의 팔로워들 .. //판매자 //seller
-//
+    @ManyToOne
+    @JoinColumn(name = "followerId")
+    private User follower; //팔로우를 신청한 사람
+
+    @ManyToOne
+    @JoinColumn(name = "followedId")
+    private User followed; //팔로우를 신청 받은 사람
 
 }
 

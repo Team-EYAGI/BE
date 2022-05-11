@@ -1,38 +1,37 @@
-//package com.example.eyagi.controller;
-//
-//import com.example.eyagi.security.UserDetailsImpl;
-//import com.example.eyagi.service.FollowService;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.security.core.annotation.AuthenticationPrincipal;
-//import org.springframework.web.bind.annotation.*;
-//
-//@RequiredArgsConstructor
-//@RestController
-//public class FollowController {
-//
-//    private final FollowService followService;
-//
-//    @PostMapping("/follow/{toUserId}")
-//    public ResponseEntity<?> followUser(@PathVariable Long toUserId,
-//                                        @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        return followService.follow(userDetails, toUserId);
-//    }
-//
-//    @DeleteMapping("/follow/{toUserId}")
-//    public ResponseEntity<?> unFollowUser(@PathVariable Long toUserId,
-//                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        return followService.unFollow(userDetails, toUserId);
-//    }
-//
-////    @GetMapping("/follow/{profileId}/follower")
-////    public ResponseEntity<?> getFollower(@PathVariable Long profileId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-////        return new ResponseEntity<>(followService.getFollower(profileId, userDetails.getUser().getId()), HttpStatus.OK);
-////    }
-////
-////    @GetMapping("/follow/{profileId}/following")
-////    public ResponseEntity<?> getFollowing(@PathVariable Long profileId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-////        return new ResponseEntity<>(followService.getFollowing(profileId, userDetails.getUser().getId()), HttpStatus.OK);
-////    }
-//}
+package com.example.eyagi.controller;
+
+import com.example.eyagi.model.Follow;
+import com.example.eyagi.security.UserDetailsImpl;
+import com.example.eyagi.service.FollowService;
+import com.example.eyagi.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+@RequiredArgsConstructor
+@RestController
+public class FollowController {
+     private final FollowService followService;
+     private final UserService userService;
+
+    //팔로잉 하기 ~
+    @PostMapping("/user/follow")
+    public boolean Follow(HttpServletRequest request, @AuthenticationPrincipal UserDetailsImpl userDetail, @RequestParam ("email") String email){
+         return followService.startFollow(userDetail,email);
+
+    }
+/* // 내가 팔로우한 사람 리스트
+    @GetMapping("/user/following")
+    public List<Follow> followingList( @RequestParam ("email") String email){
+        return followService.showFollowerList(email);
+    }
+
+// 나를 팔로우한 사람 리스트
+@GetMapping("/user/followed")
+public List<Follow> followedList( @RequestParam ("email") String email){
+    return followService.showFollowedList(email);
+}*/
+}

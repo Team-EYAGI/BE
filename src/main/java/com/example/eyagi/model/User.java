@@ -24,12 +24,15 @@ public class User extends Timestamped{
     @Column(nullable = false)
     private String password;
 
+    @Column
+    private Long followingCnt; //내가 follow를 하고 있는 사람들
+
+    @Column
+    private Long follwerCnt; //나를 follow를 하고 있는 사람들
+
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private UserLibrary userLibrary;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE) //프로필은 회원이 탈퇴하면 함께 사라짐.
     private UserProfile userProfile;
@@ -37,8 +40,8 @@ public class User extends Timestamped{
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE) //회원이 단 후기는 회원이 탈퇴하면 함께 사라짐.
     private List<Comment> comments;
 
-//    fetch = FetchType.EAGER -> 지연 로딩에 걸려서 사용해줌.
-    @OneToMany(mappedBy = "seller",fetch = FetchType.EAGER, cascade = CascadeType.REMOVE) //해당 셀러가 등록한 오디오북은 셀러가 탈퇴하면 함께 사라짐.
+
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.REMOVE) //해당 셀러가 등록한 오디오북은 셀러가 탈퇴하면 함께 사라짐.
     private List<AudioBook> audioBookList;
 
     @Column(unique = true)
@@ -60,6 +63,12 @@ public class User extends Timestamped{
     }
 
 
+    @OneToMany(mappedBy = "follower", fetch = FetchType.LAZY)
+    private List<Follow>followingList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "followed", fetch = FetchType.LAZY)
+    private List<Follow>followedList = new ArrayList<>();
+
 //    public void update(String imgurl, String fileName) {
 //        this.userImage = imgurl;
 //        this.originImage = fileName;
@@ -73,7 +82,8 @@ public class User extends Timestamped{
 //    @OneToMany(mappedBy = "userFollowing", cascade = CascadeType.REMOVE)
 //    private List<User> followingList = new ArrayList<User>();
 
-    // 현재 유저가 팔로우 당하는 부분
+    // 현재 유저가 팔로우
+    // 당하는 부분
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "userFollowerId")
