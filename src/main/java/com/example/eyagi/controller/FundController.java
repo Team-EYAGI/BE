@@ -32,7 +32,13 @@ public class FundController {
     // 펀딩목록 비로그인이 보는 //part 사용
     @GetMapping("/fund")
     public ResponseEntity<?> getAllFund(@RequestPart (name = "info", required = false)FundUserRequestDto requestDto) {
-        return fundService.getAllFund(requestDto);
+        if(requestDto != null) {
+            // 회원일 때
+            return fundService.getAllFund(requestDto);
+        } else {
+            //회원 아닐때
+            return fundService.getAllFundByNoUser();
+        }
     }
 
     // 메인화면에서 펀딩목록 보여주기

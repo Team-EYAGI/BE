@@ -30,7 +30,6 @@ public class FundService {
     private final AwsS3Service awsS3Service;
     private final FundHeartRepository fundHeartRepository;
 
-
     public ResponseEntity<?> saveFund(Long BookId, MultipartFile multipartFile, FundRequestDto fundRequestDto,
                                       UserDetailsImpl userDetails) {
         // 최소 펀딩 수량 제한 체킹다시.
@@ -61,6 +60,7 @@ public class FundService {
         return ResponseEntity.ok().body(requestId);
     }
 
+    // allfund login시
     public ResponseEntity<?> getAllFund(FundUserRequestDto requestDto) {
         boolean myHeartFund;
         boolean successGoals;
@@ -83,6 +83,35 @@ public class FundService {
             }
             // 펀딩 성공 여부.
             successGoals = false;
+            if(fund.getHeartCnt() >= fund.getFundingGoals()) {
+                successGoals = true;
+            }
+            FundResponseDto fundResponseDto = FundResponseDto.builder()
+                    .fundId(fund.getFundId())
+                    .sellerName(fund.getUser().getUsername())
+                    .content(fund.getContent())
+                    .likeCnt(fund.getHeartCnt())
+                    .fundFile(fund.getAudioFund().getFundFile())
+                    .bookTitle(fund.getBooks().getTitle())
+                    .author(fund.getBooks().getAuthor())
+                    .bookImg(fund.getBooks().getBookImg())
+                    .myHeart(myHeartFund)
+                    .fundingGoals(fund.getFundingGoals())
+                    .successFunding(successGoals)
+                    .build();
+            fundResponse.add(fundResponseDto);
+        }
+        return ResponseEntity.ok().body(fundResponse);
+    }
+
+    // allfund 비login시
+    public ResponseEntity<?> getAllFundByNoUser() {
+        boolean myHeartFund = false;
+        boolean successGoals = false;
+        List<Fund> fundList = fundRepository.findAllByOrderByFundIdDesc();
+        List<FundResponseDto> fundResponse = new ArrayList<>();
+
+        for(Fund fund : fundList) {
             if(fund.getHeartCnt() >= fund.getFundingGoals()) {
                 successGoals = true;
             }
@@ -189,12 +218,12 @@ public class FundService {
 
         // 초기에  개수가 적을시
         List<FundMainResponseDto> bestFund = new ArrayList<>();
-        if(bestFund.size() < 10) {
+        if(bestFund.size() < 5) {
             for (int i = 0; i < randomFundList.size(); i++) {
                 bestFund.add(randomFundList.get(i));
             }
         } else {
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 5; i++) {
                 bestFund.add(randomFundList.get(i));
             }
         }
