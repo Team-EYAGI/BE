@@ -85,7 +85,7 @@ public class ChatRoomService {
         for(ChatRoom cR : AllChatRoom) {
             ChatRoomListAdminResponseDto chatRoomListAdminResponseDto = new ChatRoomListAdminResponseDto().builder()
                     .roomId(cR.getRoomId())
-                    .CreatedAt(formmater(cR.getCreatedAt()))
+                    .createdAt(formmater(cR.getCreatedAt()))
                     .nickname(cR.getUuid())
                     .build();
             chatRoomList.add(chatRoomListAdminResponseDto);

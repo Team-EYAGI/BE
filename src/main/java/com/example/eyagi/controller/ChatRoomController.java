@@ -1,6 +1,7 @@
 package com.example.eyagi.controller;
 
 import com.example.eyagi.dto.request.ChatRoomCreateRequestDto;
+import com.example.eyagi.dto.response.ChatMessageAllResponseDto;
 import com.example.eyagi.dto.response.ChatRoomCreateResponseDto;
 import com.example.eyagi.dto.response.ChatRoomListAdminResponseDto;
 import com.example.eyagi.dto.response.ChatRoomListResponseDto;
@@ -48,7 +49,7 @@ public class ChatRoomController {
 //    }
     // 해당 채팅방의 메세지 조회
     @GetMapping("/chat/{roomId}/messages")
-    public List<ChatMessage> getRoomMessage(@PathVariable String roomId){
+    public List<ChatMessageAllResponseDto> getRoomMessage(@PathVariable String roomId){
         return chatMessageService.getChatMessageByRoomId(roomId);
     }
 

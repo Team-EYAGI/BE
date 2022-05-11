@@ -8,6 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 public class ChatRoomListAdminResponseDto {
     private Long roomId;
+    private String romName;
     private String nickname;
-    private String CreatedAt;
+    private String createdAt;
+    private String userRole;
 }
