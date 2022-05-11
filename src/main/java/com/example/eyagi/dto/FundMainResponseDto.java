@@ -9,7 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FundRequestDto {
-    private String content;
-    private int fundingGoals;
+public class FundMainResponseDto {
+    private Long fundId;
+    private String sellerName;
+    private int likeCnt;
+    private String fundFile;
+    private String bookTitle;
+    private String bookImg;
 }

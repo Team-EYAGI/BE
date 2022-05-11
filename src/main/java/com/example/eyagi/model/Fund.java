@@ -32,12 +32,16 @@ public class Fund extends Timestamped {
     @Column
     private int heartCnt;
 
+    @Column
+    private int fundingGoals;
+
     public Fund(FundRequestDto fundRequestDto, AudioFund audioFund , User user, Books books) {
         this.content = fundRequestDto.getContent();
         this.user = user;
         this.audioFund = audioFund;
         this.books = books;
         this.heartCnt = 0;
+        this.fundingGoals = fundRequestDto.getFundingGoals();
     }
 
     public void updateHeartCnt(boolean fundHeartBool) {
