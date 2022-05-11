@@ -42,7 +42,12 @@ public class ChatRoomService {
     public ChatRoomCreateResponseDto createChatRoom(ChatRoomCreateRequestDto requestDto, User user) {
         ChatRoom chatRoom = new ChatRoom(requestDto.getChatRoomName(), requestDto.getUuid(), user);
         chatRoomRepository.save(chatRoom);
-        ChatRoomCreateResponseDto chatRoomCreateResponseDto = new ChatRoomCreateResponseDto(chatRoom);
+        ChatRoomCreateResponseDto chatRoomCreateResponseDto = ChatRoomCreateResponseDto.builder()
+                .chatRoomName(chatRoom.getChatRoomName())
+                .roomId(chatRoom.getRoomId())
+                .userId(chatRoom.getOwnUser().getId())
+                .userName(chatRoom.getOwnUser().getUsername())
+                .build();
         return chatRoomCreateResponseDto;
     }
 
@@ -55,7 +60,11 @@ public class ChatRoomService {
             ChatRoom chatRoom = allChatInfo.getChatRoom();
             // myLastMessageId 와 newLastMessageId 를 비교하여 현재 채팅방에 새 메세지가 있는지 여부를 함께 내려줌
             //일단 무조건 True
-            ChatRoomListResponseDto responseDto = new ChatRoomListResponseDto(chatRoom, true);
+            ChatRoomListResponseDto responseDto = ChatRoomListResponseDto.builder()
+                    .roomId(chatRoom.getRoomId())
+                    .ownUserId(chatRoom.getOwnUser().getId())
+                    .newMessage(true)
+                    .build();
             responseDtoList.add(responseDto);
         }
         return responseDtoList;
@@ -86,7 +95,9 @@ public class ChatRoomService {
             ChatRoomListAdminResponseDto chatRoomListAdminResponseDto = new ChatRoomListAdminResponseDto().builder()
                     .roomId(cR.getRoomId())
                     .createdAt(formmater(cR.getCreatedAt()))
-                    .nickname(cR.getUuid())
+                    .nickname(cR.getOwnUser().getUsername())
+                    .userRole(cR.getOwnUser().getRole())
+                    .romName(cR.getChatRoomName())
                     .build();
             chatRoomList.add(chatRoomListAdminResponseDto);
         }

@@ -1,17 +1,16 @@
 package com.example.eyagi.dto.response;
 
-import com.example.eyagi.model.ChatRoom;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ChatRoomListResponseDto {
-    private final Long ownUserId;
-    private final Long roomId;
-    private final boolean newMessage;
-
-    public ChatRoomListResponseDto(ChatRoom chatRoom, boolean newMessage) {
-        this.ownUserId = chatRoom.getOwnUserId();
-        this.roomId = chatRoom.getRoomId();
-        this.newMessage = newMessage;
-    }
+    private Long ownUserId;
+    private Long roomId;
+    private boolean newMessage;
 }

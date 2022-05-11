@@ -13,6 +13,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +72,7 @@ public class ChatMessageService {
                 = new ArrayList<>();
         for(ChatMessage cM : chatMessageList) {
             ChatMessageAllResponseDto chatMessageAllResponseDto = ChatMessageAllResponseDto.builder()
-                    .createdAt(cM.getCreatedAt().toString())
+                    .createdAt(formmater(cM.getCreatedAt()))
                     .id(cM.getId())
                     .type(cM.getType())
                     .senderNickname(cM.getSender().getUsername())
@@ -79,5 +81,9 @@ public class ChatMessageService {
             chatMessageAllResponseList.add(chatMessageAllResponseDto);
         }
         return chatMessageAllResponseList;
+    }
+
+    public String formmater(LocalDateTime localDateTime) {
+        return DateTimeFormatter.ofPattern("MM/dd hh:mm").format(localDateTime);
     }
 }

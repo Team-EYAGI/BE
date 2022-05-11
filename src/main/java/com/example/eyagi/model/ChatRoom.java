@@ -1,6 +1,7 @@
 package com.example.eyagi.model;
 
 import lombok.*;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -20,13 +21,14 @@ public class ChatRoom extends Timestamped{
     @Column(nullable = false)
     private String uuid;
 
-    @Column(nullable = false)
-    private Long ownUserId;
+    @JsonIgnore
+    @ManyToOne
+    private User ownUser;
 
 
     public ChatRoom(String chatRoomName, String uuid, User user){
         this.chatRoomName = chatRoomName;
         this.uuid = uuid;
-        this.ownUserId = user.getId();
+        this.ownUser = user;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.eyagi.dto.response;
 
+import com.example.eyagi.model.UserRole;
 import lombok.*;
 
 @Getter
@@ -11,5 +12,5 @@ public class ChatRoomListAdminResponseDto {
     private String romName;
     private String nickname;
     private String createdAt;
-    private String userRole;
+    private UserRole userRole;
 }
