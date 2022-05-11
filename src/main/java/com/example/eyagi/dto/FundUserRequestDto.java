@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FundRequestDto {
-    private String content;
-    private int fundingGoals;
+public class FundUserRequestDto {
+    private String useremail;
 }
