@@ -22,10 +22,7 @@ public class ChatMessageController {
 
     @MessageMapping("/message")
     public void message(@Header("token") String token, @RequestBody ChatMessageRequestDto messageRequestDto) {
-        String[] newJwtToken = token.split("BEARER ");
-        User user = userRepository.findByUsername(jwtDecoder.decodeUsername(newJwtToken[1])).orElseThrow(
-                () -> new IllegalArgumentException("회원정보 x"));
-        ChatMessage chatMessage = new ChatMessage(messageRequestDto, user);
+        ChatMessage chatMessage = new ChatMessage(messageRequestDto);
         chatMessageService.sendChatMessage(chatMessage);
     }
 }

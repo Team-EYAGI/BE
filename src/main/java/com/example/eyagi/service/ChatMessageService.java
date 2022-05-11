@@ -41,11 +41,12 @@ public class ChatMessageService {
     // 메세지의 type 을 확인하고 그에따라 작업을 분기시킴
     public void sendChatMessage(ChatMessage chatMessageRequestDto){
         if (ChatMessage.MessageType.ENTER.equals(chatMessageRequestDto.getType())){
-            chatMessageRequestDto.setMessage(chatMessageRequestDto.getSender().getUsername() + "가 입장했습니다.");
-            chatMessageRequestDto.setSender(chatMessageRequestDto.getSender());
+            chatMessageRequestDto.setMessage(chatMessageRequestDto.getSenderId() + "가 입장했습니다.");
+            chatMessageRequestDto.setSenderId(chatMessageRequestDto.getSenderId());
+
         } else if (ChatMessage.MessageType.QUIT.equals(chatMessageRequestDto.getType())){
-            chatMessageRequestDto.setMessage(chatMessageRequestDto.getSender().getUsername() +"님이 퇴장했습니다.");
-            chatMessageRequestDto.setSender(chatMessageRequestDto.getSender());
+            chatMessageRequestDto.setMessage(chatMessageRequestDto.getSenderId() +"님이 퇴장했습니다.");
+            chatMessageRequestDto.setSenderId(chatMessageRequestDto.getSenderId());
         }
         redisTemplate.convertAndSend(channelTopic.getTopic(),chatMessageRequestDto);
     }
@@ -54,7 +55,7 @@ public class ChatMessageService {
         ChatMessage message = new ChatMessage();
         message.setType(chatMessage.getType());
         message.setRoomId(chatMessage.getRoomId());
-        message.setSender(chatMessage.getSender());
+        message.setSenderId(chatMessage.getSenderId());
         message.setMessage(chatMessage.getMessage());
         chatMessageRepository.save(message);
     }
@@ -75,7 +76,7 @@ public class ChatMessageService {
                     .createdAt(formmater(cM.getCreatedAt()))
                     .id(cM.getId())
                     .type(cM.getType())
-                    .senderNickname(cM.getSender().getUsername())
+//                    .senderNickname(cM.getSender().getUsername())
                     .message(cM.getMessage())
                     .build();
             chatMessageAllResponseList.add(chatMessageAllResponseDto);

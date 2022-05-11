@@ -27,26 +27,25 @@ public class ChatMessage extends Timestamped {
     @Column
     private String roomId;
 
-    @JsonIgnore
-    @ManyToOne
-    private User sender;
+    @Column
+    private Long senderId;
 
     @Column
     private String message;
 
     @Builder
-    public ChatMessage(MessageType type, String roomId, User sender, String message){
+    public ChatMessage(MessageType type, String roomId,  Long senderId, String message){
         this.type = type;
         this.roomId = roomId;
-        this.sender = sender;
+        this.senderId = senderId;
         this.message = message;
     }
 
     @Builder
-    public ChatMessage(ChatMessageRequestDto chatMessageRequestDto, User sender){
+    public ChatMessage(ChatMessageRequestDto chatMessageRequestDto){
         this.type = chatMessageRequestDto.getType();
         this.roomId = chatMessageRequestDto.getRoomId();
-        this.sender = sender;
+        this.senderId = chatMessageRequestDto.getSenderId();
         this.message = chatMessageRequestDto.getMessage();
     }
 }
