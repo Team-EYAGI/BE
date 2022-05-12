@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -43,20 +44,21 @@ public class AudioController {
 
 
         //성우가 해당 책에 오디오북을 처음 만드는 건지 확인해주는 부분.
-    @GetMapping("/book/detail/newAudio/check/{bookId}")
+    @PostMapping("/book/detail/newAudio/check/{bookId}")
     public boolean newAudioCheck (@PathVariable Long bookId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Books book = booksService.findBook(bookId);
         User seller = userDetails.getUser();
-        if(audioBookRepository.findByBookAndSeller(book, seller)== null){
+        AudioBook audioBook = audioBookRepository.findByBookAndSeller(book, seller);
+       if(audioBook == null){
             return true; //첫 등록이면 true
         } else {
-            return false; //등록한 적이 있다면 false
-        }
+           return false; //등록한 적이 있다면 false
+       }
+
     }
 
     //오디오북 등록하기.
     @PostMapping("/book/detail/newAudio/{bookId}")
-
     public ResponseEntity<String> newAudioBook(@PathVariable Long bookId,
                                                @AuthenticationPrincipal UserDetailsImpl userDetails,
                                                @RequestPart(name = "audio") MultipartFile multipartFile,

@@ -9,15 +9,19 @@ import lombok.NoArgsConstructor;
 public class SellerAudioBook {
     private String sellerName;
     private Long audioBookId;
+    private Long booId;
     private String bookTitle;
     private String author;
-    private String bookImage;
+    private String bookImg;
+    private String category;
 
     public SellerAudioBook (AudioBook audioBook){
         this.sellerName =audioBook.getSeller().getUsername();
         this.audioBookId = audioBook.getId();
         this.bookTitle = audioBook.getBook().getTitle();
         this.author = audioBook.getBook().getAuthor();
-        this.bookImage = audioBook.getBook().getBookImg();
+        this.bookImg = audioBook.getBook().getBookImg();
+        this.booId = audioBook.getBook().getBookId();
+        this.category = audioBook.getBook().getCategory();
     }
 }

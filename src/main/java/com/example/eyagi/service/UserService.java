@@ -3,11 +3,17 @@ package com.example.eyagi.service;
 
 import com.example.eyagi.dto.KakaoUserInfoDto;
 import com.example.eyagi.dto.TodayCreatorDto;
+import com.example.eyagi.repository.UserLibraryRepository;
+import com.example.eyagi.repository.UserProfileRepository;
 import com.example.eyagi.validator.UserValidator;
 import com.example.eyagi.dto.SignupRequestDto;
 import com.example.eyagi.dto.UserDto;
 import com.example.eyagi.model.User;
+import com.example.eyagi.model.UserLibrary;
+import com.example.eyagi.model.UserProfile;
 import com.example.eyagi.model.UserRole;
+import com.example.eyagi.repository.UserLibraryRepository;
+import com.example.eyagi.repository.UserProfileRepository;
 import com.example.eyagi.repository.UserRepository;
 import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.security.jwt.JwtDecoder;
@@ -15,16 +21,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.mapping.Collection;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -43,19 +40,34 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final JwtDecoder jwtDecoder;
+    private final UserProfileRepository profileRepository;
+    private final UserLibraryRepository libraryRepository;
 
 
+    public User findUserId (Long id){
+        return userRepository.findById(id).orElseThrow(
+                ()-> new NullPointerException("등록되지 않은 사용자 입니다.")
+        );
+    }
     public User findUser (String email){
         return userRepository.findByEmail(email).orElseThrow(
                 ()-> new NullPointerException("등록되지 않은 사용자 입니다.")
         );
     }
 
+    //이메일 중복체크
+    public String userEmailCheck(String email){
+        Optional<User> found = userRepository.findByEmail(email);
+        if (found.isPresent()){
+            throw new IllegalArgumentException("중복된 이메일입니다.");
+        }
+        return email;
+    }
 
     //닉네임 중복체크
-    public String userNameCheck(String username) {
+    public String userNameCheck(String username){
         Optional<User> found = userRepository.findByUsername(username);
-        if (found.isPresent()) {
+        if (found.isPresent()){
             throw new IllegalArgumentException("중복된 닉네임입니다.");
         }
         return username;
@@ -81,7 +93,10 @@ public class UserService {
         // 유저 생성 후 DB 저장
         User user = new User(email, username, enPassword, role);
         userRepository.save(user);
-
+        UserLibrary userLibrary = new UserLibrary(user);
+        UserProfile userProfile = new UserProfile(user);
+        libraryRepository.save(userLibrary);
+        profileRepository.save(userProfile);
         return ResponseEntity.ok().body("회원가입 완료");
     }
 

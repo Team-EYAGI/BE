@@ -16,6 +16,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -26,8 +27,14 @@ public class UserController {
 
     //회원가입
     @PostMapping("/user/join")
-    public ResponseEntity<String> registerUser(@RequestBody SignupRequestDto signupRequestDto){
+    public ResponseEntity<String> registerUser(@Valid  @RequestBody SignupRequestDto signupRequestDto){
         return userService.registerUser(signupRequestDto);
+    }
+
+    //이메일 중복확인
+    @PostMapping("/user/email/check")
+    public String userEmailCheck (@RequestBody SignupRequestDto signupRequestDto) {
+        return userService.userEmailCheck(signupRequestDto.getEmail());
     }
 
     //닉네임 중복확인

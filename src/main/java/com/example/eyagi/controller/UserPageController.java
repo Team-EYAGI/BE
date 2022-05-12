@@ -9,6 +9,7 @@ import com.example.eyagi.service.UserPageService;
 import com.example.eyagi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,7 @@ public class UserPageController {
       //todo:마이페이지 조회 - 해야됨
 
     //todo:마이페이지 조회 .1 페이지 로드 시 필요한 것, 판매자는 음성도 같이.- 포스트맨 테스트 완료
+//    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("")
     public ResponseEntity<UserPageDto> loadUserProfile(@AuthenticationPrincipal UserDetailsImpl userDetails){
         User user = userDetails.getUser();

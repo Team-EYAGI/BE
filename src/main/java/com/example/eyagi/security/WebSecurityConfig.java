@@ -28,7 +28,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
-@EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true) // @Secured 어노테이션 활성화
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JWTAuthProvider jwtAuthProvider;
@@ -140,6 +140,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/");
         skipPathList.add("GET,/category/**");
         skipPathList.add("GET,/category");
+        skipPathList.add("GET,/viewer/**");  //셀러 프로필 보기 허용
 
         skipPathList.add("GET,/basic.js");
 

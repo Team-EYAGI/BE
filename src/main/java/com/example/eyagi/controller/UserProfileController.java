@@ -1,18 +1,19 @@
 package com.example.eyagi.controller;
 
-import com.example.eyagi.dto.SellerProfileDto;
-import com.example.eyagi.dto.UserProfileDto;
+import com.example.eyagi.dto.*;
+import com.example.eyagi.model.User;
 import com.example.eyagi.model.UserRole;
 import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.UserPageService;
+import com.example.eyagi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -20,6 +21,7 @@ public class UserProfileController {
 
 
     private final UserPageService userPageService;
+    private final UserService userService;
 
 
     //todo:프로필 등록 - 일반 사용자와 셀러를 role로 구분하여 서로 다른 메서드 실행. - FE 확인 전
@@ -67,4 +69,24 @@ public class UserProfileController {
         return ResponseEntity.ok("voice 등록 완료!");
     }
 
+    //todo : 셀러 프로필 보기.  회원, 비회원 모두 볼 수 있음.
+    @GetMapping("/viewer/seller/{sellerId}")
+    public SellerPageDto sellerProfileViewer (@PathVariable Long sellerId) {
+        return userPageService.loadSellerPage( userService.findUserId(sellerId));
+    }
+
+
+    //todo : 셀러 프로필 보기 - 오디오북 목록
+    @GetMapping("/viewer/sellerAudioBook/{sellerId}")
+    public List<SellerAudioBook> sellerAudioBookViewer (@PathVariable Long sellerId) {
+        User seller = userService.findUserId(sellerId);
+        return userPageService.sellerMyAudioBook(seller);
+    }
+
+    //todo : 셀러 프로필 보기 - 펀딩 목록
+    @GetMapping("/viewer/sellerFund/{sellerId}")
+    public List<SellerFundDto> sellerFundViewer (@PathVariable Long sellerId) {
+        User seller = userService.findUserId(sellerId);
+        return userPageService.myFund(seller);
+    }
 }
