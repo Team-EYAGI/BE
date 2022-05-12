@@ -35,6 +35,10 @@ public class User extends Timestamped{
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private UserLibrary userLibrary;
+
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE) //프로필은 회원이 탈퇴하면 함께 사라짐.
     private UserProfile userProfile;
 
@@ -69,6 +73,9 @@ public class User extends Timestamped{
 
     @OneToMany(mappedBy = "followed", fetch = FetchType.LAZY)
     private List<Follow>followedList = new ArrayList<>();
+
+
+}
 
 
 }
