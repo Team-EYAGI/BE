@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,7 +16,6 @@ import java.util.Map;
 public class BooksController {
 
 
-    //private final BooksCrawlingService booksCrawlingService;
     private final BooksService booksService;
 
 
@@ -28,12 +26,17 @@ public class BooksController {
         return book;
     }
 
-    // 메인화면에서 책 목록들 보여주기
+    // 메인화면에서 추천도서 보여주기
     @GetMapping("/")
-    public Map<String,Object> getBookListToMain(){
+    public List<BooksDto> getBookListToMain(){
         return booksService.showMainBooks();
     }
 
+    // 메인화면에서 자기계발 카테고리 보여주기
+    @GetMapping("/category")
+    public List<BooksDto> getCategoryListToMain(){
+        return booksService.mainSeifList();
+    }
 
 
   /*
