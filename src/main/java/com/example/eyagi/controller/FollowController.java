@@ -1,6 +1,6 @@
 package com.example.eyagi.controller;
 
-import com.example.eyagi.model.Follow;
+import com.example.eyagi.dto.FollowDto;
 import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.FollowService;
 import com.example.eyagi.service.UserService;
@@ -15,23 +15,25 @@ import java.util.List;
 @RestController
 public class FollowController {
      private final FollowService followService;
-     private final UserService userService;
 
-    //팔로잉 하기 ~
+    //팔로잉 하기 / 취소하기
     @PostMapping("/user/follow")
-    public boolean Follow(HttpServletRequest request, @AuthenticationPrincipal UserDetailsImpl userDetail, @RequestParam ("email") String email){
-         return followService.startFollow(userDetail,email);
+    public boolean Follow(HttpServletRequest request, @AuthenticationPrincipal UserDetailsImpl userDetail, @RequestParam ("username") String username){
+         return followService.startFollow(userDetail,username);
 
     }
-/* // 내가 팔로우한 사람 리스트
+
+// 나를 팔로우한 사람 목록 불러오기
+    @GetMapping("/user/follower")
+    public List<FollowDto> getFollowerList(@RequestParam ("username") String username){
+        return followService.getFollowerList(username);
+    }
+
+// 내가 팔로잉한 사람 목록 불러오기
     @GetMapping("/user/following")
-    public List<Follow> followingList( @RequestParam ("email") String email){
-        return followService.showFollowerList(email);
+    public List<FollowDto> getFollowingList(@RequestParam ("username") String username){
+        return followService.getFollowingList(username);
     }
 
-// 나를 팔로우한 사람 리스트
-@GetMapping("/user/followed")
-public List<Follow> followedList( @RequestParam ("email") String email){
-    return followService.showFollowedList(email);
-}*/
+
 }
