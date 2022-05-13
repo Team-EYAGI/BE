@@ -11,6 +11,7 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,7 +38,7 @@ public class BookRequestDto {
 
         private String userName;
 
-        private String createdAt; //수정일 -> 등록일로 변경.
+        private LocalDateTime createdAt; //수정일 -> 등록일로 변경.
 
         private Long bookId;
 
