@@ -46,7 +46,7 @@ public class User extends Timestamped{
     private List<Comment> comments;
 
 
-    @OneToMany(mappedBy = "seller", cascade = CascadeType.REMOVE) //해당 셀러가 등록한 오디오북은 셀러가 탈퇴하면 함께 사라짐.
+    @OneToMany(mappedBy = "seller", fetch = FetchType.EAGER,cascade = CascadeType.REMOVE) //해당 셀러가 등록한 오디오북은 셀러가 탈퇴하면 함께 사라짐.
     private List<AudioBook> audioBookList;
 
     @Column(unique = true)
