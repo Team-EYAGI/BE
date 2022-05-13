@@ -13,5 +13,6 @@ public class ChatMessageAllResponseDto {
     private Long id;
     private String createdAt;
     private String senderNickname;
+    private Long senderId;
     private String message;
 }

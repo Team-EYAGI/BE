@@ -77,6 +77,7 @@ public class ChatMessageService {
                     .id(cM.getId())
                     .type(cM.getType())
 //                    .senderNickname(cM.getSender().getUsername())
+                    .senderId(cM.getSenderId())
                     .message(cM.getMessage())
                     .build();
             chatMessageAllResponseList.add(chatMessageAllResponseDto);
