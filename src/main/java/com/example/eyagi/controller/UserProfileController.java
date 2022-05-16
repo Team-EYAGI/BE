@@ -24,7 +24,7 @@ public class UserProfileController {
     private final UserService userService;
 
 
-    //todo:프로필 등록 - 일반 사용자와 셀러를 role로 구분하여 서로 다른 메서드 실행. - FE 확인 전
+    //todo:프로필 등록 - 일반 사용자와 셀러를 role로 구분하여 서로 다른 메서드 실행.
     @PostMapping("/user/new/profiles")
     public ResponseEntity newUserProfile(@RequestPart(name = "image") MultipartFile file,
                                          @RequestPart(name = "info", required = false) SellerProfileDto dto,

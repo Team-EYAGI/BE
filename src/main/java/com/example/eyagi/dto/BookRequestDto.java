@@ -47,7 +47,7 @@ public class BookRequestDto {
             this.title = bookRequest.getTitle();
             this.userName = bookRequest.getUser().getUsername();
             this.bookId = bookRequest.getBookId();
-            this.createdAt = bookRequest.getCreatedAt();
+            this.createdAt = bookRequest.getCreatedAt().toString();
         }
 
     }

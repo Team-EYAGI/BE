@@ -14,14 +14,14 @@ public class CommentDto {
    private String content;
    private String title;
    private String username; //사용자 닉네임
-   private String image;
+   private String createdAt;
 
-   public CommentDto (Comment comment, String image){
+   public CommentDto (Comment comment){
       this.commentId = comment.getId();
       this.title = comment.getTitle();
       this.content = comment.getContent();
       this.username = comment.getUser().getUsername();
-      this.image = image;
+      this.createdAt = comment.getCreatedAt().toString();
    }
 
 }

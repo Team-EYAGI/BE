@@ -35,7 +35,7 @@ public class BookDetailService {
                     .sellerName(a.getSeller().getUsername())
                     .sellerImg(a.getSeller().getUserProfile().getUserImage())
                     .contents(a.getContents())
-                    .createdAt(a.getPreview().getCreatedAt())
+                    .createdAt(a.getPreview().getCreatedAt().toString())
                     .build();
             audioPreDtos.add(dto);
         }

@@ -70,7 +70,7 @@ public class AudioDetailService {
         List<Comment> commentList = commentRepository.findAllByAudioBook_Id(audioBookDetailId);
         List<CommentDto> commentDtoList = new ArrayList<>();
         for (Comment c : commentList){
-            CommentDto commentDto = new CommentDto(c,c.getUser().getUserProfile().getUserImage());
+            CommentDto commentDto = new CommentDto(c);
             commentDtoList.add(commentDto);
         }
         return commentDtoList;
