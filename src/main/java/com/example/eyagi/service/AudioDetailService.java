@@ -57,6 +57,7 @@ public class AudioDetailService {
                 .author(audioBook.getBook().getAuthor())
                 .bookImg(audioBook.getBook().getBookImg())
                 .audioFileDtoList(audioFileDtoList)
+                .sellerId(audioBook.getSeller().getId()) //셀러 pk 추가
                 .sellerName(audioBook.getSeller().getUsername())  //셀러 닉네임 추가
                 .audioInfo(audioBook.getContents())  // 오디오북 소개글 추가
                 .sellerImage(audioBook.getSeller().getUserProfile().getUserImage()) //샐러 이미지 추가

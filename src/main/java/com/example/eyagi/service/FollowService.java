@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -21,29 +23,36 @@ import java.util.List;
 public class FollowService {
    private final FollowRepository followRepository;
    private final UserRepository userRepository;
+   private final UserService userService;
 
- // email로 user찾기
-public User findUserName(String username){
-    return userRepository.findByUsername(username).orElse(null);
-}
+ //
+//public User findUserName(String username){
+//    return userRepository.findByUsername(username).orElse(null);
+//}
 
-    public boolean startFollow(UserDetailsImpl userDetails, String sellername){
+    public Map<String, Object> startFollow(User user, Long id){
         //유저정보찾기
-        String username = userDetails.getUsername();
-        User user = userRepository.findByEmail(username).orElse(null);
-        User seller = findUserName(sellername);
 
+        User seller = userService.findUserId(id);
+        Map<String, Object> followONOff = new HashMap<>();
         //자기자신 팔로우 금지
-        if(user == seller){ return false;}
+        if(user.getId().equals(seller.getId())){
+            followONOff.put("followStatus", false);
+            return followONOff;
+        }
 
-
-        assert seller != null;
+//        assert user != null;
+//        assert seller != null;
         List<Follow>follower = seller.getFollowedList();
-
         for (Follow f : follower){
-            if(f.getFollower() == user){
+            if(f.getFollower().getId().equals(user.getId())){
                 followRepository.deleteById(f.getId());
-                return false ;
+                seller.sumFollwerCnt(-1);
+                user.sumFollowingCnt(-1);
+
+                followONOff.put("followStatus", false);
+                followONOff.put("followCount", seller.getFollwerCnt());
+                return followONOff;
             }
         }
 
@@ -52,64 +61,70 @@ public User findUserName(String username){
                 .follower(user)
                 .build();
 
-
         followRepository.save(following);
-
-        return true;
+        seller.sumFollwerCnt(1);
+        user.sumFollowingCnt(1);
+        userRepository.save(user);
+        followONOff.put("followStatus", true);
+        followONOff.put("followCount", seller.getFollwerCnt());
+        return followONOff;
     }
 
     //나를 팔로우한 사람 리스트
-    public  List<FollowDto>getFollowerList(String username) {
+    public  List<FollowDto>getFollowerList(Long id) { //pk 값으로 조회하는 걸로 바꾸는 것이 낫지 않을까?
 
-        User seller = findUserName(username);
+        User seller = userService.findUserId(id);
 
         List<Follow> follower = seller.getFollowedList();
 
         List<FollowDto> followerList = new ArrayList<>();
 
         for (Follow f : follower) {
-            try {
-                FollowDto followDto = FollowDto.builder()
-                        .img(f.getFollower().getUserProfile().getUserImage())
-                        .name(f.getFollower().getUsername())
-                        .build();
-                followerList.add(followDto);
-
-            } catch (NullPointerException e) {
-                FollowDto followDto = FollowDto.builder()
-                        .name(f.getFollower().getUsername())
-                        .build();
-                followerList.add(followDto);
-            }
-
+//            try {
+//                FollowDto followDto = FollowDto.builder()
+//                        .img(f.getFollower().getUserProfile().getUserImage())
+//                        .name(f.getFollower().getUsername())
+//                        .build();
+//                followerList.add(followDto);
+//
+//            } catch (NullPointerException e) {
+//                FollowDto followDto = FollowDto.builder()
+//                        .name(f.getFollower().getUsername())
+//                        .build();
+//                followerList.add(followDto);
+//            }
+            FollowDto dto = new FollowDto();
+            dto.follower(f);
+            followerList.add(dto);
         }
-        seller.setFollwerCnt(followerList.size());
 
         return followerList;
 
     }
     //내가 팔로잉한 사람 리스트
-   public List<FollowDto>getFollowingList(String username){
-     User user = findUserName(username);
+   public List<FollowDto>getFollowingList(Long id){
+     User user = userService.findUserId(id);
      List<Follow>following = user.getFollowingList();
 
      List<FollowDto>followingList = new ArrayList<>();
 
      for(Follow f: following){
-         try{
-                FollowDto followDto = FollowDto.builder()
-                        .name(f.getFollowed().getUsername())
-                        .img(f.getFollowed().getUserProfile().getUserImage())
-                        .build();
-                followingList.add(followDto);
-         }catch (NullPointerException e){
-             FollowDto followDto = FollowDto.builder()
-                     .name(f.getFollowed().getUsername())
-                     .build();
-             followingList.add(followDto);
-         }
+//         try{
+//             FollowDto followDto = FollowDto.builder()
+//                        .name(f.getFollowed().getUsername())
+//                        .img(f.getFollowed().getUserProfile().getUserImage())
+//                        .build();
+//                followingList.add(followDto);
+//         }catch (NullPointerException e){
+//             FollowDto followDto = FollowDto.builder()
+//                     .name(f.getFollowed().getUsername())
+//                     .build();
+//             followingList.add(followDto);
+//         }
+         FollowDto dto = new FollowDto();
+         dto.following(f);
+         followingList.add(dto);
      }
-     user.setFollowingCnt(followingList.size());
 
      return followingList;
    }

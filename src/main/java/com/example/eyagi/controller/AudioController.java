@@ -11,6 +11,7 @@ import com.example.eyagi.service.AudioService2;
 import com.example.eyagi.service.AwsS3Service;
 import com.example.eyagi.service.BooksService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class AudioController {
@@ -38,9 +40,9 @@ public class AudioController {
     private String bucket;
 
     //자른 오디오 지정 경로
-    static String path = "src/main/resources/static/"; //로컬테스트
+//    static String path = "src/main/resources/static/"; //로컬테스트
 //
-//    static String path = "/home/ubuntu/eyagi/audio/";  //배포시
+    static String path = "/home/ubuntu/eyagi/audio/";  //배포시
 
 
         //성우가 해당 책에 오디오북을 처음 만드는 건지 확인해주는 부분.
@@ -54,7 +56,6 @@ public class AudioController {
         } else {
            return false; //등록한 적이 있다면 false
        }
-
     }
 
     //오디오북 등록하기.
@@ -105,13 +106,14 @@ public class AudioController {
 
                 book.addAudioBook(audioBook1);
 
-                Thread.sleep(1000);
-                audioService.removeFile(path, audioService2.getCutFile());
-                audioService.removeFile(path, audioService2.getLocalFile());
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } finally {
+                audioService.removeFile(path, audioService2.getCutFile());
+                audioService.removeFile(path, audioService2.getLocalFile());
             }
 
+            log.info("첫 오디오북 등록 성공! 등록한 셀러 : {}", seller.getId());
             return ResponseEntity.ok("오디오북 첫 개시에 성공하였습니다!");
         }
         else {
@@ -130,6 +132,7 @@ public class AudioController {
             audioBook.addAudio(audioFile);
             audioFileRepository.save(audioFile);
 
+            log.info("오디오북 등록 성공! 등록한 셀러 : {}", seller.getId());
             return ResponseEntity.ok("오디오 등록 성공!");
 
         }

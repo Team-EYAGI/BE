@@ -13,7 +13,7 @@ public class SignupRequestDto {
     @Email(message = "이메일 형식이 올바르지 않습니다.")
     private String email;
 
-    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-zA-Z]{2,8}$")
+    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-zA-Z0-9]{2,8}$")
     @NotBlank(message = "닉네임은 필수 항목입니다.")
     private String username;
 

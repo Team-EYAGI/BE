@@ -17,6 +17,8 @@ public class AudioDetailDto {
 
     private String author;  //저자
 
+    private Long sellerId; //셀러 pk
+
     private String sellerName; //셀러 닉네임
 
     private String sellerImage; //샐러 프로필 이미지

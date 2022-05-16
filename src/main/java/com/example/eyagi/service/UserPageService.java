@@ -28,6 +28,7 @@ public class UserPageService {
     private final BooksService booksService;
     private final AudioService audioService;
     private final FundRepository fundRepository;
+    private final FollowRepository followRepository;
 
 
     @Value("${cloud.aws.s3.bucket}")
@@ -35,11 +36,14 @@ public class UserPageService {
 
     //마이페이지 첫 로드 시 내려주는 데이터 / 유저 닉네임, 유저 이메일, 프로필 이미지, 판매자인 경우 녹음 파일
     public UserPageDto loadUserPage(User user) {
+
         return new UserPageDto(user);
     }
 
-    public SellerPageDto loadSellerPage(User user) {
-        return new SellerPageDto(user);
+    public SellerPageDto loadSellerPage(User seller) {
+
+
+        return new SellerPageDto(seller);
     }
 
     //듣고 있는 오디오북에 추가
