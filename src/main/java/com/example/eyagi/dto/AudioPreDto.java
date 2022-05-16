@@ -25,7 +25,7 @@ public class AudioPreDto {
 
     private String sellerImg; //셀러 프로필 이미지
 
-    private LocalDateTime createdAt; //오디오북 찜 갯수
+    private String createdAt; //오디오북 찜 갯수
 
 
 }
