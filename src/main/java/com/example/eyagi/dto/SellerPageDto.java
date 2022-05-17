@@ -17,6 +17,7 @@ public class SellerPageDto extends UserPageDto {
 //    private List<FollowDto> followerList = new ArrayList<>(); // 나를 팔로우 하고 있는 사람 목록
 
     public SellerPageDto(User user){
+        this.userId = user.getId();
         this.userEmail = user.getEmail();
         this.userName = user.getUsername();
         this.userImage = user.getUserProfile().getUserImage();

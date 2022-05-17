@@ -63,7 +63,7 @@ public class FundService {
     // allfund login시
     public ResponseEntity<?> getAllFund(FundUserRequestDto requestDto) {
         boolean myHeartFund;
-        boolean successGoals;
+//        boolean successGoals;
         User user = null;
         if(requestDto != null) {
             user = userRepository.findByEmail(requestDto.getUseremail()).orElseThrow(() -> new NullPointerException("유저 X"));
@@ -82,10 +82,10 @@ public class FundService {
                 }
             }
             // 펀딩 성공 여부.
-            successGoals = false;
-            if(fund.getHeartCnt() >= fund.getFundingGoals()) {
-                successGoals = true;
-            }
+//            successGoals = false;
+//            if(fund.getHeartCnt() >= fund.getFundingGoals()) {
+//                successGoals = true;
+//            }
             FundResponseDto fundResponseDto = FundResponseDto.builder()
                     .fundId(fund.getFundId())
                     .sellerName(fund.getUser().getUsername())
@@ -97,7 +97,8 @@ public class FundService {
                     .bookImg(fund.getBooks().getBookImg())
                     .myHeart(myHeartFund)
                     .fundingGoals(fund.getFundingGoals())
-                    .successFunding(successGoals)
+//                    .successFunding(successGoals)
+                    .successFunding(fund.isSuccessGoals())
                     .build();
             fundResponse.add(fundResponseDto);
         }
@@ -107,14 +108,14 @@ public class FundService {
     // allfund 비login시
     public ResponseEntity<?> getAllFundByNoUser() {
         boolean myHeartFund = false;
-        boolean successGoals = false;
+//        boolean successGoals = false;
         List<Fund> fundList = fundRepository.findAllByOrderByFundIdDesc();
         List<FundResponseDto> fundResponse = new ArrayList<>();
 
         for(Fund fund : fundList) {
-            if(fund.getHeartCnt() >= fund.getFundingGoals()) {
-                successGoals = true;
-            }
+//            if(fund.getHeartCnt() >= fund.getFundingGoals()) {
+//                successGoals = true;
+//            }
             FundResponseDto fundResponseDto = FundResponseDto.builder()
                     .fundId(fund.getFundId())
                     .sellerName(fund.getUser().getUsername())
@@ -126,7 +127,8 @@ public class FundService {
                     .bookImg(fund.getBooks().getBookImg())
                     .myHeart(myHeartFund)
                     .fundingGoals(fund.getFundingGoals())
-                    .successFunding(successGoals)
+//                    .successFunding(successGoals)
+                    .successFunding(fund.isSuccessGoals())
                     .build();
             fundResponse.add(fundResponseDto);
         }
@@ -201,14 +203,15 @@ public class FundService {
     */
         //추천도서 list
         List<Fund> findAllFund = fundRepository.findAllByOrderByFundIdDesc();
-        List<FundMainResponseDto> randomFundList = new ArrayList<>();
+        List<SellerFundDto> randomFundList = new ArrayList<>();
 
         for (Fund fund : findAllFund) {
-            FundMainResponseDto fundMainResponseDto = FundMainResponseDto.builder()
+            SellerFundDto fundMainResponseDto = SellerFundDto.builder()
                     .fundId(fund.getFundId())
                     .sellerName(fund.getUser().getUsername())
                     .likeCnt(fund.getHeartCnt())
-                    .fundFile(fund.getAudioFund().getFundFile())
+//                    .fundFile(fund.getAudioFund().getFundFile())
+                    .successFunding(fund.isSuccessGoals())
                     .bookTitle(fund.getBooks().getTitle())
                     .bookImg(fund.getBooks().getBookImg())
                     .build();
@@ -217,7 +220,7 @@ public class FundService {
         Collections.shuffle(randomFundList); //리스트 내 값 랜덤으로 순서 재배치
 
         // 초기에  개수가 적을시
-        List<FundMainResponseDto> bestFund = new ArrayList<>();
+        List<SellerFundDto> bestFund = new ArrayList<>();
         if(randomFundList.size() < 5) {
             for (int i = 0; i < randomFundList.size(); i++) {
                 bestFund.add(randomFundList.get(i));

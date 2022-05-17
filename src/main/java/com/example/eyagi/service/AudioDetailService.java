@@ -34,8 +34,8 @@ public class AudioDetailService {
     }
 
     //오디오북 상세 페이지 조회 1. 책 정보 + 오디오 목록   ++ 셀러 닉네임, 오디오북 소개글 추가
-    public AudioDetailDto getAudioDetail (Long id, User user) {
-        AudioBook audioBook = findAudioBook(id);
+    public AudioDetailDto getAudioDetail (AudioBook audioBook, User user) {
+//        AudioBook audioBook = findAudioBook(id);
 
         List<AudioFile>audioFileList = audioBook.getAudioFile();
         List<AudioFileDto> audioFileDtoList = new ArrayList<>();
@@ -50,7 +50,7 @@ public class AudioDetailService {
         Optional<Library_Audio> library_audio = library_audioRepository.findByAudioBook_IdAndUserLibrary_Id(audioBook.getId(),user.getUserLibrary().getId());
         if(!library_audio.isPresent()){ //해당 오디오북이 듣고 있는 오디오북 목록에 없다면, ->서버 테스트 완
             userPageService.listenBook(audioBook,user); // 마이페이지 > 내가 듣고 있는 오디오북에 추가!
-            log.info(id + "번 오디오북을 내 서재에 추가!");
+            log.info(audioBook.getId() + "번 오디오북을 내 서재에 추가!");
         }
         return AudioDetailDto.builder()
                 .title(audioBook.getBook().getTitle())

@@ -36,13 +36,10 @@ public class UserPageService {
 
     //마이페이지 첫 로드 시 내려주는 데이터 / 유저 닉네임, 유저 이메일, 프로필 이미지, 판매자인 경우 녹음 파일
     public UserPageDto loadUserPage(User user) {
-
         return new UserPageDto(user);
     }
 
     public SellerPageDto loadSellerPage(User seller) {
-
-
         return new SellerPageDto(seller);
     }
 
@@ -91,7 +88,7 @@ public class UserPageService {
         }
     }
 
-    //todo:서재 불러오기 1. 내 서재에 담긴 책 목록 - 포스트맨 테스트 완료
+    //서재 불러오기 1. 내 서재에 담긴 책 목록
     public List<BooksDto> loadMyLibraryBooks(User user){
         //키값 역순 리스트
         List<Library_Books> library_booksList = library_booksRepository.findAllByUserLibraryOrderByIdDesc(user.getUserLibrary());
@@ -107,7 +104,7 @@ public class UserPageService {
 /*
 책제목, 책이미지, 책 아이디, 카테고리, 저자이름, 크리에이터 이름, 오디오북 아이디
  */
-    //todo:서재 불러오기 2. 내가 듣고 있는 오디오북 - 포스트맨 테스트 완료
+    //서재 불러오기 2. 내가 듣고 있는 오디오북
     public List<LibraryAudiosDto> loadMyLibraryAudios(User user){
 //        List<Library_Audio> library_audioList = user.getUserLibrary().getMyAuidoBook(); //듣고 있는 오디오북.
         List<Library_Audio> library_audioList =library_audioRepository.findAllByUserLibraryOrderByIdDesc(user.getUserLibrary());
@@ -120,7 +117,7 @@ public class UserPageService {
     }
 
 
-    //todo:서재 불러오기 1-2. 내 서재에 담긴 책 목록 > 목록에서 책 삭제
+    //서재 불러오기 1-2. 내 서재에 담긴 책 목록 > 목록에서 책 삭제
     @Transactional
     public Long removeLibraryBook (Long bookId, User user){
         Books book = booksService.findBook(bookId);
@@ -134,7 +131,7 @@ public class UserPageService {
        return bookId;
     }
 
-    //todo:서재 불러오기 2-2. 내가 듣고 있는 오디오북 > 목록에서 오디오북 삭제
+    //서재 불러오기 2-2. 내가 듣고 있는 오디오북 > 목록에서 오디오북 삭제
     public Long removeLibraryAudio(Long audioId, User user){
         AudioBook audioBook = audioService.findAudioBook(audioId);
         try{
@@ -147,7 +144,7 @@ public class UserPageService {
     }
 
 
-    //todo:마이페이지 조회 .3-1 판매자 전용 버튼, 내가 등록한 오디오북
+    //마이페이지 조회 .3-1 판매자 전용 버튼, 내가 등록한 오디오북
     @Transactional
     public List<SellerAudioBook> sellerMyAudioBook(User user){
 
@@ -165,7 +162,7 @@ public class UserPageService {
         return sellerAudioBookList;
     }
 
-    //todo:마이페이지 조회 .3-2 판매자 전용 버튼, 내가 등록한 펀딩 목록 / 책 아이디, 책 이미지, 판매자 녹음파일
+    //마이페이지 조회 .3-2 판매자 전용 버튼, 내가 등록한 펀딩 목록
     public List<SellerFundDto> myFund(User seller){
         List<Fund> myFundList = fundRepository.findAllByUserIdOrderByFundIdDesc(seller.getId());
         List<SellerFundDto> sellerFundDtoList = new ArrayList<>();

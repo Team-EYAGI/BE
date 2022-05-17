@@ -35,6 +35,8 @@ public class Fund extends Timestamped {
     @Column
     private int fundingGoals;
 
+    private boolean successGoals = false;
+
     public Fund(FundRequestDto fundRequestDto, AudioFund audioFund , User user, Books books) {
         this.content = fundRequestDto.getContent();
         this.user = user;
@@ -49,6 +51,13 @@ public class Fund extends Timestamped {
             this.heartCnt += 1;
         } else {
             this.heartCnt -= 1;
+        }
+        successGoalsStatus(this.fundingGoals, this.heartCnt);
+    }
+
+    public void successGoalsStatus (int fundingGoals, int heartCnt){
+        if (heartCnt >= fundingGoals){
+            this.successGoals = true;
         }
     }
 }
