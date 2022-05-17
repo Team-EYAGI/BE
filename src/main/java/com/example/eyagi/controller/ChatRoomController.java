@@ -19,6 +19,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RequiredArgsConstructor
@@ -42,23 +43,27 @@ public class ChatRoomController {
         return chatRoomService.getOnesChatRoom(userDetails.getUser());
     }
 
-//    // 해당 채팅방의 메세지 조회
-//    @GetMapping("/chat/{roomId}/messages")
-//    public Page<ChatMessage> getRoomMessage(@PathVariable String roomId, @PageableDefault Pageable pageable){
-//        return chatMessageService.getChatMessageByRoomId(roomId, pageable);
-//    }
     // 해당 채팅방의 메세지 조회
     @GetMapping("/chat/{roomId}/messages")
     public List<ChatMessageAllResponseDto> getRoomMessage(@PathVariable String roomId){
         return chatMessageService.getChatMessageByRoomId(roomId);
     }
 
-    // 전체 채팅방 목록 조회
+    // 전체 채팅방 목록 조회 (관리자용)
     @GetMapping("/rooms")
-    public List<ChatRoomListAdminResponseDto> getAllChatRooms(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public Map<String, Object> getAllChatRooms(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         if(!userDetails.getUserRole().equals("ROLE_ADMIN")) {
             throw new IllegalArgumentException("이 계정은 관리자 권한이 아닙니다." + userDetails.getUsername());
         }
         return chatRoomService.getAllChatRooms(userDetails);
+    }
+
+    //해당 채팅방 폭파!
+    @DeleteMapping("/chat/{roomId}")
+    public void quitChat(@PathVariable Long roomId,@AuthenticationPrincipal UserDetailsImpl userDetails){
+        if(!userDetails.getUserRole().equals("ROLE_ADMIN")) {
+            throw new IllegalArgumentException("이 계정은 관리자 권한이 아닙니다." + userDetails.getUsername());
+        }
+        chatRoomService.quitChat(roomId);
     }
 }

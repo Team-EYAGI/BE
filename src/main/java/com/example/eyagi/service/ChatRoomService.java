@@ -4,23 +4,25 @@ import com.example.eyagi.dto.request.ChatRoomCreateRequestDto;
 import com.example.eyagi.dto.response.ChatRoomCreateResponseDto;
 import com.example.eyagi.dto.response.ChatRoomListAdminResponseDto;
 import com.example.eyagi.dto.response.ChatRoomListResponseDto;
+import com.example.eyagi.model.ChatMessage;
 import com.example.eyagi.model.ChatRoom;
 import com.example.eyagi.model.User;
 import com.example.eyagi.model.AllChatInfo;
+import com.example.eyagi.repository.ChatMessageRepository;
 import com.example.eyagi.repository.ChatRoomRepository;
 import com.example.eyagi.repository.UserRepository;
 import com.example.eyagi.repository.AllChatInfoRepository;
+import com.example.eyagi.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -34,6 +36,7 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final AllChatInfoRepository allChatInfoRepository;
     private final UserRepository userRepository;
+    private final ChatMessageRepository chatMessageRepository;
 
     public static final String ENTER_INFO = "ENTER_INFO";
     public static final String USER_INFO = "USER_INFO";
@@ -58,7 +61,6 @@ public class ChatRoomService {
         List<ChatRoomListResponseDto> responseDtoList = new ArrayList<>();
         for ( AllChatInfo allChatInfo : allChatInfoList) {
             ChatRoom chatRoom = allChatInfo.getChatRoom();
-            // myLastMessageId 와 newLastMessageId 를 비교하여 현재 채팅방에 새 메세지가 있는지 여부를 함께 내려줌
             //일단 무조건 True
             ChatRoomListResponseDto responseDto = ChatRoomListResponseDto.builder()
                     .roomId(chatRoom.getRoomId())
@@ -88,7 +90,9 @@ public class ChatRoomService {
 
 
     //채팅방전부찾기
-    public List<ChatRoomListAdminResponseDto> getAllChatRooms(UserDetails userDetails) {
+    public Map<String, Object> getAllChatRooms(UserDetailsImpl userDetails) {
+        User user = userRepository.findById(userDetails.getUser().getId()).orElseThrow(
+                () -> new IllegalArgumentException("유저 없음."));
         List<ChatRoom> AllChatRoom = chatRoomRepository.findAll();
         List<ChatRoomListAdminResponseDto> chatRoomList = new ArrayList<>();
         for(ChatRoom cR : AllChatRoom) {
@@ -101,8 +105,19 @@ public class ChatRoomService {
                     .build();
             chatRoomList.add(chatRoomListAdminResponseDto);
         }
+        Long userFind = user.getId();
+        Map<String, Object> getAdminChatRooms = new HashMap<>();
+        getAdminChatRooms.put("data", chatRoomList);
+        getAdminChatRooms.put("userId", userFind);
         //  날짜 이름 방번호
-        return chatRoomList;
+        return getAdminChatRooms;
+    }
+
+    // 채팅방 나가기
+    @Transactional
+    public void quitChat(Long roomId) {
+        chatRoomRepository.deleteByRoomId(roomId);
+        chatMessageRepository.deleteByRoomId(roomId.toString());
     }
 
     // redis 에 저장했던 sessionId 로 userId 를 얻어오고 해당 userId 로 User 객체를 찾아 리턴함

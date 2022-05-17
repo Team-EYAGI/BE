@@ -10,4 +10,5 @@ import java.util.List;
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
 //    Page<ChatMessage> findByRoomId(String roomId, Pageable pageable);
     List<ChatMessage> findByRoomId(String roomId);
+    void deleteByRoomId(String toString);
 }

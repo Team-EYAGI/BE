@@ -17,8 +17,7 @@ public class SignupRequestDto {
     @NotBlank(message = "닉네임은 필수 항목입니다.")
     private String username;
 
-//    @Pattern(regexp = "^(?=.*\\d-[a-zA-Z])(?=.*[a-zA-Z][!@#$%^&*])(?=.*\\d-[!@#$%^&*]){8,25}$") // 이게 이상하게 안먹네용..!
-    @NotBlank(message = "패스워드는 필수 항목입니다.")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,25}$|^(?=.*\\d)(?=.*[@$!%*#?&])[\\d@$!%*#?&]{8,25}$|^(?=.*[@$!%*#?&])(?=.*[A-Za-z])[A-Za-z-@$!%*#?&]{8,25}$|^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,25}")
     private String password;
 
     @NotBlank(message = "패드워드 재확인은 필수 항목입니다.")

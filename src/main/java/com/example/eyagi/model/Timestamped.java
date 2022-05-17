@@ -17,13 +17,13 @@ import java.time.LocalDateTime;
 public abstract class Timestamped {
 
     @CreatedDate // 생성일자임을 나타냅니다.
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd`T`HH:mm:ss", timezone = "Asia/Seoul")
-    @DateTimeFormat(pattern = "yyyy.MM.dd`T`HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm:ss", timezone = "Asia/Seoul")
+    @DateTimeFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     private LocalDateTime createdAt;
 
     @LastModifiedDate // 마지막 수정일자임을 나타냅니다.
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd`T`HH:mm:ss", timezone = "Asia/Seoul")
-    @DateTimeFormat(pattern = "yyyy.MM.dd`T`HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm:ss", timezone = "Asia/Seoul")
+    @DateTimeFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     private LocalDateTime modifiedAt;
 
 }
