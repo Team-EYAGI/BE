@@ -46,7 +46,7 @@ public class FollowService {
                 followRepository.deleteById(f.getId());
                 seller.sumFollwerCnt(-1);
                 user.sumFollowingCnt(-1);
-
+                userRepository.save(user);
                 followONOff.put("followStatus", false);
                 followONOff.put("followCount", seller.getFollwerCnt());
                 return followONOff;

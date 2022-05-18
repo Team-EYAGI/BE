@@ -23,6 +23,10 @@ public class AudioDetailDto {
 
     private String sellerImage; //샐러 프로필 이미지
 
+    private int followingCnt; //셀러가 팔로우 하는 사람 수
+
+    private int followerCnt; // 셀러를 팔로잉 하는 사람 수
+
     private String audioInfo;   // 오디오북 소개글
 
     private List<AudioFileDto> audioFileDtoList;  //오디오 파일 목록

@@ -49,6 +49,7 @@ public class BookRequestService {
     }
 
     // 수정하기
+    @Transactional
     public void update(Long bookRequestId, BookRequestDto bookRequestDto, User user){
         BookRequest bookRequest = bookRequestRepository.findById(bookRequestId).orElseThrow(()
         -> new NullPointerException("요청글을 찾을 수가 없습니다."));
@@ -60,6 +61,7 @@ public class BookRequestService {
     }
 
     //삭제하기
+    @Transactional
     public void delete(Long bookRequestId, User user){
         bookRequestRepository.findById(bookRequestId)
                 .map(bookRequest -> {

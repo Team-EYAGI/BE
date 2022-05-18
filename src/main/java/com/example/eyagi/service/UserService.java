@@ -46,15 +46,19 @@ public class UserService {
 
     public User findUserId (Long id){
         return userRepository.findById(id).orElseThrow(
-                ()-> new NullPointerException("등록되지 않은 사용자 입니다.")
+                ()-> new NullPointerException("등록되지 않은 사용자입니다.")
         );
     }
     public User findUser (String email){
         return userRepository.findByEmail(email).orElseThrow(
-                ()-> new NullPointerException("등록되지 않은 사용자 입니다.")
+                ()-> new NullPointerException("등록되지 않은 사용자입니다.")
         );
     }
-
+    public User findUsername (String userName) {
+        return userRepository.findByUsername(userName).orElseThrow(
+                ()-> new NullPointerException("등록되지 않은 사용자입니다.")
+        );
+    }
     //이메일 중복체크
     public String userEmailCheck(String email){
         Optional<User> found = userRepository.findByEmail(email);

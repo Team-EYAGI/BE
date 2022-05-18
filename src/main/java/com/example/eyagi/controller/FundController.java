@@ -1,5 +1,6 @@
 package com.example.eyagi.controller;
 
+import com.example.eyagi.Interceptor.Auth;
 import com.example.eyagi.dto.FundHeartRequestDto;
 import com.example.eyagi.dto.FundHeartResponseDto;
 import com.example.eyagi.dto.FundRequestDto;
@@ -7,11 +8,15 @@ import com.example.eyagi.dto.FundUserRequestDto;
 import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.FundService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.http.protocol.HTTP;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class FundController {
@@ -19,13 +24,20 @@ public class FundController {
     private final FundService fundService;
 
 
-    // 펀딩등록
+    // 펀딩등록 + 파일 크기 5MB로 지정.
+    @Auth
     @PostMapping("/fund/new/{bookid}")
     public ResponseEntity<?> saveFund(
             @PathVariable Long bookid,
             @RequestPart("file") MultipartFile multipartFile ,
             @RequestPart("information") FundRequestDto fundRequestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+
+        if (multipartFile.getSize() > 5242880 ) {
+            log.error("펀딩 등록시 파일 크기 초과. 파일 크기 : {}", multipartFile.getSize());
+            throw new IllegalArgumentException("파일 크기 초과");
+        }
         return fundService.saveFund(bookid, multipartFile, fundRequestDto, userDetails);
     }
 

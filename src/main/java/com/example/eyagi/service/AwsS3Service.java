@@ -135,9 +135,9 @@ public class AwsS3Service {
     public void removeS3File(String fileName) {
         log.info("S3파일 삭제 시도 file name : " + fileName);
         try {
-            DeleteObjectRequest request = new DeleteObjectRequest(bucket, fileName);
-            amazonS3.deleteObject(request);
-//            amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
+//            DeleteObjectRequest request = new DeleteObjectRequest(bucket, fileName);
+//            amazonS3.deleteObject(request);
+            amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
         } catch (AmazonServiceException e) {
             System.err.println(e.getErrorMessage());
         }

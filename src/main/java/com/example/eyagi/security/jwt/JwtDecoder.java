@@ -67,10 +67,11 @@ public class JwtDecoder {
             throw new IllegalArgumentException("유효한 토큰이 아닙니다.");
         }
 
-        String username = decodedJWT
+        String userRole = decodedJWT
                 .getClaim(JwtTokenUtils.CLAIM_USER_ROLE)
                 .asString();
 
-        return username;
+
+        return  userRole;
     }
 }

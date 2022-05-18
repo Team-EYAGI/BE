@@ -20,8 +20,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+
+import static com.example.eyagi.service.AwsS3Path.pathAudio;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -40,9 +43,9 @@ public class AudioController {
     private String bucket;
 
     //자른 오디오 지정 경로
-    static String path = "src/main/resources/static/"; //로컬테스트
+//    static String path = "src/main/resources/static/"; //로컬테스트
 //
-//    static String path = "/home/ubuntu/eyagi/audio/";  //배포시
+    static String path = "/home/ubuntu/eyagi/audio/";  //배포시
 
 
         //성우가 해당 책에 오디오북을 처음 만드는 건지 확인해주는 부분.
@@ -58,7 +61,6 @@ public class AudioController {
        }
     }
 
-
     //오디오북 등록하기.
     @PostMapping("/book/detail/newAudio/{bookId}")
     public ResponseEntity<String> newAudioBook(@PathVariable Long bookId,
@@ -68,28 +70,20 @@ public class AudioController {
 
         Books book = booksService.findBook(bookId);
         User seller = userDetails.getUser();
-//        String originFileS3 = "audio" +"/" + UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
         AudioBook audioBook = audioBookRepository.findByBookAndSeller(book, seller);
 
-
-
         if (audioBook == null) {
-//            String originFileS3Url = awsS3Service.fileUpload(bucket, multipartFile, originFileS3);
             AudioService2 audioService2 = new AudioService2(multipartFile, path, bucket);
             audioService2.start();
 
             try {
                 audioService2.join();
 
-                String originFileS3Url = awsS3Service.fileUpload(bucket, multipartFile, audioService2.getOriginFileS3());
+//                String originFileS3Url = awsS3Service.fileUpload(bucket, multipartFile, audioService2.getOriginFileS3());
+                Map<String, String> fileName = awsS3Service.uploadFile(multipartFile, pathAudio);
                 String cutFileS3Url = awsS3Service.copyAudioUpload(bucket, path, audioService2.getCutFile(),
                         audioService2.getCutFileS3());
 
-//                AudioPreview audioPreview = audioService.saveAudioPreview(audioService2.getCutFileS3(),cutFileS3Url);
-//                AudioBook audioBook1 = audioService.saveAudioBook(seller,book, audioPreview,contents.getContents());
-//                audioService.saveAudioFile(originFileS3,originFileS3Url,audioBook1);
-//
-//
 
                 AudioPreview audioPreview = AudioPreview.builder()
                         .originName(audioService2.getCutFileS3())
@@ -106,14 +100,13 @@ public class AudioController {
                 audioBookRepository.save(audioBook1);
 
                 AudioFile audioFile = AudioFile.builder()
-                        .originName(audioService2.getOriginFileS3())
-                        .s3FileName(originFileS3Url)
+                        .originName(fileName.get("fileName"))
+                        .s3FileName(fileName.get("url"))
                         .audioBook(audioBook1)
                         .build();
                 audioFileRepository.save(audioFile);
 
                 book.addAudioBook(audioBook1);
-
 
 
                 Thread.sleep(1500);
@@ -132,14 +125,11 @@ public class AudioController {
         }
         else {
 
-            String originFileS3 = "audio" +"/" + UUID.randomUUID() + "."
-                    + StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
-//
-            String originFileS3Url = awsS3Service.fileUpload(bucket, multipartFile, originFileS3);
+            Map<String, String> fileName = awsS3Service.uploadFile(multipartFile, pathAudio);
 
             AudioFile audioFile = AudioFile.builder()
-                    .originName(originFileS3)
-                    .s3FileName(originFileS3Url)
+                    .originName(fileName.get("fileName"))
+                    .s3FileName(fileName.get("url"))
                     .audioBook(audioBook)
                     .build();
 
@@ -152,6 +142,5 @@ public class AudioController {
         }
 
     }
-    //해당 도서에 펀딩 성공 여부 확인
 
 }

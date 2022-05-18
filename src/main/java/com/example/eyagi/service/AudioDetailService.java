@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -59,6 +60,8 @@ public class AudioDetailService {
                 .audioFileDtoList(audioFileDtoList)
                 .sellerId(audioBook.getSeller().getId()) //셀러 pk 추가
                 .sellerName(audioBook.getSeller().getUsername())  //셀러 닉네임 추가
+                .followingCnt(audioBook.getSeller().getFollowingCnt())
+                .followerCnt(audioBook.getSeller().getFollwerCnt())
                 .audioInfo(audioBook.getContents())  // 오디오북 소개글 추가
                 .sellerImage(audioBook.getSeller().getUserProfile().getUserImage()) //샐러 이미지 추가
                 .build();
@@ -89,6 +92,7 @@ public class AudioDetailService {
 
 
     //후기 수정
+    @Transactional
     public Long editComment(Long commentId, User user, CommentDto commentDto){
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 ()-> new NullPointerException("요청한 후기가 존재하지 않습니다.")
@@ -102,6 +106,7 @@ public class AudioDetailService {
     }
 
     //후기 삭제
+    @Transactional
     public Long removeComment(Long commentId, User user){
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 ()-> new NullPointerException("요청한 후기가 존재하지 않습니다.")

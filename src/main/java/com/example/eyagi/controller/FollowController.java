@@ -18,7 +18,7 @@ public class FollowController {
      private final FollowService followService;
 
     //팔로잉 하기 / 취소하기
-    @PostMapping("/user/follow")
+    @PutMapping("/user/follow")
     public Map<String, Object> Follow(HttpServletRequest request, @AuthenticationPrincipal UserDetailsImpl userDetail,
                                       @RequestParam ("id") Long id){
          return followService.startFollow(userDetail.getUser(),id);

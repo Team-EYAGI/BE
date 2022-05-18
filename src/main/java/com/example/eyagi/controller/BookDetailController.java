@@ -1,5 +1,6 @@
 package com.example.eyagi.controller;
 
+import com.example.eyagi.Interceptor.Auth;
 import com.example.eyagi.model.Fund;
 import com.example.eyagi.model.Library_Books;
 import com.example.eyagi.repository.FundRepository;
@@ -33,6 +34,7 @@ public class BookDetailController {
     }
 
     //todo: 특정 책에 대해서 펀딩 성공했는지 여부 확인
+    @Auth
     @PostMapping("/{bookId}/success")
     public boolean fundSuccessCheck (@PathVariable Long bookId,@AuthenticationPrincipal UserDetailsImpl userDetails){
         Optional<Fund> fund = fundRepository.findByUserAndBooks(userDetails.getUser(), booksService.findBook(bookId));

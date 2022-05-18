@@ -29,6 +29,7 @@ public class UserPageService {
     private final AudioService audioService;
     private final FundRepository fundRepository;
     private final FollowRepository followRepository;
+    private final FollowService followService;
 
 
     @Value("${cloud.aws.s3.bucket}")
@@ -132,6 +133,7 @@ public class UserPageService {
     }
 
     //서재 불러오기 2-2. 내가 듣고 있는 오디오북 > 목록에서 오디오북 삭제
+    @Transactional
     public Long removeLibraryAudio(Long audioId, User user){
         AudioBook audioBook = audioService.findAudioBook(audioId);
         try{
@@ -212,10 +214,11 @@ public class UserPageService {
 //    }
 
     //todo: 판매자 음성 등록 및 수정
+    @Transactional
     public void sellerMyVoice(MultipartFile file, User user){
         UserProfile profile = user.getUserProfile();
         if (profile.getS3FileName()!=null) {  //S3에 파일이 삭제가 안됨 ㅡ,.ㅡ
-            awsS3Service.removeS3File(profile.getOriginName());
+            awsS3Service.removeS3File(profile.getS3FileName());
         }
         Map<String, String> fileName = awsS3Service.uploadFile(file, pathInfo);
         profile.addMyVoice(fileName.get("url"), fileName.get("fileName"));
