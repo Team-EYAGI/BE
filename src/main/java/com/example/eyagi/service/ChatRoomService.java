@@ -4,18 +4,15 @@ import com.example.eyagi.dto.request.ChatRoomCreateRequestDto;
 import com.example.eyagi.dto.response.ChatRoomCreateResponseDto;
 import com.example.eyagi.dto.response.ChatRoomListAdminResponseDto;
 import com.example.eyagi.dto.response.ChatRoomListResponseDto;
-import com.example.eyagi.model.ChatMessage;
 import com.example.eyagi.model.ChatRoom;
 import com.example.eyagi.model.User;
 import com.example.eyagi.model.AllChatInfo;
-import com.example.eyagi.repository.ChatMessageRepository;
-import com.example.eyagi.repository.ChatRoomRepository;
-import com.example.eyagi.repository.UserRepository;
-import com.example.eyagi.repository.AllChatInfoRepository;
+import com.example.eyagi.repository.*;
 import com.example.eyagi.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
 import org.springframework.data.redis.core.HashOperations;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -128,5 +125,13 @@ public class ChatRoomService {
 
     public String formmater(LocalDateTime localDateTime) {
         return DateTimeFormatter.ofPattern("yyyy.MM.dd").format(localDateTime);
+    }
+
+    public ResponseEntity<?> getAllChatRoomsTest(Pageable pageable) {
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt" );
+        pageable = PageRequest.of(page, pageable.getPageSize(), sort );
+        Page<ChatRoomCustomRepository> AllChatRoomTest = chatRoomRepository.findAllByOrderByRoomId(pageable);
+        return ResponseEntity.ok().body(AllChatRoomTest);
     }
 }

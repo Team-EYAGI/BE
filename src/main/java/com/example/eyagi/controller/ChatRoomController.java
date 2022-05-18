@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -65,5 +66,11 @@ public class ChatRoomController {
             throw new IllegalArgumentException("이 계정은 관리자 권한이 아닙니다." + userDetails.getUsername());
         }
         chatRoomService.quitChat(roomId);
+    }
+
+    // 전체 채팅방 목록 조회 (관리자용)
+    @GetMapping("/test/rooms")
+    public ResponseEntity<?> getAllChatRoomsTest(Pageable pageable) {
+        return chatRoomService.getAllChatRoomsTest(pageable);
     }
 }
