@@ -49,18 +49,18 @@ public class AudioDetailController {
     }
 
     //오디오북 상세페이지 -> 후기 목록
-    @GetMapping("/{audioBookId}/comment")
-    public ResponseEntity getComment (@PathVariable Long audioBookId){
-
-        List<CommentDto> commentDtoList = audioDetailService.commentList(audioBookId);
-
-        return new ResponseEntity(commentDtoList, HttpStatus.OK);
-    }
-
 //    @GetMapping("/{audioBookId}/comment")
-//    public ResponseEntity<?> getComment (@PathVariable Long audioBookId, Pageable pageable){
-//        return audioDetailService.commentList(audioBookId, pageable);
+//    public ResponseEntity getComment (@PathVariable Long audioBookId){
+//
+//        List<CommentDto> commentDtoList = audioDetailService.commentList(audioBookId);
+//
+//        return new ResponseEntity(commentDtoList, HttpStatus.OK);
 //    }
+
+    @GetMapping("/{audioBookId}/comment")
+    public ResponseEntity<?> getComment (@PathVariable Long audioBookId, Pageable pageable){
+        return audioDetailService.commentList(audioBookId, pageable);
+    }
 
     //후기 등록
     @PostMapping("/{audioBookId}/comment/new")

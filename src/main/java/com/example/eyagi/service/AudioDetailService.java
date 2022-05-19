@@ -73,32 +73,32 @@ public class AudioDetailService {
 
 
 //    오디오북 상세 페이지 조회 2. 후기 목록
-    public List<CommentDto> commentList(Long audioBookDetailId){
-
-        List<Comment> commentList = commentRepository.findAllByAudioBook_Id(audioBookDetailId);
-        List<CommentDto> commentDtoList = new ArrayList<>();
-        for (Comment c : commentList){
-            CommentDto commentDto = new CommentDto(c);
-            commentDtoList.add(commentDto);
-        }
-        return commentDtoList;
-    }
-//    public ResponseEntity<?> commentList(Long audioBookDetailId, Pageable pageable){
-//        //pageable
-//        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-//        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt" );
-//        pageable = PageRequest.of(page, pageable.getPageSize(), sort );
+//    public List<CommentDto> commentList(Long audioBookDetailId){
 //
-//        Page<CommentCustomRepository> commentPage = commentRepository.findAllByAudioBook_Id(audioBookDetailId, pageable);
-//        List<CommentCustomRepository>  commentList = commentPage.getContent();
+//        List<Comment> commentList = commentRepository.findAllByAudioBook_Id(audioBookDetailId);
 //        List<CommentDto> commentDtoList = new ArrayList<>();
-//        for (CommentCustomRepository c : commentList){
-//            CommentDto commentDto = new CommentDto(c.getCommentId(), c.getTitle(), c.getContent(), c.getUsername(), c.getCreatedAt().toString());
+//        for (Comment c : commentList){
+//            CommentDto commentDto = new CommentDto(c);
 //            commentDtoList.add(commentDto);
 //        }
-//        PageImpl pageImpl = new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
-//        return ResponseEntity.ok().body(pageImpl);
+//        return commentDtoList;
 //    }
+    public ResponseEntity<?> commentList(Long audioBookDetailId, Pageable pageable){
+        //pageable
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt" );
+        pageable = PageRequest.of(page, pageable.getPageSize(), sort );
+
+        Page<CommentCustomRepository> commentPage = commentRepository.findAllByAudioBook_Id(audioBookDetailId, pageable);
+        List<CommentCustomRepository>  commentList = commentPage.getContent();
+        List<CommentDto> commentDtoList = new ArrayList<>();
+        for (CommentCustomRepository c : commentList){
+            CommentDto commentDto = new CommentDto(c.getCommentId(), c.getTitle(), c.getContent(), c.getUsername(), c.getCreatedAt().toString());
+            commentDtoList.add(commentDto);
+        }
+        PageImpl pageImpl = new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
+        return ResponseEntity.ok().body(pageImpl);
+    }
 
 
     //후기 등록
