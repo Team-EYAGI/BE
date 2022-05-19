@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.example.eyagi.service.AwsS3Path.pathFund;
 
@@ -95,11 +92,9 @@ public class FundService {
             FundResponseDto fundResponseDto = FundResponseDto.builder()
                     .fundId(fundCustomRepository.getFundId())
                     .sellerName(fundCustomRepository.getSellerName())
-                    .content(fundCustomRepository.getContent())
                     .likeCnt(fundCustomRepository.getLikeCnt())
                     .fundFile(fundCustomRepository.getFundFile())
                     .bookTitle(fundCustomRepository.getBookTitle())
-                    .author(fundCustomRepository.getAuthor())
                     .bookImg(fundCustomRepository.getBookImg())
                     .myHeart(myHeartFund)
                     .fundingGoals(fundCustomRepository.getFundingGoals())
@@ -126,11 +121,9 @@ public class FundService {
             FundResponseDto fundResponseDto = FundResponseDto.builder()
                     .fundId(fundCustomRepository.getFundId())
                     .sellerName(fundCustomRepository.getSellerName())
-                    .content(fundCustomRepository.getContent())
                     .likeCnt(fundCustomRepository.getLikeCnt())
                     .fundFile(fundCustomRepository.getFundFile())
                     .bookTitle(fundCustomRepository.getBookTitle())
-                    .author(fundCustomRepository.getAuthor())
                     .bookImg(fundCustomRepository.getBookImg())
                     .myHeart(myHeartFund)
                     .fundingGoals(fundCustomRepository.getFundingGoals())
@@ -239,5 +232,66 @@ public class FundService {
         }
 
         return ResponseEntity.ok().body(bestFund);
+    }
+
+    // 펀딩상세보기
+    public ResponseEntity<?> detailFund(Long fundid, UserDetailsImpl userDetails) {
+        boolean myHeartFund;
+        User user = userDetails.getUser();
+        Fund foundFund = fundRepository.findById(fundid).orElseThrow(
+                () -> new NullPointerException("펀딩내용을 찾을 수 없습니다."));
+
+        myHeartFund = false;
+        boolean existsFundHeart = fundHeartRepository.existsByUserAndFund(user, foundFund);
+        if(user != null) {
+            if(existsFundHeart) {
+                myHeartFund = true;
+            }
+        }
+        // 상세보기
+        FundDetailResponseDto fundDetailResponseDto = FundDetailResponseDto.builder()
+                .fundId(foundFund.getFundId())
+                .sellerName(foundFund.getUser().getUsername())
+                .bookTitle(foundFund.getBooks().getTitle())
+                .author(foundFund.getBooks().getAuthor())
+                .bookImg(foundFund.getBooks().getBookImg())
+                .fundFile(foundFund.getAudioFund().getFundFile())
+                .successFunding(foundFund.isSuccessGoals())
+                .fundingGoals(foundFund.getFundingGoals())
+                .likeCnt(foundFund.getHeartCnt())
+                .content(foundFund.getContent())
+                .myHeart(myHeartFund)
+                .build();
+
+        //연관 4개
+//        List<Fund> fundList = fundRepository.findAll();
+//        List<FundResponseDto> fundResponse = new ArrayList<>();
+//        for(Fund f : fundList) {
+//            myHeartFund = false;
+//            existsFundHeart = fundHeartRepository.existsByUserAndFund_FundId(user, f.getFundId());
+//            if(user != null) {
+//                if(existsFundHeart) {
+//                    myHeartFund = true;
+//                }
+//            }
+//            FundResponseDto fundResponseDto = FundResponseDto.builder()
+//                    .fundId(f.getFundId())
+//                    .sellerName(f.getUser().getUsername())
+//                    .likeCnt(f.getHeartCnt())
+//                    .fundFile(f.getAudioFund().getFundFile())
+//                    .bookTitle(f.getBooks().getTitle())
+//                    .bookImg(f.getBooks().getBookImg())
+//                    .myHeart(myHeartFund)
+//                    .fundingGoals(f.getFundingGoals())
+//                    .successFunding(f.isSuccessGoals())
+//                    .build();
+//            fundResponse.add(fundResponseDto);
+//        }
+
+
+        Map<String, Object> fundDetail = new HashMap<>();
+        fundDetail.put("content",fundDetailResponseDto);
+        fundDetail.put("ano","리스트 출력시 이곳으로 출력.");
+        return ResponseEntity.ok().body(fundDetail);
     }
 }

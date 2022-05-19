@@ -19,6 +19,6 @@ public interface BooksRepository extends JpaRepository<Books,Long> {
 
 
     @Query(value = "select b.BookId as bookId, b.bookImg as bookImg, b.title as title, b.publisher as publisher," +
-            "b.author as author, b.category as category from Books as b where b.category = category")
+            "b.author as author, b.category as category from Books as b where b.category=:category")
     Page<BooksCustomRepository> findByCategoryAndOrderByBookId(String category, Pageable pageable);
 }

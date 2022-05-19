@@ -17,8 +17,8 @@ public interface FundRepository extends JpaRepository<Fund, Long> {
     List<Fund> findAllByOrderByFundIdDesc();
     Optional<Fund> findByUserAndBooks(User seller, Books books);
 
-    @Query(value = "select f.fundId as fundId, f.user.username as sellerName, f.content as content, f.heartCnt as likeCnt, " +
-            "f.audioFund.fundFile as fundFile, f.books.title as bookTitle, f.books.author as author, f.books.bookImg as bookImg, " +
+    @Query(value = "select f.fundId as fundId, f.user.username as sellerName, f.heartCnt as likeCnt, " +
+            "f.audioFund.fundFile as fundFile, f.books.title as bookTitle, f.books.bookImg as bookImg, " +
             "f.fundingGoals as fundingGoals, f.successGoals as successFunding from Fund f")
     Page<FundCustomRepository> findByOrderByFundId(Pageable pageable);
 }

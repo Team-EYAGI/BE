@@ -67,4 +67,14 @@ public class FundController {
     ) {
         return fundService.saveFundHeart(fundid, requestDto, userDetails);
     }
+
+
+    // 펀딩상세보기
+    @GetMapping("/fund/detail/{fundid}")
+    public ResponseEntity<?> detailFund(
+            @PathVariable Long fundid,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        return fundService.detailFund(fundid, userDetails);
+    }
 }
