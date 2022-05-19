@@ -69,7 +69,7 @@ public class FundService {
 
         User user = null;
         if(requestDto != null) {
-            user = userRepository.findByEmail(requestDto.getUseremail()).orElseThrow(() -> new NullPointerException("유저 X"));
+            user = userRepository.findByUsername(requestDto.getUsername()).orElseThrow(() -> new NullPointerException("유저 X"));
         }
         Page<FundCustomRepository> fundPage = fundRepository.findByOrderByFundId(pageable);
         List<FundCustomRepository> fundList = fundPage.getContent();
