@@ -3,7 +3,9 @@ package com.example.eyagi.service;
 
 
 import com.example.eyagi.dto.BooksDto;
+import com.example.eyagi.model.AudioBook;
 import com.example.eyagi.model.Books;
+import com.example.eyagi.repository.AudioBookRepository;
 import com.example.eyagi.repository.BooksRepository;
 import com.example.eyagi.repository.QRepository.BooksCustomRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,13 +25,14 @@ import java.util.*;
 public class BooksService {
 
     private final BooksRepository booksRepository;
+    private final AudioBookRepository audioBookRepository;
+
 
     public Books findBook (Long id) {
         return booksRepository.findById(id).orElseThrow(
                 () -> new NullPointerException("존재하지 않는 책의 페이지를 요청하였습니다.")
         );
     }
-
 
     //모든 책 가져오기
     public List<Books> getAllBooks() {
@@ -122,23 +126,57 @@ public class BooksService {
 //    }
 
 
+//    // 메인 (추천도서)
+//    public  List<BooksDto> showMainBooks() {
+//        List<AudioBook> findAllAudioBook = audioBookRepository.findAll();
+//        //추천도서 list
+//        List<Books> findAllBook = booksRepository.findAll();
+//        List<BooksDto> randomBookList = new ArrayList<>();
+//
+//        for (Books books : findAllBook) {
+//            BooksDto booksDto = new BooksDto(books);
+//            randomBookList.add(booksDto);
+//        }
+//        Collections.shuffle(randomBookList); //리스트 내 값 랜덤으로 순서 재배치
+//
+//        List<BooksDto> bestBooks = new ArrayList<>();
+//
+//        for (int i = 0; i < 10; i++) {
+//            bestBooks.add(randomBookList.get(i));
+//        }
+//
+//        return bestBooks;
+//    }
+
     // 메인 (추천도서)
     public  List<BooksDto> showMainBooks() {
-
-        //추천도서 list
+        // 겹치는 것 제외 됬는지 확인.
+        List<AudioBook> findAllAudioInBook = audioBookRepository.findAll();
         List<Books> findAllBook = booksRepository.findAll();
         List<BooksDto> randomBookList = new ArrayList<>();
-
-        for (Books books : findAllBook) {
-            BooksDto booksDto = new BooksDto(books);
-            randomBookList.add(booksDto);
-        }
-        Collections.shuffle(randomBookList); //리스트 내 값 랜덤으로 순서 재배치
-
         List<BooksDto> bestBooks = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++) {
-            bestBooks.add(randomBookList.get(i));
+        // 오디오북있는 책만.!
+        for (AudioBook audioBook : findAllAudioInBook) {
+            BooksDto booksDto = new BooksDto(audioBook.getBook());
+            bestBooks.add(booksDto);
+        }
+        int poor = 10 - bestBooks.size();
+
+        Collections.shuffle(bestBooks);
+
+        // 오디오북 책이 10개 미만일떄.
+        if(bestBooks.size() < 10) {
+            for (Books books : findAllBook) {
+                BooksDto booksDto = new BooksDto(books);
+                randomBookList.add(booksDto);
+            }
+
+            Collections.shuffle(randomBookList);
+
+            for (int i = 0; i < poor; i++) {
+                bestBooks.add(randomBookList.get(i));
+            }
         }
 
         return bestBooks;
