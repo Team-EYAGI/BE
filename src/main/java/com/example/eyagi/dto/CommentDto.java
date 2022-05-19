@@ -24,4 +24,12 @@ public class CommentDto {
       this.createdAt = comment.getCreatedAt().toString();
    }
 
+   public CommentDto (Long commentId, String content, String title, String username, String createdAt){
+      this.commentId = commentId;
+      this.title = title;
+      this.content = content;
+      this.username = username;
+      this.createdAt = createdAt;
+   }
+
 }

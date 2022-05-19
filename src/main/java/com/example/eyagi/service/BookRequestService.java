@@ -6,11 +6,16 @@ import com.example.eyagi.dto.BookRequestDto;
 import com.example.eyagi.model.BookRequest;
 import com.example.eyagi.model.User;
 import com.example.eyagi.repository.BookRequestRepository;
+import com.example.eyagi.repository.QRepository.BookRequestCustomRepository;
+import com.example.eyagi.repository.QRepository.FundCustomRepository;
 import com.example.eyagi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,15 +30,23 @@ public class BookRequestService {
 
 
     // 요청목록 등록순으로 불러오기
-    public List<BookRequestDto.ResponesDto> findAllRequest(){
+//    public List<BookRequestDto.ResponesDto> findAllRequest(Pageable pageable){
+    public ResponseEntity<?> findAllRequest(Pageable pageable){
 //        List<BookRequest> bookRequestList = bookRequestRepository.findAllByOrderByModifiedAtDesc();//최신순으로 수정함.
-        List<BookRequest> bookRequestList = bookRequestRepository.findAllByOrderByBookRequestIdDesc(); //id 값 역순으로 ..
+//        List<BookRequest> bookRequestList = bookRequestRepository.findAllByOrderByBookRequestIdDesc(); //id 값 역순으로 ..
+        //pageable
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt" );
+        pageable = PageRequest.of(page, pageable.getPageSize(), sort );
+        Page<BookRequestCustomRepository> bookRequestPage = bookRequestRepository.findAllByOrderByBookRequestId(pageable);
+        List<BookRequestCustomRepository> bookRequestList = bookRequestPage.getContent();
         List<BookRequestDto.ResponesDto> dtoList = new ArrayList<>();
-        for (BookRequest b : bookRequestList){
-            BookRequestDto.ResponesDto dto = new BookRequestDto.ResponesDto(b);
+        for (BookRequestCustomRepository b : bookRequestList){
+            BookRequestDto.ResponesDto dto = new BookRequestDto.ResponesDto(b.getBookRequestId(), b.getTitle(), b.getContents(), b.getUserName(), b.getCreatedAt(), b.getBookId());
             dtoList.add(dto);
         }
-        return dtoList;
+        PageImpl pageImpl = new PageImpl<>(dtoList, pageable, bookRequestPage.getTotalElements());
+        return ResponseEntity.ok().body(pageImpl);
     }
 
     // 저장하기

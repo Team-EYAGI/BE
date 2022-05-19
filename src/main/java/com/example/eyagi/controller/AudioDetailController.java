@@ -11,6 +11,7 @@ import com.example.eyagi.service.FollowService;
 import com.example.eyagi.service.UserPageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -55,6 +56,11 @@ public class AudioDetailController {
 
         return new ResponseEntity(commentDtoList, HttpStatus.OK);
     }
+
+//    @GetMapping("/{audioBookId}/comment")
+//    public ResponseEntity<?> getComment (@PathVariable Long audioBookId, Pageable pageable){
+//        return audioDetailService.commentList(audioBookId, pageable);
+//    }
 
     //후기 등록
     @PostMapping("/{audioBookId}/comment/new")

@@ -4,6 +4,9 @@ import com.example.eyagi.dto.BooksDto;
 import com.example.eyagi.service.BooksService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,13 +21,17 @@ public class BooksController {
 
     private final BooksService booksService;
 
+    @GetMapping("/category/{category}")
+    public ResponseEntity<?> getBookbyCategory(@PathVariable String category, Pageable pageable){
+        return booksService.findBooksByCategory(category, pageable);
+    }
 
     // 카테고리 별로 보여주기 (내용빼고)
-    @GetMapping("/category/{category}")
-    public List<BooksDto> getBookbyCategory(@PathVariable String category){
-        List<BooksDto>book = booksService.findBooksByCategory(category);
-        return book;
-    }
+//    @GetMapping("/category/{category}")
+//    public List<BooksDto> getBookbyCategory(@PathVariable String category){
+//        List<BooksDto>book = booksService.findBooksByCategory(category);
+//        return book;
+//    }
 
     // 메인화면에서 추천도서 보여주기
     @GetMapping("/")

@@ -3,10 +3,10 @@ package com.example.eyagi.service;
 import com.example.eyagi.dto.*;
 import com.example.eyagi.model.*;
 import com.example.eyagi.repository.*;
+import com.example.eyagi.repository.QRepository.FundCustomRepository;
 import com.example.eyagi.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -61,21 +61,27 @@ public class FundService {
     }
 
     // allfund login시
-    public ResponseEntity<?> getAllFund(FundUserRequestDto requestDto) {
+    public ResponseEntity<?> getAllFund(FundUserRequestDto requestDto, Pageable pageable) {
         boolean myHeartFund;
+
+        //pageable
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt" );
+        pageable = PageRequest.of(page, pageable.getPageSize(), sort );
 //        boolean successGoals;
+
         User user = null;
         if(requestDto != null) {
             user = userRepository.findByEmail(requestDto.getUseremail()).orElseThrow(() -> new NullPointerException("유저 X"));
         }
-        List<Fund> fundList = fundRepository.findAllByOrderByFundIdDesc();
+        Page<FundCustomRepository> fundPage = fundRepository.findByOrderByFundId(pageable);
+        List<FundCustomRepository> fundList = fundPage.getContent();
         List<FundResponseDto> fundResponse = new ArrayList<>();
 
-        for(Fund fund : fundList) {
+        for(FundCustomRepository fundCustomRepository : fundList) {
             // 좋아요 반영해서 myHeart 담아야함.
             myHeartFund = false;
-            boolean existsFundHeart = fundHeartRepository.existsByUserAndFund(user, fund);
-            System.out.println(existsFundHeart);
+            boolean existsFundHeart = fundHeartRepository.existsByUserAndFund_FundId(user, fundCustomRepository.getFundId());
             if(user != null) {
                 if(existsFundHeart) {
                     myHeartFund = true;
@@ -87,52 +93,53 @@ public class FundService {
 //                successGoals = true;
 //            }
             FundResponseDto fundResponseDto = FundResponseDto.builder()
-                    .fundId(fund.getFundId())
-                    .sellerName(fund.getUser().getUsername())
-                    .content(fund.getContent())
-                    .likeCnt(fund.getHeartCnt())
-                    .fundFile(fund.getAudioFund().getFundFile())
-                    .bookTitle(fund.getBooks().getTitle())
-                    .author(fund.getBooks().getAuthor())
-                    .bookImg(fund.getBooks().getBookImg())
+                    .fundId(fundCustomRepository.getFundId())
+                    .sellerName(fundCustomRepository.getSellerName())
+                    .content(fundCustomRepository.getContent())
+                    .likeCnt(fundCustomRepository.getLikeCnt())
+                    .fundFile(fundCustomRepository.getFundFile())
+                    .bookTitle(fundCustomRepository.getBookTitle())
+                    .author(fundCustomRepository.getAuthor())
+                    .bookImg(fundCustomRepository.getBookImg())
                     .myHeart(myHeartFund)
-                    .fundingGoals(fund.getFundingGoals())
-//                    .successFunding(successGoals)
-                    .successFunding(fund.isSuccessGoals())
+                    .fundingGoals(fundCustomRepository.getFundingGoals())
+                    .successFunding(fundCustomRepository.getSuccessFunding())
                     .build();
             fundResponse.add(fundResponseDto);
         }
-        return ResponseEntity.ok().body(fundResponse);
+        PageImpl pageImpl = new PageImpl<>(fundResponse, pageable, fundPage.getTotalElements());
+        return ResponseEntity.ok().body(pageImpl);
     }
 
     // allfund 비login시
-    public ResponseEntity<?> getAllFundByNoUser() {
+    public ResponseEntity<?> getAllFundByNoUser(Pageable pageable) {
         boolean myHeartFund = false;
-//        boolean successGoals = false;
-        List<Fund> fundList = fundRepository.findAllByOrderByFundIdDesc();
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt" );
+        pageable = PageRequest.of(page, pageable.getPageSize(), sort );
+
+        Page<FundCustomRepository> fundPage = fundRepository.findByOrderByFundId(pageable);
+        List<FundCustomRepository> fundList = fundPage.getContent();
         List<FundResponseDto> fundResponse = new ArrayList<>();
 
-        for(Fund fund : fundList) {
-//            if(fund.getHeartCnt() >= fund.getFundingGoals()) {
-//                successGoals = true;
-//            }
+        for(FundCustomRepository fundCustomRepository : fundList) {
             FundResponseDto fundResponseDto = FundResponseDto.builder()
-                    .fundId(fund.getFundId())
-                    .sellerName(fund.getUser().getUsername())
-                    .content(fund.getContent())
-                    .likeCnt(fund.getHeartCnt())
-                    .fundFile(fund.getAudioFund().getFundFile())
-                    .bookTitle(fund.getBooks().getTitle())
-                    .author(fund.getBooks().getAuthor())
-                    .bookImg(fund.getBooks().getBookImg())
+                    .fundId(fundCustomRepository.getFundId())
+                    .sellerName(fundCustomRepository.getSellerName())
+                    .content(fundCustomRepository.getContent())
+                    .likeCnt(fundCustomRepository.getLikeCnt())
+                    .fundFile(fundCustomRepository.getFundFile())
+                    .bookTitle(fundCustomRepository.getBookTitle())
+                    .author(fundCustomRepository.getAuthor())
+                    .bookImg(fundCustomRepository.getBookImg())
                     .myHeart(myHeartFund)
-                    .fundingGoals(fund.getFundingGoals())
-//                    .successFunding(successGoals)
-                    .successFunding(fund.isSuccessGoals())
+                    .fundingGoals(fundCustomRepository.getFundingGoals())
+                    .successFunding(fundCustomRepository.getSuccessFunding())
                     .build();
             fundResponse.add(fundResponseDto);
         }
-        return ResponseEntity.ok().body(fundResponse);
+        PageImpl pageImpl = new PageImpl<>(fundResponse, pageable, fundPage.getTotalElements());
+        return ResponseEntity.ok().body(pageImpl);
     }
 
     // funding 후원

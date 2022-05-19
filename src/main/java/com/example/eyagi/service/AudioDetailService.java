@@ -7,8 +7,12 @@ import com.example.eyagi.model.*;
 import com.example.eyagi.repository.AudioBookRepository;
 import com.example.eyagi.repository.CommentRepository;
 import com.example.eyagi.repository.Library_AudioRepository;
+import com.example.eyagi.repository.QRepository.CommentCustomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -68,7 +72,7 @@ public class AudioDetailService {
     }
 
 
-    //오디오북 상세 페이지 조회 2. 후기 목록
+//    오디오북 상세 페이지 조회 2. 후기 목록
     public List<CommentDto> commentList(Long audioBookDetailId){
 
         List<Comment> commentList = commentRepository.findAllByAudioBook_Id(audioBookDetailId);
@@ -79,6 +83,22 @@ public class AudioDetailService {
         }
         return commentDtoList;
     }
+//    public ResponseEntity<?> commentList(Long audioBookDetailId, Pageable pageable){
+//        //pageable
+//        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
+//        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt" );
+//        pageable = PageRequest.of(page, pageable.getPageSize(), sort );
+//
+//        Page<CommentCustomRepository> commentPage = commentRepository.findAllByAudioBook_Id(audioBookDetailId, pageable);
+//        List<CommentCustomRepository>  commentList = commentPage.getContent();
+//        List<CommentDto> commentDtoList = new ArrayList<>();
+//        for (CommentCustomRepository c : commentList){
+//            CommentDto commentDto = new CommentDto(c.getCommentId(), c.getTitle(), c.getContent(), c.getUsername(), c.getCreatedAt().toString());
+//            commentDtoList.add(commentDto);
+//        }
+//        PageImpl pageImpl = new PageImpl<>(commentDtoList, pageable, commentPage.getTotalElements());
+//        return ResponseEntity.ok().body(pageImpl);
+//    }
 
 
     //후기 등록

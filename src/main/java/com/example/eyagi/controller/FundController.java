@@ -9,12 +9,11 @@ import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.FundService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.protocol.HTTP;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.domain.Pageable;
 
 @Slf4j
 @RestController
@@ -43,13 +42,13 @@ public class FundController {
 
     // 펀딩목록 비로그인이 보는 //part 사용
     @GetMapping("/fund")
-    public ResponseEntity<?> getAllFund(@RequestPart (name = "info", required = false)FundUserRequestDto requestDto) {
+    public ResponseEntity<?> getAllFund(@RequestPart (name = "info", required = false)FundUserRequestDto requestDto, Pageable pageable) {
         if(requestDto != null) {
             // 회원일 때
-            return fundService.getAllFund(requestDto);
+            return fundService.getAllFund(requestDto, pageable);
         } else {
             //회원 아닐때
-            return fundService.getAllFundByNoUser();
+            return fundService.getAllFundByNoUser(pageable);
         }
     }
 
