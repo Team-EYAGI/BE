@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -35,7 +36,8 @@ public class BooksController {
 
     // 메인화면에서 추천도서 보여주기
     @GetMapping("/")
-    public List<BooksDto> getBookListToMain(){
+    public List<BooksDto> getBookListToMain(HttpServletRequest request){
+
         return booksService.showMainBooks();
     }
 
@@ -44,7 +46,6 @@ public class BooksController {
     public List<BooksDto> getCategoryListToMain(){
         return booksService.mainSeifList();
     }
-
 
   /*
    //모든 책 불러오기
