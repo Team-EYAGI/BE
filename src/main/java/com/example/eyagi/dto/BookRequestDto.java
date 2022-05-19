@@ -11,6 +11,7 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -47,9 +48,17 @@ public class BookRequestDto {
             this.title = bookRequest.getTitle();
             this.userName = bookRequest.getUser().getUsername();
             this.bookId = bookRequest.getBookId();
-            this.createdAt = bookRequest.getCreatedAt();
+            this.createdAt = bookRequest.getCreatedAt().toString();
         }
 
+        public ResponesDto (Long bookRequestId, String title, String contents, String userName, LocalDateTime createdAt, Long bookId){
+            this.bookRequestId = bookRequestId;
+            this.contents = contents;
+            this.title = title;
+            this.userName = userName;
+            this.bookId = bookId;
+            this.createdAt = createdAt.toString();
+        }
     }
 
 }

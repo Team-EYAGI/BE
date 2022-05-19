@@ -41,5 +41,12 @@ public class BooksDto {
 //        this.summary = books.getSummary();
 //        this.audioPreDtoList = audioPreDtoList;
 //    }
-
+public BooksDto(Long bookId, String bookImg, String title, String publisher, String author, String category){
+    this.bookId = bookId;
+    this.bookImg = bookImg;
+    this.title = title;
+    this.publisher = publisher;
+    this.author = author;
+    this.category = category;
+}
 }

@@ -5,8 +5,11 @@ package com.example.eyagi.service;
 import com.example.eyagi.dto.BooksDto;
 import com.example.eyagi.model.Books;
 import com.example.eyagi.repository.BooksRepository;
+import com.example.eyagi.repository.QRepository.BooksCustomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -33,16 +36,35 @@ public class BooksService {
     }
 
     //카테고리 별 책리스트 가져오기
-    public List<BooksDto> findBooksByCategory(String category) {
-        List<Books> findBookList = booksRepository.findByCategory(category);
+    public ResponseEntity<?> findBooksByCategory(String category, Pageable pageable) {
+        //pageable
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
+        Sort sort = Sort.by(Sort.Direction.DESC, "bookId" );
+        pageable = PageRequest.of(page, pageable.getPageSize(), sort );
+
+        Page<BooksCustomRepository> findBookPage = booksRepository.findByCategoryAndOrderByBookId(category,pageable);
+        List<BooksCustomRepository> findBookList = findBookPage.getContent();
         List<BooksDto> bookList = new ArrayList<>();
 
-        for (Books books : findBookList) {
-            BooksDto booksDto = new BooksDto(books);
+        for (BooksCustomRepository bCR : findBookList) {
+            BooksDto booksDto = new BooksDto(bCR.getBookId(), bCR.getBookImg(), bCR.getTitle(), bCR.getPublisher(), bCR.getAuthor(), bCR.getCategory());
             bookList.add(booksDto);
         }
-        return bookList;
+        PageImpl pageImpl = new PageImpl(bookList, pageable, findBookPage.getTotalElements());
+        return ResponseEntity.ok().body(pageImpl);
     }
+
+//    //카테고리 별 책리스트 가져오기
+//    public List<BooksDto> findBooksByCategory(String category) {
+//        List<Books> findBookList = booksRepository.findByCategory(category);
+//        List<BooksDto> bookList = new ArrayList<>();
+//
+//        for (Books books : findBookList) {
+//            BooksDto booksDto = new BooksDto(books);
+//            bookList.add(booksDto);
+//        }
+//        return bookList;
+//    }
 
 
 //// 메인 (추천도서)+(자기계발서)

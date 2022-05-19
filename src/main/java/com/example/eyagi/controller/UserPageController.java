@@ -1,5 +1,6 @@
 package com.example.eyagi.controller;
 
+import com.example.eyagi.Interceptor.Auth;
 import com.example.eyagi.dto.*;
 import com.example.eyagi.model.User;
 import com.example.eyagi.model.UserRole;
@@ -25,10 +26,9 @@ public class UserPageController {
     private final AwsS3Service awsS3Service;
 
 
-      //todo:마이페이지 조회 - 해야됨
+      //마이페이지 조회 - 해야됨
 
-    //todo:마이페이지 조회 .1 페이지 로드 시 필요한 것, 판매자는 음성도 같이.- 포스트맨 테스트 완료
-//    @PreAuthorize("hasRole('ROLE_USER')")
+    //마이페이지 조회 .1 페이지 로드 시 필요한 것, 판매자는 음성도 같이.- 포스트맨 테스트 완료
     @GetMapping("")
     public ResponseEntity<UserPageDto> loadUserProfile(@AuthenticationPrincipal UserDetailsImpl userDetails){
         User user = userDetails.getUser();
@@ -39,14 +39,14 @@ public class UserPageController {
         }
     }
 
-    //todo:마이페이지 조회 .2-1 내 서재 불러오기 , 서재에 담은 책 - 포스트맨 테스트 완료
+    //마이페이지 조회 .2-1 내 서재 불러오기 , 서재에 담은 책 - 포스트맨 테스트 완료
     @GetMapping("/library/book")
     public ResponseEntity<List<BooksDto>> loadUserLibraryBook(@AuthenticationPrincipal UserDetailsImpl userDetails){
         User user = userDetails.getUser();
         return ResponseEntity.ok(userPageService.loadMyLibraryBooks(user));
     }
 
-    //todo:마이페이지 조회 .2-1-1 내 서재 불러오기 , 서재에 담은 책 > 책 목록에서 "삭제" - 포스트맨 테스트 완료
+    //마이페이지 조회 .2-1-1 내 서재 불러오기 , 서재에 담은 책 > 책 목록에서 "삭제" - 포스트맨 테스트 완료
     @DeleteMapping("/library/book/{bookId}/remove")
     public ResponseEntity<String> removeLibraryBook(@PathVariable Long bookId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         Long id = userPageService.removeLibraryBook(bookId, userDetails.getUser());
@@ -54,7 +54,7 @@ public class UserPageController {
     }
 
 
-    //todo:마이페이지 조회 .2-2 내 서재 불러오기 , 듣고 있는 오디오 목록 - 포스트맨 테스트 완료
+    //마이페이지 조회 .2-2 내 서재 불러오기 , 듣고 있는 오디오 목록 - 포스트맨 테스트 완료
     @GetMapping("/library/audio")
     public ResponseEntity<List<LibraryAudiosDto>> loadUserLibraryAudio(@AuthenticationPrincipal UserDetailsImpl userDetails){
         User user = userDetails.getUser();
@@ -62,7 +62,7 @@ public class UserPageController {
     }
 
 
-    //todo:마이페이지 조회 .2-2-1 내 서재 불러오기 , 듣고 있는 오디오 목록 > 목록에서 오디오 "삭제" - 포스트맨 테스트 완료
+    //마이페이지 조회 .2-2-1 내 서재 불러오기 , 듣고 있는 오디오 목록 > 목록에서 오디오 "삭제" - 포스트맨 테스트 완료
     @DeleteMapping("/library/audio/{audioId}/remove")
     public ResponseEntity<String> removeLibraryAudio(@PathVariable Long audioId,@AuthenticationPrincipal UserDetailsImpl userDetails){
         Long id = userPageService.removeLibraryAudio(audioId,userDetails.getUser());
@@ -71,7 +71,8 @@ public class UserPageController {
 
 
 
-    //todo:마이페이지 조회 .3-1 판매자 전용 버튼, 내가 등록한 오디오북 - 포스트맨 테스트 완료
+    //마이페이지 조회 .3-1 판매자 전용 버튼, 내가 등록한 오디오북 - 포스트맨 테스트 완료
+    @Auth
     @GetMapping("/seller/audioBook")
     public ResponseEntity<List<SellerAudioBook>> loadSellerPageMyAudioBook(@AuthenticationPrincipal UserDetailsImpl userDetails){
        User seller = userDetails.getUser();
@@ -79,7 +80,8 @@ public class UserPageController {
     }
 
 
-    //todo:마이페이지 조회 .3-2 판매자 전용 버튼, 내가 등록한 펀딩 목록
+    //마이페이지 조회 .3-2 판매자 전용 버튼, 내가 등록한 펀딩 목록
+    @Auth
     @GetMapping("/seller/fund")
     public ResponseEntity<List<SellerFundDto>>  loadSellerPageMyFund(@AuthenticationPrincipal UserDetailsImpl userDetails){
         User seller = userDetails.getUser();

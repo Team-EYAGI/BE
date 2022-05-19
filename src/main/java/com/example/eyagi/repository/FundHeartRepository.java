@@ -9,5 +9,6 @@ import java.util.Optional;
 
 public interface FundHeartRepository extends JpaRepository<FundHeart, Long> {
     boolean existsByUserAndFund(User user, Fund foundFund);
+    boolean existsByUserAndFund_FundId(User user, Long fundId);
     void deleteByUserAndFund(User user, Fund foundFund);
 }
