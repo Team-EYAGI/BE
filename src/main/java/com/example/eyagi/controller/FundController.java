@@ -41,7 +41,7 @@ public class FundController {
     }
 
     // 펀딩목록 비로그인이 보는 //part 사용
-    @GetMapping("/fund")
+    @PostMapping("/fund")
     public ResponseEntity<?> getAllFund(@RequestPart (name = "info", required = false)FundUserRequestDto requestDto, Pageable pageable) {
         if(requestDto != null) {
             // 회원일 때
