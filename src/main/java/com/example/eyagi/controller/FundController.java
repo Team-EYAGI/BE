@@ -52,11 +52,11 @@ public class FundController {
         }
     }
 
-    // 메인화면에서 펀딩목록 보여주기
-    @GetMapping("/main/fund")
-    public ResponseEntity<?> getFundListToMain(){
-        return fundService.mainFundList();
-    }
+//    // 메인화면에서 펀딩목록 보여주기
+//    @GetMapping("/main/fund")
+//    public ResponseEntity<?> getFundListToMain(){
+//        return fundService.mainFundList();
+//    }
 
     // 펀딩좋아요
     @PostMapping("/fund/like/{fundid}")
