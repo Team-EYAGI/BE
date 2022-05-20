@@ -165,6 +165,7 @@ public class FundService {
         return FundHeartResponseDto.builder()
                 .fundHeartBool(requestDto.isFundHeartBool())
                 .fundHeartCnt(foundFund.getHeartCnt())
+                .successFunding(foundFund.isSuccessGoals())
                 .build();
 
 

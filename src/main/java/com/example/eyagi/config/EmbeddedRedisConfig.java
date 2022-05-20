@@ -7,7 +7,7 @@ import redis.embedded.RedisServer;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-@Profile("54.180.115.121")
+@Profile("3.34.46.63")
 //@Profile("local")
 @Configuration
 public class EmbeddedRedisConfig {
