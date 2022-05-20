@@ -2,22 +2,18 @@ package com.example.eyagi.controller;
 
 import com.example.eyagi.dto.KakaoUserInfoDto;
 import com.example.eyagi.dto.SignupRequestDto;
-import com.example.eyagi.dto.TodayCreatorDto;
 import com.example.eyagi.dto.UserDto;
 import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.KakaoUserService;
 import com.example.eyagi.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
-import org.apache.http.HttpResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -58,9 +54,9 @@ public class UserController {
         return kakaoUserService.kakaoLogin(code, res);
     }
 
-// 메인에 Best 목소리
-    @GetMapping("/user/todayCreator")
-    public List<TodayCreatorDto> todayCreator(){
-        return userService.showMainCreator();
-    }
+//// 메인에 Best 목소리
+//    @GetMapping("/user/todayCreator")
+//    public List<TodayCreatorDto> todayCreator(){
+//        return userService.showMainCreator();
+//    }
 }

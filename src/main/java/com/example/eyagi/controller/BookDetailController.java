@@ -27,6 +27,9 @@ public class BookDetailController {
     private final UserPageService userPageService;
     private final FundRepository fundRepository;
     private final BooksService booksService;
+
+
+
     //책 상세페이지 불러오기
     @GetMapping("/{bookId}")
         public Map<String, Object> bookDetail (@PathVariable Long bookId){
