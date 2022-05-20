@@ -9,7 +9,6 @@ import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
 @Entity
 public class User extends Timestamped{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,10 +25,10 @@ public class User extends Timestamped{
     private String password;
 
     @Column
-    private Integer followingCnt; //내가 follow를 하고 있는 사람들
+    private int followingCnt = 0; //내가 follow를 하고 있는 사람들
 
     @Column
-    private Integer follwerCnt; //나를 follow를 하고 있는 사람들
+    private int follwerCnt = 0; //나를 follow를 하고 있는 사람들
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -59,6 +58,7 @@ public class User extends Timestamped{
         this.password = password;
         this.role = role;
     }
+
     public User(String email,String username,String password,UserRole role,Long kakaoId){
         this.email = email;
         this.username = username;
@@ -68,11 +68,22 @@ public class User extends Timestamped{
     }
 
 
-    @OneToMany(mappedBy = "follower", fetch = FetchType.LAZY)
-    private List<Follow>followingList = new ArrayList<>(); //
+    @OneToMany(mappedBy = "follower")
+    private List<Follow>followingList = new ArrayList<>(); //내가 팔로우 하는 사람 목록
 
-    @OneToMany(mappedBy = "followed", fetch = FetchType.LAZY)
-    private List<Follow>followedList = new ArrayList<>();
+    @OneToMany(mappedBy = "followed")
+    private List<Follow>followedList = new ArrayList<>(); //나를 팔로우 하는 사람 목록
+
+    //내가 follow를 하고 있는 사람들
+    public void sumFollowingCnt (int num) {
+        this.followingCnt += num;  //파라미터로 -1이 들어오면 -1이 되겠지 ?
+    }
+
+    //나를 follow를 하고 있는 사람들
+    public void sumFollwerCnt (int num) {
+        this.follwerCnt += num;  //파라미터로 -1이 들어오면 -1이 되겠지 ?
+    }
+
 
 
 }

@@ -15,7 +15,7 @@ public class AudioService2 extends Thread {
     private final String multipartName;
     private final String localFile;
     private final String cutFile;
-    private final String originFileS3;
+//    private final String originFileS3;
     private final String cutFileS3;
     private final String path;
     private final String bucket;
@@ -26,7 +26,7 @@ public class AudioService2 extends Thread {
         this.multipartName = multipartFile.getOriginalFilename();
         this.localFile = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartName);
         this.cutFile = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartName);
-        this.originFileS3 = "audio" +"/" + localFile;
+//        this.originFileS3 = "audio" +"/" + localFile;
         this.cutFileS3 = "audioPreview" + "/" + cutFile;
         this.path = path;
         this.bucket = bucket;
@@ -58,7 +58,7 @@ public class AudioService2 extends Thread {
             AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(file);
             AudioFormat format = fileFormat.getFormat();
             AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
-
+            //getFrameSize => 사운드의 각 프레임의 바이트 수. int형임. getFrameRate => 사운드의 1 초 쯤에 재생 또는 녹음된 프레임수. float 형임.
             int bytesPerSecond = format.getFrameSize() * (int) format.getFrameRate();
             inputStream.skip(startSecond * bytesPerSecond);
             long framesOfAudioToCopy = secondsToCopy * (int) format.getFrameRate();

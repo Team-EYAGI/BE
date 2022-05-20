@@ -3,11 +3,15 @@ package com.example.eyagi.controller;
 
 import com.example.eyagi.dto.AudioDetailDto;
 import com.example.eyagi.dto.CommentDto;
+import com.example.eyagi.model.AudioBook;
+import com.example.eyagi.repository.FollowRepository;
 import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.AudioDetailService;
+import com.example.eyagi.service.FollowService;
 import com.example.eyagi.service.UserPageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,23 +29,37 @@ public class AudioDetailController {
 
     private final AudioDetailService audioDetailService;
     private final UserPageService userPageService;
+    private final FollowRepository followRepository;
+    private final FollowService followService;
 
 
 
-    //오디오북 상세페이지 조회 & 조회한 오디오북을 마이페이지 > 내가 듣고 있는 오디오북에 추가
+
+    //오디오북 상세페이지 조회 & 조회한 오디오북을 마이페이지 > 내가 듣고 있는 오디오북에 추가 + 조회 하는 유저가 해당 셀러를 팔로우햇는지 여부 추가
     @GetMapping("/{audioBookId}")
-    public ResponseEntity<AudioDetailDto> audioBookDetail (@PathVariable Long audioBookId,
+    public ResponseEntity<Map<String, Object>> audioBookDetail (@PathVariable Long audioBookId,
                                                            @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return ResponseEntity.ok(audioDetailService.getAudioDetail(audioBookId, userDetails.getUser()));
+        AudioBook audioBook = audioDetailService.findAudioBook(audioBookId);
+        AudioDetailDto audioDetailDto = audioDetailService.getAudioDetail(audioBook, userDetails.getUser());
+        boolean b = followService.followStatus(userDetails.getUser().getId(), audioBook.getSeller().getId());
+        Map<String, Object> audioBookDetail = new HashMap<>();
+        audioBookDetail.put("audioBookDetail", audioDetailDto);
+        audioBookDetail.put("followStatus",b );
+        return ResponseEntity.ok(audioBookDetail);
     }
 
     //오디오북 상세페이지 -> 후기 목록
+//    @GetMapping("/{audioBookId}/comment")
+//    public ResponseEntity getComment (@PathVariable Long audioBookId){
+//
+//        List<CommentDto> commentDtoList = audioDetailService.commentList(audioBookId);
+//
+//        return new ResponseEntity(commentDtoList, HttpStatus.OK);
+//    }
+
     @GetMapping("/{audioBookId}/comment")
-    public ResponseEntity getComment (@PathVariable Long audioBookId){
-
-        List<CommentDto> commentDtoList = audioDetailService.commentList(audioBookId);
-
-        return new ResponseEntity(commentDtoList, HttpStatus.OK);
+    public ResponseEntity<?> getComment (@PathVariable Long audioBookId, Pageable pageable){
+        return audioDetailService.commentList(audioBookId, pageable);
     }
 
     //후기 등록
