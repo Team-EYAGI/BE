@@ -223,6 +223,8 @@ public class FundService {
                 // 저자...
                 .fundId(foundFund.getFundId())
                 .sellerName(foundFund.getUser().getUsername())
+                .sellerImg(foundFund.getUser().getUserProfile().getOriginImage())
+                .introduce(foundFund.getUser().getUserProfile().getIntroduce())
                 .bookTitle(foundFund.getBooks().getTitle())
                 .author(foundFund.getBooks().getAuthor())
                 .bookImg(foundFund.getBooks().getBookImg())
@@ -232,6 +234,7 @@ public class FundService {
                 .likeCnt(foundFund.getHeartCnt())
                 .content(foundFund.getContent())
                 .myHeart(myHeartFund)
+                .followerCnt(foundFund.getUser().getFollwerCnt())
                 .build();
 
         //연관 4개
