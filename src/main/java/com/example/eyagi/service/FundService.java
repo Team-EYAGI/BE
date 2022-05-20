@@ -223,7 +223,7 @@ public class FundService {
                 // 저자...
                 .fundId(foundFund.getFundId())
                 .sellerName(foundFund.getUser().getUsername())
-                .sellerImg(foundFund.getUser().getUserProfile().getOriginImage())
+                .sellerImg(foundFund.getUser().getUserProfile().getUserImage())
                 .introduce(foundFund.getUser().getUserProfile().getIntroduce())
                 .bookTitle(foundFund.getBooks().getTitle())
                 .author(foundFund.getBooks().getAuthor())
