@@ -38,7 +38,7 @@ public class BookRequestDto {
 
         private String userName;
 
-        private String createdAt; //수정일 -> 등록일로 변경.
+        private LocalDateTime createdAt; //수정일 -> 등록일로 변경.
 
         private Long bookId;
 
