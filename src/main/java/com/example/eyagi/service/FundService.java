@@ -93,11 +93,9 @@ public class FundService {
                     .fundId(fundCustomRepository.getFundId())
                     .sellerName(fundCustomRepository.getSellerName())
                     .likeCnt(fundCustomRepository.getLikeCnt())
-                    .fundFile(fundCustomRepository.getFundFile())
                     .bookTitle(fundCustomRepository.getBookTitle())
                     .bookImg(fundCustomRepository.getBookImg())
                     .myHeart(myHeartFund)
-                    .fundingGoals(fundCustomRepository.getFundingGoals())
                     .successFunding(fundCustomRepository.getSuccessFunding())
                     .build();
             fundResponse.add(fundResponseDto);
@@ -122,11 +120,9 @@ public class FundService {
                     .fundId(fundCustomRepository.getFundId())
                     .sellerName(fundCustomRepository.getSellerName())
                     .likeCnt(fundCustomRepository.getLikeCnt())
-                    .fundFile(fundCustomRepository.getFundFile())
                     .bookTitle(fundCustomRepository.getBookTitle())
                     .bookImg(fundCustomRepository.getBookImg())
                     .myHeart(myHeartFund)
-                    .fundingGoals(fundCustomRepository.getFundingGoals())
                     .successFunding(fundCustomRepository.getSuccessFunding())
                     .build();
             fundResponse.add(fundResponseDto);
@@ -175,32 +171,6 @@ public class FundService {
     }
 
     public ResponseEntity<?> mainFundList() {
-    /*    Long qty = fundRepository.countAll();
-        int idx = (int)(Math.random() * qty);
-        boolean myHeartFund;
-        List<Fund> setFundList = new ArrayList<>();
-        List<FundResponseDto> fundResponse = new ArrayList<>();
-        // 데이터 개수 지정 5
-        Page<Fund> fundMainPage = fundRepository.findAll(PageRequest.of(idx, 1));
-        if(fundMainPage.hasContent()) {
-            setFundList.add(fundMainPage.getContent().get(0));
-        }
-
-        for(Fund fund : setFundList) {
-            myHeartFund = false;
-            FundResponseDto fundResponseDto = FundResponseDto.builder()
-                    .fundId(fund.getFundId())
-                    .sellerName(fund.getUser().getUsername())
-                    .fundFile(fund.getAudioFund().getFundFile())
-                    .bookTitle(fund.getBooks().getTitle())
-                    .bookImg(fund.getBooks().getBookImg())
-                    .myHeart(myHeartFund)
-                    .build();
-            fundResponse.add(fundResponseDto);
-        }
-        return ResponseEntity.ok().body(fundResponse);
-    }
-    */
         //추천도서 list
         List<Fund> findAllFund = fundRepository.findAllByOrderByFundIdDesc();
         List<SellerFundDto> randomFundList = new ArrayList<>();
@@ -250,6 +220,7 @@ public class FundService {
         }
         // 상세보기
         FundDetailResponseDto fundDetailResponseDto = FundDetailResponseDto.builder()
+                // 저자...
                 .fundId(foundFund.getFundId())
                 .sellerName(foundFund.getUser().getUsername())
                 .bookTitle(foundFund.getBooks().getTitle())
@@ -291,7 +262,7 @@ public class FundService {
 
         Map<String, Object> fundDetail = new HashMap<>();
         fundDetail.put("content",fundDetailResponseDto);
-        fundDetail.put("ano","리스트 출력시 이곳으로 출력.");
+        fundDetail.put("ano","디자인 하단 추천페이지용 ");
         return ResponseEntity.ok().body(fundDetail);
     }
 }
