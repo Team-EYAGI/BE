@@ -223,6 +223,7 @@ public class FundService {
         FundDetailResponseDto fundDetailResponseDto = FundDetailResponseDto.builder()
                 // 저자...
                 .fundId(foundFund.getFundId())
+                .sellerId(foundFund.getUser().getId())
                 .sellerName(foundFund.getUser().getUsername())
                 .sellerImg(foundFund.getUser().getUserProfile().getUserImage())
                 .introduce(foundFund.getUser().getUserProfile().getIntroduce())
