@@ -32,17 +32,34 @@ public class HomeController {
     public List<BooksDto> getBookListToMain(@CookieValue(value = "oneTimeCookie", required = false) String oneTimeCookie,
                                             @CookieValue(value = "monthCookie" ,required = false) String monthCookie,
                                             HttpServletRequest request, HttpServletResponse response){
-//        if (oneTimeCookie == null){
-//            homeService.selectOneTimeCookie(response);
-//            //VisitCount에 ++ 해줘야함
-//        }
-//        if(monthCookie == null){
-//            homeService.selectMonthCookie(response);
-//            //VisitCount에 ++ 해줘야함
-//        }
+        if (oneTimeCookie == null){
+            homeService.selectOneTimeCookie(response);
+            //VisitCount에 ++ 해줘야함
+        }
+        if(monthCookie == null){
+            homeService.selectMonthCookie(response);
+            //VisitCount에 ++ 해줘야함
+        }
+
+
+
 
         return booksService.showMainBooks();
     }
+
+//    @GetMapping("/")
+//    public List<BooksDto> getBookListToMain(HttpServletRequest request, HttpServletResponse response){
+////        if (oneTimeCookie == null){
+////            homeService.selectOneTimeCookie(response);
+////            //VisitCount에 ++ 해줘야함
+////        }
+////        if(monthCookie == null){
+////            homeService.selectMonthCookie(response);
+////            //VisitCount에 ++ 해줘야함
+////        }
+//
+//        return booksService.showMainBooks();
+//    }
 
     // 메인화면에서 자기계발 카테고리 보여주기
     @GetMapping("/category")

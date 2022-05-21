@@ -1,5 +1,7 @@
 package com.example.eyagi.model;
 
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Map;
 
+@NoArgsConstructor
 @Entity
 public class VisitCount {
 
@@ -22,6 +25,14 @@ public class VisitCount {
 
     private long visiter; // 실 이용자 수  monthCookie룰 센다
 
+
+    public void newvisitCounter (LocalDate nowDate){
+        if (this.toDay != nowDate){
+            VisitCount visitCount = new VisitCount();
+        }
+
+
+    }
 }
 
 /*
