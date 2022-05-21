@@ -4,8 +4,6 @@ import com.example.eyagi.model.UserLibrary;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-import java.util.Optional;
-
 public interface UserLibraryRepository extends JpaRepository<UserLibrary, Long> {
 
 

@@ -1,38 +1,50 @@
 package com.example.eyagi.service;
 
-import com.example.eyagi.model.Timestamped;
+import com.example.eyagi.model.VisitCount;
+import com.example.eyagi.repository.VisitCountRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CookieValue;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.Stack;
 
+@RequiredArgsConstructor
 @Service
-public class HomeService extends Timestamped {
+public class HomeService {
+
+    private final VisitCountRepository visitCountRepository;
 
     /*쿠키 생성 !
     oneTimeCookie 쿠키 생성
     monthCookie 쿠키 생성
 */
 
-
-    public void selectOneTimeCookie (HttpServletResponse response){
-
+    public void selectOneTimeCookie (HttpServletResponse response, VisitCount toDayCount){
         Cookie oneTimeCookie = new Cookie("oneTimeCookie", null);
-//        oneDayCookie.setMaxAge(60*60*6);  //초단위
-        response.addCookie(oneTimeCookie);
-
+        response.addCookie(oneTimeCookie); //쿠키에 일정 시간을 지정하지 않으면 브라우져가 종료될 때 쿠키도 함께 사라지므로, 방문 횟수를 세기에 적절하다고 판단.
+        toDayCount.addCount();
     }
-    public void  selectMonthCookie (HttpServletResponse response){
+
+    public void selectMonthCookie(HttpServletResponse response, VisitCount toDayCount) {
         Cookie monthCookie = new Cookie("monthCookie", null);
-        monthCookie.setMaxAge(60*60*24*30); //초단위
+        monthCookie.setMaxAge(60 * 60 * 24 * 30); //초단위
         response.addCookie(monthCookie);
+        toDayCount.addVister();
     }
 
+    public VisitCount newDayNewCount(LocalDate nowDay) {
+        List<VisitCount> allCount = visitCountRepository.findAll();
+        if (allCount.size() == 0) {
+            return new VisitCount();
+        }
+        VisitCount lastDay = allCount.get(allCount.size() - 1);
+        return lastDay.newVisitCounter(nowDay);
 
-
+    }
 
 }
 /*
