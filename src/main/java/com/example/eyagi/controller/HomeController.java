@@ -2,6 +2,8 @@ package com.example.eyagi.controller;
 
 import com.example.eyagi.dto.BooksDto;
 import com.example.eyagi.dto.TodayCreatorDto;
+import com.example.eyagi.model.VisitCount;
+import com.example.eyagi.repository.VisitCountRepository;
 import com.example.eyagi.service.BooksService;
 import com.example.eyagi.service.FundService;
 import com.example.eyagi.service.HomeService;
@@ -13,8 +15,9 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 @Slf4j
@@ -26,23 +29,25 @@ public class HomeController {
     private final FundService fundService;
     private final UserService userService;
     private final HomeService homeService;
+    private final VisitCountRepository visitCountRepository;
 
     // 메인화면에서 추천도서 보여주기
     @GetMapping("/")
     public List<BooksDto> getBookListToMain(@CookieValue(value = "oneTimeCookie", required = false) String oneTimeCookie,
-                                            @CookieValue(value = "monthCookie" ,required = false) String monthCookie,
-                                            HttpServletRequest request, HttpServletResponse response){
-//        if (oneTimeCookie == null){
-//            homeService.selectOneTimeCookie(response);
-//            //VisitCount에 ++ 해줘야함
-//        }
-//        if(monthCookie == null){
-//            homeService.selectMonthCookie(response);
-//            //VisitCount에 ++ 해줘야함
-//        }
-
+                                            @CookieValue(value = "monthCookie", required = false) String monthCookie,
+                                            HttpServletResponse response) {
+        LocalDate nowDay = LocalDate.now(ZoneId.of("Asia/Seoul"));
+        VisitCount toDayCount = homeService.newDayNewCount(nowDay);
+        if (oneTimeCookie == null) {
+            homeService.selectOneTimeCookie(response, toDayCount);
+        }
+        if (monthCookie == null) {
+            homeService.selectMonthCookie(response, toDayCount);
+        }
+        visitCountRepository.save(toDayCount);
         return booksService.showMainBooks();
     }
+
 
     // 메인화면에서 자기계발 카테고리 보여주기
     @GetMapping("/category")
