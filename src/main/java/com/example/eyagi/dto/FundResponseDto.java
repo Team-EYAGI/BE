@@ -14,4 +14,5 @@ public class FundResponseDto {
     private String bookImg;
     private boolean myHeart;
     private boolean successFunding;
+    private Long sellerId;
 }

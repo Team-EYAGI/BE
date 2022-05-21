@@ -58,6 +58,9 @@ dependencies {
 //    implementation 'javax.xml.bind:jaxb-api'
 //    //devtools (소스 실시간 반영)
 //    implementation 'org.springframework.boot:spring-boot-devtools:2.5.2'
+
+    //Log4JDBC
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 }
 
 tasks.named('test') {
