@@ -75,7 +75,7 @@ public class KakaoUserService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", kakaoClientId);
-        body.add("redirect_uri", "https://eyagi99.shop/oauth/callback/kakao");
+        body.add("redirect_uri", "https://eyagibook.shop/oauth/callback/kakao");
         body.add("code", code);
 
                 // HTTP 요청 보내기
