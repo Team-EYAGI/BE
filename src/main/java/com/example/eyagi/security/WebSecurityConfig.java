@@ -99,6 +99,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 // 로그아웃 요청 처리 URL
                 .logoutUrl("/user/logout")
+                //todo : addLogoutHandler-> 로그아웃 이후 일어날 로직을 입력.
+                // CustomLogoutHandler -> LogoutHandler를 구현. 리프레시 토큰을 삭제해주는 로그아웃 핸들러 추가.
+//                .addLogoutHandler(new CustomLogoutHandler())
                 .permitAll()
                 .and()
                 .exceptionHandling()

@@ -9,8 +9,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
-import java.util.Stack;
 
 @RequiredArgsConstructor
 @Service
@@ -25,6 +23,7 @@ public class HomeService {
 
     public void selectOneTimeCookie (HttpServletResponse response, VisitCount toDayCount){
         Cookie oneTimeCookie = new Cookie("oneTimeCookie", null);
+        oneTimeCookie.setDomain("www.eyagibook.shop"); //우리 사이트 도메인 이름 넣기 프론트 도메인이겠지 ..?
         response.addCookie(oneTimeCookie); //쿠키에 일정 시간을 지정하지 않으면 브라우져가 종료될 때 쿠키도 함께 사라지므로, 방문 횟수를 세기에 적절하다고 판단.
         toDayCount.addCount();
     }
@@ -32,6 +31,8 @@ public class HomeService {
     public void selectMonthCookie(HttpServletResponse response, VisitCount toDayCount) {
         Cookie monthCookie = new Cookie("monthCookie", null);
         monthCookie.setMaxAge(60 * 60 * 24 * 30); //초단위
+        monthCookie.setDomain("www.eyagibook.shop"); // 우리 사이트 도메인 이름 넣기. 프론트 도메인이겠지 ..?
+
         response.addCookie(monthCookie);
         toDayCount.addVister();
     }

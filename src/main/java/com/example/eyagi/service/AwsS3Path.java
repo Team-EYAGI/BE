@@ -1,6 +1,8 @@
 package com.example.eyagi.service;
 
 
+import org.springframework.beans.factory.annotation.Value;
+
 public class AwsS3Path {
 
     public static final String pathAudio = "audio" + "/";
