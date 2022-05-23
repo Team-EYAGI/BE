@@ -36,7 +36,7 @@ public class BookDetailController {
             return bookDetailService.readBookDetail(bookId);
     }
 
-    //todo: 특정 책에 대해서 펀딩 성공했는지 여부 확인
+    //특정 책에 대해서 펀딩 성공했는지 여부 확인
     @Auth
     @PostMapping("/{bookId}/success")
     public boolean fundSuccessCheck (@PathVariable Long bookId,@AuthenticationPrincipal UserDetailsImpl userDetails){
