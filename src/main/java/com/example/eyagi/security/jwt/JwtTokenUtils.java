@@ -2,12 +2,13 @@ package com.example.eyagi.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.example.eyagi.security.JwtProperties;
 import com.example.eyagi.security.UserDetailsImpl;
 
 
 import java.util.Date;
 
-public final class JwtTokenUtils {
+public final class JwtTokenUtils extends JwtProperties {
     /*
     todo: 여기서 리프레시 토큰 생성! 액세스 토큰 : 15분, 리프레시 : 30분. 이정도면 되지 않을까 ?
         -> 리프레시는 현업에서는 비용 때문에 1주일 혹은 2주일 더 길게 가진다고 보았는데, 그건 아마도 로그인 유지 혹은 자동로그인 같은 경우에
@@ -23,16 +24,18 @@ public final class JwtTokenUtils {
     private static final int HOUR = 60 * MINUTE;
     private static final int DAY = 24 * HOUR;
 
-    // JWT 토큰의 유효기간: 3일 (단위: seconds)
-    private static final int JWT_TOKEN_VALID_SEC = 5 * MINUTE;
-    // JWT 토큰의 유효기간: 3일 (단위: milliseconds)
+    // JWT 토큰의 유효기간: 1시간 (단위: seconds)
+    private static final int JWT_TOKEN_VALID_SEC = HOUR;
+    // JWT 토큰의 유효기간: 1시간 (단위: milliseconds)
     private static final int JWT_TOKEN_VALID_MILLI_SEC = JWT_TOKEN_VALID_SEC * 1000;
 
     public static final String CLAIM_EXPIRED_DATE = "EXPIRED_DATE";
     public static final String CLAIM_USER_NAME = "USER_EMAIL";
     public static final String CLAIM_USER_NIK = "USER_NIK";
     public static final String CLAIM_USER_ROLE = "USER_ROLE";
-    public static final String JWT_SECRET = "jwt_secret_!@#$%";  //todo : 시크릿키 보이지않도록 프로퍼티스에 넣어놓기
+
+
+    public static final String JWT_SECRET = key;  //todo : 시크릿키 보이지않도록 프로퍼티스에 넣어놓기
 
     public static String generateJwtToken(UserDetailsImpl userDetails) {
         String token = null;

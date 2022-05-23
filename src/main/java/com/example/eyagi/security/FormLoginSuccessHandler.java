@@ -31,6 +31,7 @@ public class FormLoginSuccessHandler extends SavedRequestAwareAuthenticationSucc
         response.addHeader(AUTH_HEADER, TOKEN_TYPE + " " + token);
 //        response.addHeader(AUTH_HEADER, TOKEN_TYPE + " " + reFreshToken);
 
+
     }
 
 }
