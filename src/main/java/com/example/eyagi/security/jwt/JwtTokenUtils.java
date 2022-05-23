@@ -59,8 +59,8 @@ public final class JwtTokenUtils extends JwtProperties {
     }
 
     /*
-              todo : refresh token 생성! 사용자 이메일 + 유효기간만 담아주기.
-              */
+          todo : refresh token 생성! 사용자 이메일 + 유효기간만 담아주기.
+     */
     public static String generateJwtReFreshToken(UserDetailsImpl userDetails) {
         String reFreshToken = null;
         try {
