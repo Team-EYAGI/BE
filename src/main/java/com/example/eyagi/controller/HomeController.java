@@ -69,7 +69,7 @@ public class HomeController {
             String a = URLEncoder.encode("Hello", "UTF-8");
             Cookie oneTimeCookie = new Cookie("oneTimeCookie", a);
 
-            oneTimeCookie.setDomain(".eyagi99.shop"); //우리 사이트 도메인 이름 넣기 프론트 도메인이겠지 ..?
+            oneTimeCookie.setDomain(".eyagibook.shop"); //우리 사이트 도메인 이름 넣기 프론트 도메인이겠지 ..?
             oneTimeCookie.setPath("/");
             response.addCookie(oneTimeCookie); //쿠키
         }
@@ -77,7 +77,7 @@ public class HomeController {
             String a = URLEncoder.encode("Welcome", "UTF-8");
             Cookie monthCookie = new Cookie("oneTimeCookie", a);
             monthCookie.setMaxAge(60 * 60 * 24 * 30);
-            monthCookie.setDomain(".eyagi99.shop"); //우리 사이트 도메인 이름 넣기 프론트 도메인이겠지 ..?
+            monthCookie.setDomain(".eyagibook.shop"); //우리 사이트 도메인 이름 넣기 프론트 도메인이겠지 ..?
             monthCookie.setPath("/");
             response.addCookie(monthCookie); //쿠키
         }
