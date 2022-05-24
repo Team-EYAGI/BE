@@ -146,6 +146,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/viewer/**");  //셀러 프로필 보기 허용
 
         skipPathList.add("GET,/basic.js");
+        skipPathList.add("GET,/cookie");
+
 
         skipPathList.add("GET,/favicon.ico");
 
