@@ -190,7 +190,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.addExposedHeader("Authorization");
-        configuration.addAllowedOriginPattern("*");
+        configuration.addAllowedOriginPattern("https://eyagibook.shop");
         configuration.addExposedHeader("oneTimeCookie");
         configuration.addExposedHeader("monthCookie");
         configuration.addExposedHeader("Set-Cookie");
