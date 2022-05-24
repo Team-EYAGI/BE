@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,41 +24,41 @@ public class HomeService {
     monthCookie 쿠키 생성
 */
 
-    public void selectOneTimeCookie (HttpServletResponse response, VisitCount toDayCount){
+    public void selectOneTimeCookie (HttpServletResponse response, VisitCount toDayCount) throws UnsupportedEncodingException {
 //        Cookie oneTimeCookie = new Cookie("oneTimeCookie", "Hello");
 //
 //        oneTimeCookie.setDomain(".eyagi99.shop"); //우리 사이트 도메인 이름 넣기 프론트 도메인이겠지 ..?
 ////        oneTimeCookie.setMaxAge();
 //        oneTimeCookie.setPath("/");
 //        response.addCookie(oneTimeCookie); //쿠키에 일정 시간을 지정하지 않으면 브라우져가 종료될 때 쿠키도 함께 사라지므로, 방문 횟수를 세기에 적절하다고 판단.
-
-//        ResponseCookie oneTimeCookie = ResponseCookie.from("oneTimeCookie", "Hello")
-//                .domain("eyagibook.shop")
-//                .sameSite("None")
-//                .secure(true)
-////                .maxAge(60 * 60 * 24 * 30)
-//                .path("/")
-//                .build();
-//        response.addHeader("Set-Cookie",oneTimeCookie.toString());
+        String a = URLEncoder.encode("Hello", "UTF-8");
+        ResponseCookie oneTimeCookie = ResponseCookie.from("oneTimeCookie", a)
+                .domain("eyagibook.shop")
+                .sameSite("None")
+                .secure(true)
+//                .maxAge(60 * 60 * 24 * 30)
+                .path("/")
+                .build();
+        response.addHeader("Set-Cookie",oneTimeCookie.toString());
         toDayCount.addCount();
     }
 
-    public void selectMonthCookie(HttpServletResponse response, VisitCount toDayCount) {
+    public void selectMonthCookie(HttpServletResponse response, VisitCount toDayCount) throws UnsupportedEncodingException {
 //        Cookie monthCookie = new Cookie("monthCookie", "Welcome");
 //        monthCookie.setMaxAge(60 * 60 * 24 * 30); //초단위
 //
 //        monthCookie.setDomain(".eyagi99.shop"); // 우리 사이트 도메인 이름 넣기. 프론트 도메인이겠지 ..?
 //        monthCookie.setPath("/");
 //        response.addCookie(monthCookie);
-
-//        ResponseCookie monthCookie = ResponseCookie.from("monthCookie", "Welcome")
-//                .domain("eyagibook.shop")
-//                .sameSite("None")
-//                .secure(true)
-//                .maxAge(60 * 60 * 24 * 30)
-//                .path("/")
-//                .build();
-//        response.addHeader("Set-Cookie",monthCookie.toString());
+        String a = URLEncoder.encode("Welcome", "UTF-8");
+        ResponseCookie monthCookie = ResponseCookie.from("monthCookie", a)
+                .domain("eyagibook.shop")
+                .sameSite("None")
+                .secure(true)
+                .maxAge(60 * 60 * 24 * 30)
+                .path("/")
+                .build();
+        response.addHeader("Set-Cookie",monthCookie.toString());
         toDayCount.addVister();
     }
 
