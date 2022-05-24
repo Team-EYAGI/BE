@@ -33,8 +33,8 @@ public class HomeController {
 
     // 메인화면에서 추천도서 보여주기
     @GetMapping("/")
-    public List<BooksDto> getBookListToMain(@CookieValue(value = "oneTimeCookie", required = false) String oneTimeCookie,
-                                            @CookieValue(value = "monthCookie", required = false) String monthCookie,
+    public List<BooksDto> getBookListToMain(@CookieValue(name = "oneTimeCookie", required = false) String oneTimeCookie,
+                                            @CookieValue(name = "monthCookie", required = false) String monthCookie,
                                             HttpServletResponse response) {
         LocalDate nowDay = LocalDate.now(ZoneId.of("Asia/Seoul"));
         VisitCount toDayCount = homeService.newDayNewCount(nowDay);
