@@ -39,9 +39,9 @@ public class HomeController {
 //        LocalDate nowDay = LocalDate.now(ZoneId.of("Asia/Seoul"));
         LocalDate nowDay = LocalDate.now();
         VisitCount toDayCount = homeService.newDayNewCount(nowDay);
-        if (oneTimeCookie == null) {
-            homeService.selectOneTimeCookie(response, toDayCount);
-        }
+//        if (oneTimeCookie == null) {
+//            homeService.selectOneTimeCookie(response, toDayCount);
+//        }
         if (monthCookie == null) {
             homeService.selectMonthCookie(response, toDayCount);
         }
