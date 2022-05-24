@@ -6,6 +6,8 @@
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
 //
+//import java.net.MalformedURLException;
+//
 ///**
 // * Solving the problem of cookie root domain name setting
 // * @author Declan
@@ -24,4 +26,5 @@
 //        return (factory) -> factory.addContextCustomizers(
 //                (context) -> context.setCookieProcessor(new LegacyCookieProcessor()));
 //    }
+//
 //}
