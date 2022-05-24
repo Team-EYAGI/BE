@@ -66,23 +66,23 @@ public class HomeController {
         LocalDate nowDay = LocalDate.now();
         VisitCount toDayCount = homeService.newDayNewCount(nowDay);
         if (oneTimeCookie1 == null) {
-            String a = URLEncoder.encode("Hello", "UTF-8");
-            Cookie oneTimeCookie = new Cookie("oneTimeCookie", a);
-
-            oneTimeCookie.setDomain(".eyagi99.shop"); //우리 사이트 도메인 이름 넣기 프론트 도메인이겠지 ..?
-            oneTimeCookie.setPath("/");
-            response.addCookie(oneTimeCookie); //쿠키
-            toDayCount.addCount();
+//            String a = URLEncoder.encode("Hello", "UTF-8");
+//            Cookie oneTimeCookie = new Cookie("oneTimeCookie", a);
+//
+//            oneTimeCookie.setDomain(".eyagi99.shop"); //우리 사이트 도메인 이름 넣기 프론트 도메인이겠지 ..?
+//            oneTimeCookie.setPath("/");
+//            response.addCookie(oneTimeCookie); //쿠키
+//            toDayCount.addCount();
             homeService.selectOneTimeCookie(response, toDayCount);
         }
         if (monthCookie1 == null) {
-            String a = URLEncoder.encode("Welcome", "UTF-8");
-            Cookie monthCookie = new Cookie("monthCookie", a);
-            monthCookie.setMaxAge(60 * 60 * 24 * 30);
-            monthCookie.setDomain(".eyagi99.shop"); //우리 사이트 도메인 이름 넣기 프론트 도메인이겠지 ..?
-            monthCookie.setPath("/");
-            response.addCookie(monthCookie); //쿠키
-            toDayCount.addVister();
+//            String a = URLEncoder.encode("Welcome", "UTF-8");
+//            Cookie monthCookie = new Cookie("monthCookie", a);
+//            monthCookie.setMaxAge(60 * 60 * 24 * 30);
+//            monthCookie.setDomain(".eyagi99.shop"); //우리 사이트 도메인 이름 넣기 프론트 도메인이겠지 ..?
+//            monthCookie.setPath("/");
+//            response.addCookie(monthCookie); //쿠키
+//            toDayCount.addVister();
             homeService.selectMonthCookie(response, toDayCount);
         }
         visitCountRepository.save(toDayCount);
