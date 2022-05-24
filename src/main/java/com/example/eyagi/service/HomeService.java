@@ -23,6 +23,7 @@ public class HomeService {
 
     public void selectOneTimeCookie (HttpServletResponse response, VisitCount toDayCount){
         Cookie oneTimeCookie = new Cookie("oneTimeCookie", "Hello");
+
 //        oneTimeCookie.setDomain(".eyagibook.shop"); //우리 사이트 도메인 이름 넣기 프론트 도메인이겠지 ..?
 //        oneTimeCookie.setMaxAge();
 //        oneTimeCookie.setPath("/");
@@ -33,6 +34,7 @@ public class HomeService {
     public void selectMonthCookie(HttpServletResponse response, VisitCount toDayCount) {
         Cookie monthCookie = new Cookie("monthCookie", "Welcome");
         monthCookie.setMaxAge(60 * 60 * 24 * 30); //초단위
+
 //        monthCookie.setDomain(".eyagibook.shop"); // 우리 사이트 도메인 이름 넣기. 프론트 도메인이겠지 ..?
 //        monthCookie.setPath("/");
         response.addCookie(monthCookie);
