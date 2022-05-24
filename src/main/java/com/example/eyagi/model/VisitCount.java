@@ -9,6 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @NoArgsConstructor
 @Entity
@@ -47,6 +51,7 @@ public class VisitCount extends Timestamped{
     public void addVister() {
         this.visiter++;
     }
+
 }
 
 /*
