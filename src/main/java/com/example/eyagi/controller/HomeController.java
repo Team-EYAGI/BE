@@ -59,8 +59,8 @@ public class HomeController {
 //    }
 
     @GetMapping("/cookie")
-    public void cookie(@CookieValue(value = "oneTimeCookie", required = false) String oneTimeCookie1,
-                       @CookieValue(value = "monthCookie", required = false) String monthCookie1,
+    public void cookie(@CookieValue(value = "oneTimeCookie", required = false) Cookie oneTimeCookie1,
+                       @CookieValue(value = "monthCookie", required = false) Cookie monthCookie1,
                        HttpServletResponse response) throws UnsupportedEncodingException {
 //        LocalDate nowDay = LocalDate.now(ZoneId.of("Asia/Seoul"));
         LocalDate nowDay = LocalDate.now();

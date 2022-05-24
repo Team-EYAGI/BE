@@ -7,6 +7,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -72,6 +73,20 @@ public class HomeService {
 
     }
 
+//    public void addClientIp (HttpServletRequest request, VisitCount toDayCount) {
+//        String ip;
+//        try {
+//            ip = request.getHeader("X-FORWARDED-FOR");
+//            if (ip == null) {
+//                ip = request.getRemoteAddr();
+//            }
+//
+//            toDayCount.addVister();
+//        } catch (NullPointerException e){
+//
+//        }
+//
+//    }
 }
 /*
 하고싶은거
