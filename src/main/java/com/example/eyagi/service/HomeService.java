@@ -47,7 +47,7 @@ public class HomeService {
             return new VisitCount();
         }
         VisitCount lastDay = allCount.get(allCount.size() - 1);
-        return lastDay.newVisitCounter(nowDay);
+        return lastDay.newVisitCounter(nowDay.toString());
 
     }
 
