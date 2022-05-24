@@ -36,7 +36,8 @@ public class HomeController {
     public List<BooksDto> getBookListToMain(@CookieValue(name = "oneTimeCookie", required = false) String oneTimeCookie,
                                             @CookieValue(name = "monthCookie", required = false) String monthCookie,
                                             HttpServletResponse response) {
-        LocalDate nowDay = LocalDate.now(ZoneId.of("Asia/Seoul"));
+//        LocalDate nowDay = LocalDate.now(ZoneId.of("Asia/Seoul"));
+        LocalDate nowDay = LocalDate.now();
         VisitCount toDayCount = homeService.newDayNewCount(nowDay);
         if (oneTimeCookie == null) {
             homeService.selectOneTimeCookie(response, toDayCount);

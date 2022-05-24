@@ -203,6 +203,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.addAllowedOriginPattern("*");
         configuration.addExposedHeader("oneTimeCookie");
         configuration.addExposedHeader("monthCookie");
+        configuration.addExposedHeader("Set-Cookie");
 
 //        configuration.addAllowedOrigin("*");
 

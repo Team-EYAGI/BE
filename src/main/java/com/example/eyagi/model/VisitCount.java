@@ -19,17 +19,18 @@ public class VisitCount {
     @Id
     private Long id;
 
-    private LocalDate toDay = LocalDate.now(ZoneId.of("Asia/Seoul")); // 오늘
+    //    private LocalDate toDay = LocalDate.now(ZoneId.of("Asia/Seoul")); // 오늘
+    private LocalDate toDay = LocalDate.now(); // 오늘
 
     private int count = 0; // 총 방문 횟수 카운트 oneDayCookie쿠키를 센다
 
     private int visiter = 0; // 실 이용자 수  monthCookie룰 센다
 
 
-    public VisitCount newVisitCounter (LocalDate nowDate){
-        System.out.println("저장 날짜 : "+this.toDay + "지금 날짜 : " +nowDate);
-        if (!this.toDay.toString().equals(nowDate.toString())){
-           return new VisitCount();
+    public VisitCount newVisitCounter(LocalDate nowDate) {
+        System.out.println("저장 날짜 : " + this.toDay + "지금 날짜 : " + nowDate);
+        if (!this.toDay.toString().equals(nowDate.toString())) {
+            return new VisitCount();
         } else {
             return this;
         }
@@ -39,7 +40,8 @@ public class VisitCount {
     public void addCount() {
         this.count++;
     }
-    public void addVister(){
+
+    public void addVister() {
         this.visiter++;
     }
 }
