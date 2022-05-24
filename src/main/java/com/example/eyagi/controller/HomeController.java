@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
@@ -33,20 +36,52 @@ public class HomeController {
 
     // 메인화면에서 추천도서 보여주기
     @GetMapping("/")
-    public List<BooksDto> getBookListToMain(@CookieValue(name = "oneTimeCookie", required = false) String oneTimeCookie,
-                                            @CookieValue(name = "monthCookie", required = false) String monthCookie,
-                                            HttpServletResponse response) {
+    public List<BooksDto> getBookListToMain() {
+
+        return booksService.showMainBooks();
+    }
+
+//    @GetMapping("/")
+//    public List<BooksDto> getBookListToMain(@CookieValue(name = "oneTimeCookie", required = false) String oneTimeCookie,
+//                                            @CookieValue(name = "monthCookie", required = false) String monthCookie,
+//                                            HttpServletResponse response) {
+////        LocalDate nowDay = LocalDate.now(ZoneId.of("Asia/Seoul"));
+//        LocalDate nowDay = LocalDate.now();
+//        VisitCount toDayCount = homeService.newDayNewCount(nowDay);
+////        if (oneTimeCookie == null) {
+////            homeService.selectOneTimeCookie(response, toDayCount);
+////        }
+//        if (monthCookie == null) {
+//            homeService.selectMonthCookie(response, toDayCount);
+//        }
+//        visitCountRepository.save(toDayCount);
+//        return booksService.showMainBooks();
+//    }
+
+    @GetMapping("/cookie")
+    public void cookie(@CookieValue(name = "oneTimeCookie", required = false) String oneTimeCookie1,
+                       @CookieValue(name = "monthCookie", required = false) String monthCookie1,
+                       HttpServletResponse response) throws UnsupportedEncodingException {
 //        LocalDate nowDay = LocalDate.now(ZoneId.of("Asia/Seoul"));
         LocalDate nowDay = LocalDate.now();
         VisitCount toDayCount = homeService.newDayNewCount(nowDay);
-//        if (oneTimeCookie == null) {
-//            homeService.selectOneTimeCookie(response, toDayCount);
-//        }
-        if (monthCookie == null) {
-            homeService.selectMonthCookie(response, toDayCount);
+        if (oneTimeCookie1 == null) {
+            String a = URLEncoder.encode("Hello", "UTF-8");
+            Cookie oneTimeCookie = new Cookie("oneTimeCookie", a);
+
+            oneTimeCookie.setDomain(".eyagi99.shop"); //우리 사이트 도메인 이름 넣기 프론트 도메인이겠지 ..?
+            oneTimeCookie.setPath("/");
+            response.addCookie(oneTimeCookie); //쿠키
+        }
+        if (monthCookie1 == null) {
+            String a = URLEncoder.encode("Welcome", "UTF-8");
+            Cookie monthCookie = new Cookie("oneTimeCookie", a);
+            monthCookie.setMaxAge(60 * 60 * 24 * 30);
+            monthCookie.setDomain(".eyagi99.shop"); //우리 사이트 도메인 이름 넣기 프론트 도메인이겠지 ..?
+            monthCookie.setPath("/");
+            response.addCookie(monthCookie); //쿠키
         }
         visitCountRepository.save(toDayCount);
-        return booksService.showMainBooks();
     }
 
 
