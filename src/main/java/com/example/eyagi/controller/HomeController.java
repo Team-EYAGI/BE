@@ -3,6 +3,7 @@ package com.example.eyagi.controller;
 import com.example.eyagi.dto.BooksDto;
 import com.example.eyagi.dto.TodayCreatorDto;
 import com.example.eyagi.model.VisitCount;
+import com.example.eyagi.repository.ClientAdressRepository;
 import com.example.eyagi.repository.VisitCountRepository;
 import com.example.eyagi.service.BooksService;
 import com.example.eyagi.service.FundService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -33,6 +35,7 @@ public class HomeController {
     private final UserService userService;
     private final HomeService homeService;
     private final VisitCountRepository visitCountRepository;
+    private final ClientAdressRepository clientAdressRepository;
 
     // 메인화면에서 추천도서 보여주기
     @GetMapping("/")
@@ -58,13 +61,63 @@ public class HomeController {
 //        return booksService.showMainBooks();
 //    }
 
+//    @GetMapping("/cookie")
+//    public void cookie(@CookieValue(value = "oneTimeCookie", required = false) Cookie oneTimeCookie1,
+//                       @CookieValue(value = "monthCookie", required = false) Cookie monthCookie1,
+//                       HttpServletResponse response) throws UnsupportedEncodingException {
+////        LocalDate nowDay = LocalDate.now(ZoneId.of("Asia/Seoul"));
+//        LocalDate nowDay = LocalDate.now();
+//        VisitCount toDayCount = homeService.newDayNewCount(nowDay);
+//
+////        Cookie[] cookies = request.getCookies();
+////        System.out.println(cookies.length);
+////
+////        for (Cookie c : cookies){
+////            homeService.checkOneTimeCookie(c, response, toDayCount);
+////            homeService.checkMonthCookie(c, response, toDayCount);
+////            System.out.println(c.getName());
+////        }
+//
+//        if (oneTimeCookie1 == null) {
+////            String a = URLEncoder.encode("Hello", "UTF-8");
+////            Cookie oneTimeCookie = new Cookie("oneTimeCookie", a);
+////
+////            oneTimeCookie.setDomain(".eyagi99.shop"); //우리 사이트 도메인 이름 넣기 프론트 도메인이겠지 ..?
+////            oneTimeCookie.setPath("/");
+////            response.addCookie(oneTimeCookie); //쿠키
+////            toDayCount.addCount();
+//            homeService.selectOneTimeCookie(response, toDayCount);
+//        }
+//        if (monthCookie1 == null) {
+////            String a = URLEncoder.encode("Welcome", "UTF-8");
+////            Cookie monthCookie = new Cookie("monthCookie", a);
+////            monthCookie.setMaxAge(60 * 60 * 24 * 30);
+////            monthCookie.setDomain(".eyagi99.shop"); //우리 사이트 도메인 이름 넣기 프론트 도메인이겠지 ..?
+////            monthCookie.setPath("/");
+////            response.addCookie(monthCookie); //쿠키
+////            toDayCount.addVister();
+//            homeService.selectMonthCookie(response, toDayCount);
+//        }
+//
+//        visitCountRepository.save(toDayCount);
+//    }
+
     @GetMapping("/cookie")
     public void cookie(@CookieValue(value = "oneTimeCookie", required = false) Cookie oneTimeCookie1,
-                       @CookieValue(value = "monthCookie", required = false) Cookie monthCookie1,
-                       HttpServletResponse response) throws UnsupportedEncodingException {
+                       HttpServletResponse response,HttpServletRequest request) throws UnsupportedEncodingException {
 //        LocalDate nowDay = LocalDate.now(ZoneId.of("Asia/Seoul"));
         LocalDate nowDay = LocalDate.now();
         VisitCount toDayCount = homeService.newDayNewCount(nowDay);
+
+//        Cookie[] cookies = request.getCookies();
+//        System.out.println(cookies.length);
+//
+//        for (Cookie c : cookies){
+//            homeService.checkOneTimeCookie(c, response, toDayCount);
+//            homeService.checkMonthCookie(c, response, toDayCount);
+//            System.out.println(c.getName());
+//        }
+
         if (oneTimeCookie1 == null) {
 //            String a = URLEncoder.encode("Hello", "UTF-8");
 //            Cookie oneTimeCookie = new Cookie("oneTimeCookie", a);
@@ -75,19 +128,13 @@ public class HomeController {
 //            toDayCount.addCount();
             homeService.selectOneTimeCookie(response, toDayCount);
         }
-        if (monthCookie1 == null) {
-//            String a = URLEncoder.encode("Welcome", "UTF-8");
-//            Cookie monthCookie = new Cookie("monthCookie", a);
-//            monthCookie.setMaxAge(60 * 60 * 24 * 30);
-//            monthCookie.setDomain(".eyagi99.shop"); //우리 사이트 도메인 이름 넣기 프론트 도메인이겠지 ..?
-//            monthCookie.setPath("/");
-//            response.addCookie(monthCookie); //쿠키
-//            toDayCount.addVister();
-            homeService.selectMonthCookie(response, toDayCount);
-        }
+
+        String ip = homeService.etRemoteAddr(request);
+        System.out.println(ip);
+        homeService.addressCheck(ip, toDayCount);
+
         visitCountRepository.save(toDayCount);
     }
-
 
     // 메인화면에서 자기계발 카테고리 보여주기
     @GetMapping("/category")

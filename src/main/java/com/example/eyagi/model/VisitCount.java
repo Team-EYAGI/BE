@@ -31,6 +31,7 @@ public class VisitCount extends Timestamped{
     private int visiter = 0; // 실 이용자 수  monthCookie룰 센다
 
 
+
     public VisitCount newVisitCounter(String nowDate1) {
 //        System.out.println("저장 날짜 : " + this.getCreatedAt() + "지금 날짜 : " + nowDate1);
         String [] today = this.getCreatedAt().toString().split("T");
