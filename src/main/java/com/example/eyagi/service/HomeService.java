@@ -33,44 +33,31 @@ public class HomeService {
     oneTimeCookie 쿠키 생성
     monthCookie 쿠키 생성
 */
-
     public void selectOneTimeCookie(HttpServletResponse response, VisitCount toDayCount) throws UnsupportedEncodingException {
-//        Cookie oneTimeCookie = new Cookie("oneTimeCookie", "Hello");
-//
-//        oneTimeCookie.setDomain(".eyagi99.shop"); //우리 사이트 도메인 이름 넣기 프론트 도메인이겠지 ..?
-////        oneTimeCookie.setMaxAge();
-//        oneTimeCookie.setPath("/");
-//        response.addCookie(oneTimeCookie); //쿠키에 일정 시간을 지정하지 않으면 브라우져가 종료될 때 쿠키도 함께 사라지므로, 방문 횟수를 세기에 적절하다고 판단.
         String a = URLEncoder.encode("Hello", "UTF-8");
         ResponseCookie oneTimeCookie = ResponseCookie.from("oneTimeCookie", a)
                 .domain(".eyagi99.shop")
                 .sameSite("None")
                 .secure(true)
-//                .maxAge(60 * 60 * 24 * 30)
                 .path("/")
                 .build();
         response.addHeader("Set-Cookie", oneTimeCookie.toString());
         toDayCount.addCount();
     }
 
-    public void selectMonthCookie(HttpServletResponse response, VisitCount toDayCount) throws UnsupportedEncodingException {
-//        Cookie monthCookie = new Cookie("monthCookie", "Welcome");
-//        monthCookie.setMaxAge(60 * 60 * 24 * 30); //초단위
+//    public void selectMonthCookie(HttpServletResponse response, VisitCount toDayCount) throws UnsupportedEncodingException {
 //
-//        monthCookie.setDomain(".eyagi99.shop"); // 우리 사이트 도메인 이름 넣기. 프론트 도메인이겠지 ..?
-//        monthCookie.setPath("/");
-//        response.addCookie(monthCookie);
-        String a = URLEncoder.encode("Welcome", "UTF-8");
-        ResponseCookie monthCookie = ResponseCookie.from("monthCookie", a)
-                .domain(".eyagi99.shop")
-                .sameSite("None")
-                .secure(true)
-                .maxAge(60 * 60 * 24 * 30)
-                .path("/")
-                .build();
-        response.addHeader("Set-Cookie", monthCookie.toString());
-        toDayCount.addVister();
-    }
+//        String a = URLEncoder.encode("Welcome", "UTF-8");
+//        ResponseCookie monthCookie = ResponseCookie.from("monthCookie", a)
+//                .domain(".eyagi99.shop")
+//                .sameSite("None")
+//                .secure(true)
+//                .maxAge(60 * 60 * 24 * 30)
+//                .path("/")
+//                .build();
+//        response.addHeader("Set-Cookie", monthCookie.toString());
+//        toDayCount.addVister();
+//    }
 
     public VisitCount newDayNewCount(LocalDate nowDay) {
         List<VisitCount> allCount = visitCountRepository.findAll();
@@ -82,36 +69,6 @@ public class HomeService {
 
     }
 
-//    public void addClientIp (HttpServletRequest request, VisitCount toDayCount) {
-//        String ip;
-//        try {
-//            ip = request.getHeader("X-FORWARDED-FOR");
-//            if (ip == null) {
-//                ip = request.getRemoteAddr();
-//            }
-//
-//            toDayCount.addVister();
-//        } catch (NullPointerException e){
-//
-//        }
-//
-//    }
-
-    public void checkOneTimeCookie(Cookie c, HttpServletResponse response, VisitCount toDayCount) throws UnsupportedEncodingException {
-        String cookiename = c.getName();
-        if (!Objects.equals(cookiename, "oneTimeCookie")) {
-            selectOneTimeCookie(response, toDayCount);
-        }
-    }
-
-    public void checkMonthCookie(Cookie c, HttpServletResponse response, VisitCount toDayCount) throws UnsupportedEncodingException {
-        String cookiename = c.getName();
-        if (!Objects.equals(cookiename, "monthCookie")) {
-            selectOneTimeCookie(response, toDayCount);
-        }
-    }
-
-
     public String etRemoteAddr(HttpServletRequest request) {
 
         String ip = null;
@@ -120,42 +77,42 @@ public class HomeService {
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
-            System.out.println(1 + ip);
+//            System.out.println(1 + ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("WL-Proxy-Client-IP");
-            System.out.println(2+ ip);
+//            System.out.println(2+ ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_CLIENT_IP");
-            System.out.println(3+ ip);
+//            System.out.println(3+ ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-            System.out.println(4+ ip);
+//            System.out.println(4+ ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("X-Real-IP");
-            System.out.println(5+ ip);
+//            System.out.println(5+ ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("X-RealIP");
-            System.out.println(6+ ip);
+//            System.out.println(6+ ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("REMOTE_ADDR");
-            System.out.println(7+ ip);
+//            System.out.println(7+ ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
-            System.out.println(8+ ip);
+//            System.out.println(8+ ip);
         }
 
         return ip;
@@ -175,20 +132,22 @@ public class HomeService {
             clientAdressRepository.save(clientAddress);
             toDayCount.addVister();
 //            System.out.println("비어있다!");
-        }
-        for (ClientAddress c : clientAddressList){
+        } else {
+            for (ClientAddress c : clientAddressList){
 
-            if(passwordEncoder.matches(ip, c.getIp())){
-                System.out.println("똑같다!");
-                a++;
+                if(passwordEncoder.matches(ip, c.getIp())){
+                    System.out.println("똑같다!");
+                    a++;
+                }
+            }
+//        System.out.println(a);
+            if (a==0){
+                ClientAddress clientAddress = new ClientAddress(addressEncoder(ip));
+                clientAdressRepository.save(clientAddress);
+                toDayCount.addVister();
             }
         }
-//        System.out.println(a);
-        if (a==0){
-            ClientAddress clientAddress = new ClientAddress(addressEncoder(ip));
-            clientAdressRepository.save(clientAddress);
-            toDayCount.addVister();
-        }
+
     }
 
 
