@@ -160,6 +160,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/book/request"); //오디오 요청 페이지 조회 허용
         skipPathList.add("GET,/fund"); //펀드 목록 조회 허용
         skipPathList.add("POST,/fund"); //펀드 목록 조회 허용
+        skipPathList.add("POST,/fund/**");
         skipPathList.add("GET,/main/fund"); //메인 펀딩 목록
         skipPathList.add("GET,/search");  //검색허용
         skipPathList.add("GET,/user/kakao/callback"); //카카오 소셜 로그인 허용
