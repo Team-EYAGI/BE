@@ -105,32 +105,17 @@ public class HomeController {
     @GetMapping("/cookie")
     public void cookie(@CookieValue(value = "oneTimeCookie", required = false) Cookie oneTimeCookie1,
                        HttpServletResponse response,HttpServletRequest request) throws UnsupportedEncodingException {
-//        LocalDate nowDay = LocalDate.now(ZoneId.of("Asia/Seoul"));
+
         LocalDate nowDay = LocalDate.now();
         VisitCount toDayCount = homeService.newDayNewCount(nowDay);
 
-//        Cookie[] cookies = request.getCookies();
-//        System.out.println(cookies.length);
-//
-//        for (Cookie c : cookies){
-//            homeService.checkOneTimeCookie(c, response, toDayCount);
-//            homeService.checkMonthCookie(c, response, toDayCount);
-//            System.out.println(c.getName());
-//        }
-
         if (oneTimeCookie1 == null) {
-//            String a = URLEncoder.encode("Hello", "UTF-8");
-//            Cookie oneTimeCookie = new Cookie("oneTimeCookie", a);
-//
-//            oneTimeCookie.setDomain(".eyagi99.shop"); //우리 사이트 도메인 이름 넣기 프론트 도메인이겠지 ..?
-//            oneTimeCookie.setPath("/");
-//            response.addCookie(oneTimeCookie); //쿠키
-//            toDayCount.addCount();
+
             homeService.selectOneTimeCookie(response, toDayCount);
         }
 
         String ip = homeService.etRemoteAddr(request);
-        System.out.println(ip);
+//        System.out.println(ip);
         homeService.addressCheck(ip, toDayCount);
 
         visitCountRepository.save(toDayCount);
