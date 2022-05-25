@@ -153,7 +153,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         skipPathList.add("GET,/basic.js");
         skipPathList.add("GET,/cookie");
-
+        skipPathList.add("GET,/acturator/**");
 
         skipPathList.add("GET,/favicon.ico");
 
