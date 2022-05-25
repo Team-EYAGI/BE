@@ -235,6 +235,8 @@ public class FundService {
                 .content(foundFund.getContent())
                 .myHeart(myHeartFund)
                 .followerCnt(foundFund.getUser().getFollwerCnt())
+                .bookId(foundFund.getBooks().getBookId())
+                .category(foundFund.getBooks().getCategory())
                 .build();
 
         //연관 4개
