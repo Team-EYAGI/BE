@@ -120,42 +120,42 @@ public class HomeService {
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
-//            System.out.println(1 + ip);
+            System.out.println(1 + ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("WL-Proxy-Client-IP");
-//            System.out.println(2+ ip);
+            System.out.println(2+ ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_CLIENT_IP");
-//            System.out.println(3+ ip);
+            System.out.println(3+ ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-//            System.out.println(4+ ip);
+            System.out.println(4+ ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("X-Real-IP");
-//            System.out.println(5+ ip);
+            System.out.println(5+ ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("X-RealIP");
-//            System.out.println(6+ ip);
+            System.out.println(6+ ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("REMOTE_ADDR");
-//            System.out.println(7+ ip);
+            System.out.println(7+ ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
-//            System.out.println(8+ ip);
+            System.out.println(8+ ip);
         }
 
         return ip;
