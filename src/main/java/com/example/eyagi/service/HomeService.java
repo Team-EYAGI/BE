@@ -9,6 +9,8 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -118,42 +120,42 @@ public class HomeService {
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
-            System.out.println(1 + ip);
+//            System.out.println(1 + ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("WL-Proxy-Client-IP");
-            System.out.println(2+ ip);
+//            System.out.println(2+ ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_CLIENT_IP");
-            System.out.println(3+ ip);
+//            System.out.println(3+ ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-            System.out.println(4+ ip);
+//            System.out.println(4+ ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("X-Real-IP");
-            System.out.println(5+ ip);
+//            System.out.println(5+ ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("X-RealIP");
-            System.out.println(6+ ip);
+//            System.out.println(6+ ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("REMOTE_ADDR");
-            System.out.println(7+ ip);
+//            System.out.println(7+ ip);
         }
 
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
-            System.out.println(8+ ip);
+//            System.out.println(8+ ip);
         }
 
         return ip;
@@ -161,25 +163,32 @@ public class HomeService {
     }
 
     public String addressEncoder(String ip) {
-        String address= passwordEncoder.encode(ip);
-        System.out.println("여기는 인코더 " + address);
-        return address;
+        //        System.out.println("여기는 인코더 " + address);
+        return passwordEncoder.encode(ip);
     }
 
     public void addressCheck (String ip, VisitCount toDayCount) {
         List<ClientAddress> clientAddressList = clientAdressRepository.findAll();
+        int a =0;
         if ( clientAddressList.size() == 0){
             ClientAddress clientAddress = new ClientAddress(addressEncoder(ip));
             clientAdressRepository.save(clientAddress);
             toDayCount.addVister();
-            System.out.println("비어있다!");
+//            System.out.println("비어있다!");
         }
         for (ClientAddress c : clientAddressList){
+
             if(passwordEncoder.matches(ip, c.getIp())){
                 System.out.println("똑같다!");
+                a++;
             }
         }
-
+//        System.out.println(a);
+        if (a==0){
+            ClientAddress clientAddress = new ClientAddress(addressEncoder(ip));
+            clientAdressRepository.save(clientAddress);
+            toDayCount.addVister();
+        }
     }
 
 
