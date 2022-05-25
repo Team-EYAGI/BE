@@ -92,6 +92,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/chatting/**").permitAll()
                 .antMatchers("/sub/**").permitAll()
                 .antMatchers("/pub/**").permitAll()
+                .antMatchers("/acturator/**").permitAll() //Acturator 권한설정 X
                 .anyRequest()
                 .permitAll()
                 .and()
