@@ -44,7 +44,8 @@ public class AudioController {
 //
 //    static String path = "/home/ubuntu/eyagi/audio/";  //배포시
 
-    static String path = "./audio/";  //배포시
+    @Value("{$audio_path}")
+    static String path;  //배포시
 
 
 
