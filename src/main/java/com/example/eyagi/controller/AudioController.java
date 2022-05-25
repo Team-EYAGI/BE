@@ -5,6 +5,7 @@ import com.example.eyagi.model.*;
 import com.example.eyagi.repository.AudioBookRepository;
 import com.example.eyagi.repository.AudioFileRepository;
 import com.example.eyagi.repository.AudioPreRepository;
+import com.example.eyagi.security.JwtProperties;
 import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.AudioService;
 import com.example.eyagi.service.AudioService2;
@@ -26,7 +27,7 @@ import static com.example.eyagi.service.AwsS3Path.pathAudio;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-public class AudioController {
+public class AudioController extends JwtProperties {
 
     private final AwsS3Service awsS3Service;
     private final AudioBookRepository audioBookRepository;
@@ -44,8 +45,8 @@ public class AudioController {
 //
 //    static String path = "/home/ubuntu/eyagi/audio/";  //배포시
 
-    @Value("{$audio_path}")
-    static String path;  //배포시
+//    @Value("{$audio_path}")
+    static String path= filePath;  //배포시
 
 
 

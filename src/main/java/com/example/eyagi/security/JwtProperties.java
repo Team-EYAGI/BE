@@ -8,9 +8,17 @@ public class JwtProperties {
 
     public static String key;
 
+    public static String filePath;
+
     @Value("${JWT_SECRET}")
     public void setKey(String value) {
         key = value;
+    }
+
+
+    @Value("${audio_path}")
+    public void setFilePath(String value) {
+        filePath = value;
     }
 
 }
