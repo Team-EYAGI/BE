@@ -298,6 +298,8 @@ public class FundService {
                 .content(foundFund.getContent())
                 .myHeart(myHeartFund)
                 .followerCnt(foundFund.getUser().getFollwerCnt())
+                .bookId(foundFund.getBooks().getBookId())
+                .category(foundFund.getBooks().getCategory())
                 .build();
 
         Map<String, Object> fundDetail = new HashMap<>();
