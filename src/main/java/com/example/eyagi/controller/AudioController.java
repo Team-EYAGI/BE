@@ -42,10 +42,13 @@ public class AudioController {
     //자른 오디오 지정 경로
 //    static String path = "src/main/resources/static/"; //로컬테스트
 //
-    static String path = "/home/ubuntu/eyagi/audio/";  //배포시
+//    static String path = "/home/ubuntu/eyagi/audio/";  //배포시
+
+    static String path = "./audio/";  //배포시
 
 
-        //성우가 해당 책에 오디오북을 처음 만드는 건지 확인해주는 부분.
+
+    //성우가 해당 책에 오디오북을 처음 만드는 건지 확인해주는 부분.
     @PostMapping("/book/detail/newAudio/check/{bookId}")
     public boolean newAudioCheck (@PathVariable Long bookId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Books book = booksService.findBook(bookId);
