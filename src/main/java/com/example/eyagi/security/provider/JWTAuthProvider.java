@@ -15,6 +15,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @Component
 @RequiredArgsConstructor
 public class JWTAuthProvider implements AuthenticationProvider {
@@ -23,11 +26,14 @@ public class JWTAuthProvider implements AuthenticationProvider {
 
     private final UserRepository userRepository;
 
+    private final HttpServletResponse response;
+
     @Override
     public Authentication authenticate(Authentication authentication)
             throws AuthenticationException {
         String token = (String) authentication.getPrincipal();
         String username = jwtDecoder.decodeUsername(token); //복호화
+//        String username = jwtDecoder.decodeUsername(token, response); // TODO : RT
 
         // TODO: API 사용시마다 매번 User DB 조회 필요
         //  -> 해결을 위해서는 UserDetailsImpl 에 User 객체를 저장하지 않도록 수정
