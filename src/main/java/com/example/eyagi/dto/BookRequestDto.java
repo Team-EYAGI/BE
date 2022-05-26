@@ -38,7 +38,7 @@ public class BookRequestDto {
 
         private String userName;
 
-        private String createdAt; //수정일 -> 등록일로 변경.
+        private LocalDateTime createdAt; //수정일 -> 등록일로 변경.
 
         private Long bookId;
 
@@ -48,7 +48,7 @@ public class BookRequestDto {
             this.title = bookRequest.getTitle();
             this.userName = bookRequest.getUser().getUsername();
             this.bookId = bookRequest.getBookId();
-            this.createdAt = bookRequest.getCreatedAt().toString();
+            this.createdAt = bookRequest.getCreatedAt();
         }
 
         public ResponesDto (Long bookRequestId, String title, String contents, String userName, LocalDateTime createdAt, Long bookId){
@@ -57,7 +57,7 @@ public class BookRequestDto {
             this.title = title;
             this.userName = userName;
             this.bookId = bookId;
-            this.createdAt = createdAt.toString();
+            this.createdAt = createdAt;
         }
     }
 

@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 public class FundDetailResponseDto {
     private Long fundId;
+    private Long sellerId;
     private String sellerName;
     private String sellerImg;
     private String introduce;

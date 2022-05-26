@@ -37,6 +37,6 @@ out/
 .vscode/
 ### my yml###
 src/main/resources/application.yml
+src/main/resources/ssl/keystore.p12
 **/application.properties
 src/main/java/com/example/eyagi/aws
-src/main/resources/ssl/keystore.p12
