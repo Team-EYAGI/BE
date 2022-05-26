@@ -19,9 +19,8 @@ public class JwtDecoder {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public String decodeUsername(String token, HttpServletRequest request, HttpServletResponse response) {
+    public String decodeUsername(String token) {
 
-        try {
             DecodedJWT decodedJWT = isValidToken(token)
                     .orElseThrow(() -> new IllegalArgumentException("유효한 토큰이 아닙니다."));
 
@@ -40,15 +39,40 @@ public class JwtDecoder {
                     .getClaim(JwtTokenUtils.CLAIM_USER_NAME)
                     .asString();
             return username;
-        }catch (Exception e){
-            e.printStackTrace();
-//            request.setAttribute("exception", ErrorCode.EXPIRED_TOKEN.getCode());
-            response.addHeader("Authorization", "TimeOut");
-
-            return e.getMessage();
-        }
 
     }
+
+    // TODO : RT
+//    public String decodeUsername(String token, HttpServletResponse response) {
+//
+//        try {
+//            DecodedJWT decodedJWT = isValidToken(token)
+//                    .orElseThrow(() -> new IllegalArgumentException("유효한 토큰이 아닙니다."));
+//
+//            Date expiredDate = decodedJWT
+//                    .getClaim(JwtTokenUtils.CLAIM_EXPIRED_DATE)
+//                    .asDate();
+//
+//            Date now = new Date();
+//            if (expiredDate.before(now)) {
+//
+//                throw new IllegalArgumentException("만료된 토큰입니다.");
+////                request.setAttribute("exception", ErrorCode.EXPIRED_TOKEN);
+//                //todo : 유효기간이 끝났을경우 , 재발급을 해야된다는 의미의 에러를 내려주자
+//            }
+//            String username = decodedJWT
+//                    .getClaim(JwtTokenUtils.CLAIM_USER_NAME)
+//                    .asString();
+//            return username;
+//        }catch (Exception e){
+//            e.printStackTrace();
+////            request.setAttribute("exception", ErrorCode.EXPIRED_TOKEN.getCode());
+//            response.addHeader("Authorization", "TimeOut");
+//
+//            return e.getMessage();
+//        }
+//
+//    }
 
     private Optional<DecodedJWT> isValidToken(String token) {
         DecodedJWT jwt = null;

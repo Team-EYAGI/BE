@@ -101,7 +101,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .exceptionHandling()
-//                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+//                .authenticationEntryPoint(new CustomAuthenticationEntryPoint()) // TODO : RT ?....
                 .and()
                 .exceptionHandling()
                 // "접근 불가" 페이지 URL 설정
