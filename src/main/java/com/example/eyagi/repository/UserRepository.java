@@ -1,16 +1,15 @@
 package com.example.eyagi.repository;
 
 
-import com.example.eyagi.dto.KakaoUserInfoDto;
-import com.example.eyagi.model.Follow;
+import com.example.eyagi.model.AudioBook;
 import com.example.eyagi.model.User;
 import com.example.eyagi.model.UserRole;
+import com.example.eyagi.repository.QRepository.UserCustomRepositiry;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import javax.transaction.Transactional;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +22,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByKakaoId(Long kakaoId);
     List<User>findByRole(UserRole role);
 
+
+    @Query(value = "select seller.id, seller.userProfile.userImage, seller.username from User as seller")
+    Page<UserCustomRepositiry>findByOrderByRoleDesc(UserRole role);
 
 
 }

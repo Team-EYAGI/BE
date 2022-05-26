@@ -3,6 +3,8 @@ package com.example.eyagi.service;
 
 import com.example.eyagi.dto.KakaoUserInfoDto;
 import com.example.eyagi.dto.TodayCreatorDto;
+import com.example.eyagi.repository.QRepository.FundCustomRepository;
+import com.example.eyagi.repository.QRepository.UserCustomRepositiry;
 import com.example.eyagi.repository.UserLibraryRepository;
 import com.example.eyagi.repository.UserProfileRepository;
 import com.example.eyagi.validator.UserValidator;
@@ -22,6 +24,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -43,9 +49,8 @@ public class UserService {
     private final JwtDecoder jwtDecoder;
     private final UserProfileRepository profileRepository;
     private final UserLibraryRepository libraryRepository;
+    private final UserCustomRepositiry userCustomRepositiry;
 
-    @Value("${JWT_SECRET}")
-    public String key;
 
     public User findUserId (Long id){
         return userRepository.findById(id).orElseThrow(
@@ -161,4 +166,14 @@ public class UserService {
 
         return todayCreatorList;
     }
+
+//    public void findSellerList (Pageable pageable){
+//        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
+////        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt" );
+//        pageable = PageRequest.of(page, pageable.getPageSize());
+//        Page<UserCustomRepositiry> sellers = userRepository.findByOrderByRoleDesc(UserRole.SELLER);
+//        Page<UserCustomRepositiry> sellerList =sellers(pageable);
+//
+//    }
+
 }
