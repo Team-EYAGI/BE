@@ -2,22 +2,21 @@ package com.example.eyagi.controller;
 
 import com.example.eyagi.dto.KakaoUserInfoDto;
 import com.example.eyagi.dto.SignupRequestDto;
-import com.example.eyagi.dto.TodayCreatorDto;
 import com.example.eyagi.dto.UserDto;
 import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.KakaoUserService;
 import com.example.eyagi.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
-import org.apache.http.HttpResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.List;
+
+
 
 @RestController
 @RequiredArgsConstructor
@@ -58,9 +57,16 @@ public class UserController {
         return kakaoUserService.kakaoLogin(code, res);
     }
 
-// 메인에 Best 목소리
-    @GetMapping("/user/todayCreator")
-    public List<TodayCreatorDto> todayCreator(){
-        return userService.showMainCreator();
+
+    //todo : access token 재 발급 요청.
+    @PostMapping("/re/refresh")
+    public void reRefreshToken(HttpServletRequest request){
+        //프론트에서 리프레시토큰을 받고, 거기 있는 사용자 정보를 꺼내고 레디스에 잇는 거랑 비교해서 일치하는 정보의 토큰과 일치하면,
+        //엑세스 토큰을 새로 발급해준다.
+        //만약 리프레시 토큰도 만료가 되었다면, 로그인을 다시하게 한다.
+        request.getHeader("RefreshToken");
+
     }
+
+
 }

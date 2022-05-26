@@ -18,7 +18,7 @@ public class SellerFundDto {
     private String bookImg;
     private Long fundId;
     private String sellerName;
-    //    private String fundFile;
+    private Long sellerId;
     private int likeCnt;
     private boolean successFunding; //펀딩 성공 여부
 
@@ -26,8 +26,8 @@ public class SellerFundDto {
         this.bookTitle = fund.getBooks().getTitle();
         this.author = fund.getBooks().getAuthor();
         this.bookImg = fund.getBooks().getBookImg();
-//        this.fundFile =fund.getAudioFund().getFundFile();
         this.fundId = fund.getFundId();
+        this.sellerId = fund.getUser().getId();
         this.likeCnt = fund.getHeartCnt();
         this.successFunding = fund.isSuccessGoals();
     }

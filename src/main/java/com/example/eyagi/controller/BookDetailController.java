@@ -27,13 +27,16 @@ public class BookDetailController {
     private final UserPageService userPageService;
     private final FundRepository fundRepository;
     private final BooksService booksService;
+
+
+
     //책 상세페이지 불러오기
     @GetMapping("/{bookId}")
         public Map<String, Object> bookDetail (@PathVariable Long bookId){
             return bookDetailService.readBookDetail(bookId);
     }
 
-    //todo: 특정 책에 대해서 펀딩 성공했는지 여부 확인
+    //특정 책에 대해서 펀딩 성공했는지 여부 확인
     @Auth
     @PostMapping("/{bookId}/success")
     public boolean fundSuccessCheck (@PathVariable Long bookId,@AuthenticationPrincipal UserDetailsImpl userDetails){

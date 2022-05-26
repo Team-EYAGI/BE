@@ -99,6 +99,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 // 로그아웃 요청 처리 URL
                 .logoutUrl("/user/logout")
+                //todo : addLogoutHandler-> 로그아웃 이후 일어날 로직을 입력.
+                // CustomLogoutHandler -> LogoutHandler를 구현. 리프레시 토큰을 삭제해주는 로그아웃 핸들러 추가.
+//                .addLogoutHandler(new CustomLogoutHandler())
                 .permitAll()
                 .and()
                 .exceptionHandling()
@@ -148,6 +151,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/viewer/**");  //셀러 프로필 보기 허용
 
         skipPathList.add("GET,/basic.js");
+        skipPathList.add("GET,/cookie");
+
 
         skipPathList.add("GET,/favicon.ico");
 
@@ -155,6 +160,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/book/request"); //오디오 요청 페이지 조회 허용
         skipPathList.add("GET,/fund"); //펀드 목록 조회 허용
         skipPathList.add("POST,/fund"); //펀드 목록 조회 허용
+        skipPathList.add("POST,/fund/detail/**");
         skipPathList.add("GET,/main/fund"); //메인 펀딩 목록
         skipPathList.add("GET,/search");  //검색허용
         skipPathList.add("GET,/user/kakao/callback"); //카카오 소셜 로그인 허용
@@ -191,13 +197,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-//        configuration.addAllowedOrigin("http://mytodolist1.s3-website.ap-northeast-2.amazonaws.com/*");
-        configuration.addAllowedOrigin("http://localhost:3000");
+
+
+        configuration.addAllowedOrigin("https://eyagi99.shop");
         configuration.setAllowCredentials(true);
+        configuration.addAllowedOrigin("https://eyagibook.shop");
+        configuration.setAllowCredentials(true);
+        configuration.addAllowedOrigin("http://localhost:3000");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.addExposedHeader("Authorization");
         configuration.addAllowedOriginPattern("*");
+        configuration.addExposedHeader("oneTimeCookie");
+        configuration.addExposedHeader("monthCookie");
+        configuration.addExposedHeader("Set-Cookie");
+
 //        configuration.addAllowedOrigin("*");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
