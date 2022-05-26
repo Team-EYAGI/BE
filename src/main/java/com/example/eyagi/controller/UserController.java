@@ -10,6 +10,7 @@ import com.example.eyagi.service.KakaoUserService;
 import com.example.eyagi.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -81,8 +82,8 @@ public class UserController {
 
 
     @GetMapping ("/sellerList")
-    public void sellerList() {
-
+    public ResponseEntity sellerList(Pageable pageable) {
+        return ResponseEntity.ok(userService.findSellerList(pageable));
     }
 
 }

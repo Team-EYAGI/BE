@@ -1,7 +1,6 @@
 package com.example.eyagi.repository;
 
 
-import com.example.eyagi.model.AudioBook;
 import com.example.eyagi.model.User;
 import com.example.eyagi.model.UserRole;
 import com.example.eyagi.repository.QRepository.UserCustomRepositiry;
@@ -23,8 +22,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User>findByRole(UserRole role);
 
 
-    @Query(value = "select seller.id, seller.userProfile.userImage, seller.username from User as seller")
-    Page<UserCustomRepositiry>findByOrderByRoleDesc(UserRole role);
+    @Query(value = "select seller.id as id, seller.userProfile.userImage as userImage, seller.username as username, seller.email as email from User as seller where seller.role =:role")
+    Page<UserCustomRepositiry> findByOrderByRole(UserRole role, Pageable pageable);
 
 
 }
