@@ -1,9 +1,6 @@
 package com.example.eyagi.repository;
 
-import com.amazonaws.auth.policy.Policy;
 import com.example.eyagi.model.ChatMessage;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -14,6 +11,7 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> 
     List<ChatMessage> findByRoomId(String roomId);
     void deleteByRoomId(String toString);
 
-    @Query("select cm from ChatMessage cm where cm.type = 'TALK' and cm.roomId = :roomId order by cm.id desc")
-    ChatMessage findByRoomIdAndTypeLikeType_Talk(String roomId);
+//    @Query("select cm.id from ChatMessage cm where cm.type = 'TALK' and cm.roomId = :roomId order by cm.id desc")
+//    @Query("select cm.id from ChatMessage as cm where cm.type=:talk and cm.roomId=:roomId order by desc")
+//    Long findByRoomIdAndType_Talk(String roomId, MessageType talk);
 }

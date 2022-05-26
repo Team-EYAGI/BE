@@ -8,4 +8,5 @@ import lombok.Getter;
 public class FundHeartResponseDto {
     private boolean fundHeartBool;
     private int fundHeartCnt;
+    private boolean successFunding;
 }

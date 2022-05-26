@@ -21,14 +21,10 @@ public class AllChatInfoService {
     @Transactional
     public void updateReadMessage(User user, String roomId){
         // 마지막으로 읽은 메세지
-        System.out.println("여기통과1");
-        ChatMessage chatMessage = chatMessageRepository.findByRoomIdAndTypeLikeType_Talk(roomId);
-        System.out.println("여기는1111?");
-        Long lastMessageId = chatMessage.getId();
-        System.out.println("여기는2222?");
+        Long lastMessageId = 0L;
+//        Long lastMessageId = chatMessageRepository.findByRoomIdAndType_Talk(roomId, ChatMessage.MessageType.TALK);
         AllChatInfo allChatInfo = allChatInfoRepository.findByChatRoom_RoomIdAndUserId(Long.parseLong(roomId),user.getId());
-        // 마지막으로 그유저가 읽은 메세지id 변경
-        System.out.println("여기는333?");
+//        // 마지막으로 그유저가 읽은 메세지id 변경
         allChatInfo.updateLastMessageId(lastMessageId);
     }
 
