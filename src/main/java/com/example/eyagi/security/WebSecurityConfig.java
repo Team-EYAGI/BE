@@ -1,6 +1,7 @@
 package com.example.eyagi.security;
 
 
+//import com.example.eyagi.ExceptionHandler.CustomAuthenticationEntryPoint;
 import com.example.eyagi.security.filter.FormLoginFilter;
 import com.example.eyagi.security.provider.FormLoginAuthProvider;
 import com.example.eyagi.security.filter.JwtAuthFilter;
@@ -105,6 +106,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .exceptionHandling()
+//                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                .and()
+                .exceptionHandling()
                 // "접근 불가" 페이지 URL 설정
                 .accessDeniedPage("/forbidden.html");
     }
@@ -153,7 +157,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/basic.js");
         skipPathList.add("GET,/cookie");
 
-
+        skipPathList.add("GET,/sellerList"); //셀러 목록 조회 허용
         skipPathList.add("GET,/favicon.ico");
 
         skipPathList.add("GET,/book/detail/**"); //책 상세페이지 조회 허용
@@ -209,8 +213,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.addExposedHeader("Authorization");
         configuration.addAllowedOriginPattern("*");
         configuration.addExposedHeader("oneTimeCookie");
-        configuration.addExposedHeader("monthCookie");
         configuration.addExposedHeader("Set-Cookie");
+
 
 //        configuration.addAllowedOrigin("*");
 

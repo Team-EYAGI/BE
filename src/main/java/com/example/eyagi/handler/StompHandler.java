@@ -37,7 +37,7 @@ public class StompHandler implements ChannelInterceptor {
             String jwtToken = accessor.getFirstNativeHeader("token");
             log.info("CONNECT {}", jwtToken);
             String[] newJwtToken = jwtToken.split("BEARER ");
-            jwtDecoder.decodeUsername(newJwtToken[1]);
+            jwtDecoder.decodeUsername(newJwtToken[1].toString());
         } else if (StompCommand.SUBSCRIBE == accessor.getCommand()){// 채팅룸 구독요청
             // header정보에서 구독 destination정보를 얻고, roomId를 추출한다.
             String roomId = chatService.getRoomId(Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId"));

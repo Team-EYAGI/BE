@@ -1,37 +1,35 @@
 package com.example.eyagi.service;
 
 
-import com.example.eyagi.dto.KakaoUserInfoDto;
-import com.example.eyagi.dto.TodayCreatorDto;
-import com.example.eyagi.repository.UserLibraryRepository;
-import com.example.eyagi.repository.UserProfileRepository;
-import com.example.eyagi.validator.UserValidator;
 import com.example.eyagi.dto.SignupRequestDto;
+import com.example.eyagi.dto.TodayCreatorDto;
 import com.example.eyagi.dto.UserDto;
 import com.example.eyagi.model.User;
 import com.example.eyagi.model.UserLibrary;
 import com.example.eyagi.model.UserProfile;
 import com.example.eyagi.model.UserRole;
+
+import com.example.eyagi.repository.QRepository.UserCustomRepositiry;
 import com.example.eyagi.repository.UserLibraryRepository;
 import com.example.eyagi.repository.UserProfileRepository;
 import com.example.eyagi.repository.UserRepository;
 import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.security.jwt.JwtDecoder;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.eyagi.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -43,9 +41,8 @@ public class UserService {
     private final JwtDecoder jwtDecoder;
     private final UserProfileRepository profileRepository;
     private final UserLibraryRepository libraryRepository;
+//    private final UserCustomRepositiry userCustomRepositiry;
 
-    @Value("${JWT_SECRET}")
-    public String key;
 
     public User findUserId (Long id){
         return userRepository.findById(id).orElseThrow(
@@ -161,9 +158,13 @@ public class UserService {
 
         return todayCreatorList;
     }
+
+    public Page<UserCustomRepositiry> findSellerList (Pageable pageable){
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt" );
+        pageable = PageRequest.of(page, pageable.getPageSize(), sort);
+        Page<UserCustomRepositiry> sellerList = userRepository.findByOrderByRole(UserRole.SELLER, pageable);
+        return sellerList;
+    }
+
 }
-//
-//    // 유저의 pk 값으로 유저 조회
-//    public User getUser(Long id) {
-//        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("회원이 아닙니다."));
-//    }
