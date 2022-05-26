@@ -15,6 +15,7 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.Optional;
 
@@ -27,6 +28,7 @@ public class StompHandler implements ChannelInterceptor {
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatService;
     private final UserRepository userRepository;
+    private final HttpServletResponse response;
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel){
@@ -35,7 +37,7 @@ public class StompHandler implements ChannelInterceptor {
             String jwtToken = accessor.getFirstNativeHeader("token");
             log.info("CONNECT {}", jwtToken);
             String[] newJwtToken = jwtToken.split("BEARER ");
-            jwtDecoder.decodeUsername(newJwtToken[1]);
+            jwtDecoder.decodeUsername(newJwtToken[1], response);
         } else if (StompCommand.SUBSCRIBE == accessor.getCommand()){// 채팅룸 구독요청
             // header정보에서 구독 destination정보를 얻고, roomId를 추출한다.
             String roomId = chatService.getRoomId(Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId"));
@@ -49,7 +51,7 @@ public class StompHandler implements ChannelInterceptor {
             User user;
             if (newJwtToken[1] != null) {
                 //토큰으로 user 가져옴
-                user = userRepository.findByEmail(jwtDecoder.decodeUsername(newJwtToken[1]))
+                user = userRepository.findByEmail(jwtDecoder.decodeUsername(newJwtToken[1], response))
                         .orElseThrow(()->new IllegalArgumentException("user 가 존재하지 않습니다."));
             }else {
                 throw new IllegalArgumentException("유효하지 않은 token 입니다.");

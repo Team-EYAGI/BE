@@ -2,18 +2,25 @@ package com.example.eyagi.security;
 
 
 import com.example.eyagi.security.jwt.JwtTokenUtils;
+import com.example.eyagi.service.RedisService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
+
 public class FormLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+
+
+
     public static final String AUTH_HEADER = "Authorization";
 
     public static final String TOKEN_TYPE = "BEARER";
 
-//    public static final String Refresh_HEADER = "RefreshToken"; // TODO : RT
+    public static final String Refresh_HEADER = "RefreshToken"; // TODO : RT
 
 
 
@@ -30,10 +37,10 @@ public class FormLoginSuccessHandler extends SavedRequestAwareAuthenticationSucc
          */
 
         final String token = JwtTokenUtils.generateJwtToken(userDetails);
-//        final String RefreshToken = JwtTokenUtils.generateJwtReFreshToken(userDetails); // TODO : RT
+        final String RefreshToken = JwtTokenUtils.generateJwtReFreshToken(userDetails); // TODO : RT
 
         response.addHeader(AUTH_HEADER, TOKEN_TYPE + " " + token);
-//        response.addHeader(Refresh_HEADER, TOKEN_TYPE + " " + RefreshToken); // TODO : RT
+        response.addHeader(Refresh_HEADER, TOKEN_TYPE + " " + RefreshToken); // TODO : RT
 
 
     }

@@ -4,10 +4,13 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.example.eyagi.security.JwtProperties;
 import com.example.eyagi.security.UserDetailsImpl;
+import com.example.eyagi.service.RedisService;
+import lombok.RequiredArgsConstructor;
 
 
 import java.util.Date;
 
+@RequiredArgsConstructor
 public final class JwtTokenUtils extends JwtProperties {
     /*
     todo: 여기서 리프레시 토큰 생성! 액세스 토큰 : 15분, 리프레시 : 30분. 이정도면 되지 않을까 ?
@@ -18,7 +21,7 @@ public final class JwtTokenUtils extends JwtProperties {
         보안상 다시 로그인을 시키는것이 좋은 것일까 ?
         이문제에 대해서는 우선 로그인을 하도록 구현을 다 해놓고 조언을 구해봐도 좋을 것 같다.
      */
-
+    private static final RedisService redisService = null;
     private static final int SEC = 1;
     private static final int MINUTE = 60 * SEC;
     private static final int HOUR = 60 * MINUTE;
@@ -63,6 +66,7 @@ public final class JwtTokenUtils extends JwtProperties {
      */
     public static String generateJwtReFreshToken(UserDetailsImpl userDetails) {
         String reFreshToken = null;
+        String username = null;
         try {
 
             reFreshToken = JWT.create()
@@ -72,12 +76,11 @@ public final class JwtTokenUtils extends JwtProperties {
                     // 토큰 만료 일시 = 현재 시간 + 토큰 유효기간) //30분 부여 .
                     .withClaim(CLAIM_EXPIRED_DATE, new Date(System.currentTimeMillis() + MINUTE * 30 * 1000))
                     .sign(generateAlgorithm());
-
-
+            username = userDetails.getUsername();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
+        redisService.setValues(username,reFreshToken);
         return reFreshToken;
     }
 
