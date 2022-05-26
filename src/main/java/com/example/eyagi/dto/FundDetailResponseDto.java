@@ -22,4 +22,6 @@ public class FundDetailResponseDto {
     private int fundingGoals;
     private boolean successFunding;
     private int followerCnt;
+    private Long bookId;
+    private String category;
 }

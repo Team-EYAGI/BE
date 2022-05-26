@@ -4,9 +4,7 @@ import com.example.eyagi.dto.AudioDetailDto;
 import com.example.eyagi.dto.AudioFileDto;
 import com.example.eyagi.dto.CommentDto;
 import com.example.eyagi.model.*;
-import com.example.eyagi.repository.AudioBookRepository;
-import com.example.eyagi.repository.CommentRepository;
-import com.example.eyagi.repository.Library_AudioRepository;
+import com.example.eyagi.repository.*;
 import com.example.eyagi.repository.QRepository.CommentCustomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,31 +28,33 @@ public class AudioDetailService {
     private final CommentRepository commentRepository;
     private final AudioService audioService;
     private final Library_AudioRepository library_audioRepository;
+    private final AudioFileRepository audioFileRepository;
+    private final AudioPreRepository audioPreRepository;
 
     //특정 오디오북 찾기
-    public AudioBook findAudioBook (Long id) {
+    public AudioBook findAudioBook(Long id) {
         return audioBookRepository.findById(id).orElseThrow(
-                ()-> new NullPointerException("요청한 오디오북이 존재하지 않습니다.")
+                () -> new NullPointerException("요청한 오디오북이 존재하지 않습니다.")
         );
     }
 
     //오디오북 상세 페이지 조회 1. 책 정보 + 오디오 목록   ++ 셀러 닉네임, 오디오북 소개글 추가
-    public AudioDetailDto getAudioDetail (AudioBook audioBook, User user) {
+    public AudioDetailDto getAudioDetail(AudioBook audioBook, User user) {
 //        AudioBook audioBook = findAudioBook(id);
 
-        List<AudioFile>audioFileList = audioBook.getAudioFile();
+        List<AudioFile> audioFileList = audioBook.getAudioFile();
         List<AudioFileDto> audioFileDtoList = new ArrayList<>();
 
-        for (AudioFile file : audioFileList){
+        for (AudioFile file : audioFileList) {
             AudioFileDto audioFileDto = AudioFileDto.builder()
                     .id(file.getId())
                     .s3FileName(file.getS3FileName())
                     .build();
             audioFileDtoList.add(audioFileDto);
         }
-        Optional<Library_Audio> library_audio = library_audioRepository.findByAudioBook_IdAndUserLibrary_Id(audioBook.getId(),user.getUserLibrary().getId());
-        if(!library_audio.isPresent()){ //해당 오디오북이 듣고 있는 오디오북 목록에 없다면, ->서버 테스트 완
-            userPageService.listenBook(audioBook,user); // 마이페이지 > 내가 듣고 있는 오디오북에 추가!
+        Optional<Library_Audio> library_audio = library_audioRepository.findByAudioBook_IdAndUserLibrary_Id(audioBook.getId(), user.getUserLibrary().getId());
+        if (!library_audio.isPresent()) { //해당 오디오북이 듣고 있는 오디오북 목록에 없다면, ->서버 테스트 완
+            userPageService.listenBook(audioBook, user); // 마이페이지 > 내가 듣고 있는 오디오북에 추가!
             log.info(audioBook.getId() + "번 오디오북을 내 서재에 추가!");
         }
         return AudioDetailDto.builder()
@@ -72,7 +72,7 @@ public class AudioDetailService {
     }
 
 
-//    오디오북 상세 페이지 조회 2. 후기 목록
+    //    오디오북 상세 페이지 조회 2. 후기 목록
 //    public List<CommentDto> commentList(Long audioBookDetailId){
 //
 //        List<Comment> commentList = commentRepository.findAllByAudioBook_Id(audioBookDetailId);
@@ -83,16 +83,16 @@ public class AudioDetailService {
 //        }
 //        return commentDtoList;
 //    }
-    public ResponseEntity<?> commentList(Long audioBookDetailId, Pageable pageable){
+    public ResponseEntity<?> commentList(Long audioBookDetailId, Pageable pageable) {
         //pageable
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt" );
-        pageable = PageRequest.of(page, pageable.getPageSize(), sort );
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
+        pageable = PageRequest.of(page, pageable.getPageSize(), sort);
 
         Page<CommentCustomRepository> commentPage = commentRepository.findAllByAudioBook_Id(audioBookDetailId, pageable);
-        List<CommentCustomRepository>  commentList = commentPage.getContent();
+        List<CommentCustomRepository> commentList = commentPage.getContent();
         List<CommentDto> commentDtoList = new ArrayList<>();
-        for (CommentCustomRepository c : commentList){
+        for (CommentCustomRepository c : commentList) {
             CommentDto commentDto = new CommentDto(c.getCommentId(), c.getTitle(), c.getContent(), c.getUsername(), c.getCreatedAt().toString());
             commentDtoList.add(commentDto);
         }
@@ -113,9 +113,9 @@ public class AudioDetailService {
 
     //후기 수정
     @Transactional
-    public Long editComment(Long commentId, User user, CommentDto commentDto){
+    public Long editComment(Long commentId, User user, CommentDto commentDto) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
-                ()-> new NullPointerException("요청한 후기가 존재하지 않습니다.")
+                () -> new NullPointerException("요청한 후기가 존재하지 않습니다.")
         );
         if (!comment.getUser().getId().equals(user.getId())) {
             throw new IllegalArgumentException("요청자가 후기 작성자와 일치하지 않습니다.");
@@ -127,15 +127,38 @@ public class AudioDetailService {
 
     //후기 삭제
     @Transactional
-    public Long removeComment(Long commentId, User user){
+    public Long removeComment(Long commentId, User user) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
-                ()-> new NullPointerException("요청한 후기가 존재하지 않습니다.")
+                () -> new NullPointerException("요청한 후기가 존재하지 않습니다.")
         );
         if (!comment.getUser().getId().equals(user.getId())) {
             throw new IllegalArgumentException("요청자가 후기 작성자와 일치하지 않습니다.");
         }
         commentRepository.delete(comment);
         return commentId;
+    }
+
+    //오디오 파일 삭제
+    @Transactional
+    public void removeAudiofile(Long audiofileId) {
+        AudioFile audioFile = audioFileRepository.findById(audiofileId).orElseThrow(
+                () -> new NullPointerException("해당 오디오파일이 없습니다."));
+
+        audioFileRepository.delete(audioFile);
+    }
+
+ //오디오북 상세페이지 삭제
+    @Transactional
+    public void removeAudioBook(Long audioBookId, Long uid){
+        AudioBook audioBook = audioBookRepository.findById(audioBookId).orElseThrow(
+                ()-> new NullPointerException("해당 오디오북이 없습니다.")
+        );
+
+        if(audioBook.getSeller().getId() == uid){
+            audioBookRepository.delete(audioBook);
+            audioPreRepository.deleteById(audioBookId);
+        }
+
     }
 
 }

@@ -70,11 +70,32 @@ public class FundController {
 
 
     // 펀딩상세보기
-    @GetMapping("/fund/detail/{fundid}")
+//    @GetMapping("/fund/detail/{fundid}")
+//    public ResponseEntity<?> detailFund(
+//            @PathVariable Long fundid,
+//            @AuthenticationPrincipal UserDetailsImpl userDetails
+//    ) {
+//        return fundService.detailFund(fundid, userDetails);
+//    }
+    @PostMapping("/fund/detail/{fundid}")
     public ResponseEntity<?> detailFund(
             @PathVariable Long fundid,
-            @AuthenticationPrincipal UserDetailsImpl userDetails
+            @RequestPart (name = "info", required = false)FundUserRequestDto requestDto
     ) {
-        return fundService.detailFund(fundid, userDetails);
+        if(requestDto != null) {
+            // 회원일 때
+            return fundService.detailFund(fundid, requestDto);
+        } else {
+            //회원 아닐때
+            return fundService.detailFundNoUser(fundid);
+        }
     }
+
+
+    //펀딩 삭제
+  @DeleteMapping("/fund/detail/remove/{fundid}")
+    public Long removeFunding(@PathVariable Long fundid){
+        fundService.removeFunding(fundid);
+        return fundid;
+  }
 }

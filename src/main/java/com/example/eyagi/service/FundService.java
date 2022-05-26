@@ -27,6 +27,8 @@ public class FundService {
     private final AwsS3Service awsS3Service;
     private final FundHeartRepository fundHeartRepository;
 
+
+
     public ResponseEntity<?> saveFund(Long BookId, MultipartFile multipartFile, FundRequestDto fundRequestDto,
                                       UserDetailsImpl userDetails) {
         // 최소 펀딩 수량 제한 체킹다시.
@@ -165,6 +167,7 @@ public class FundService {
         return FundHeartResponseDto.builder()
                 .fundHeartBool(requestDto.isFundHeartBool())
                 .fundHeartCnt(foundFund.getHeartCnt())
+                .successFunding(foundFund.isSuccessGoals())
                 .build();
 
 
@@ -204,10 +207,10 @@ public class FundService {
         return ResponseEntity.ok().body(bestFund);
     }
 
-    // 펀딩상세보기
-    public ResponseEntity<?> detailFund(Long fundid, UserDetailsImpl userDetails) {
+    // 펀딩상세보기 - 회원
+    public ResponseEntity<?> detailFund(Long fundid, FundUserRequestDto requestDto /* UserDetailsImpl userDetails */) {
         boolean myHeartFund;
-        User user = userDetails.getUser();
+        User user = userRepository.findByUsername(requestDto.getUsername()).orElseThrow(() -> new NullPointerException("유저 X"));
         Fund foundFund = fundRepository.findById(fundid).orElseThrow(
                 () -> new NullPointerException("펀딩내용을 찾을 수 없습니다."));
 
@@ -222,6 +225,7 @@ public class FundService {
         FundDetailResponseDto fundDetailResponseDto = FundDetailResponseDto.builder()
                 // 저자...
                 .fundId(foundFund.getFundId())
+                .sellerId(foundFund.getUser().getId())
                 .sellerName(foundFund.getUser().getUsername())
                 .sellerImg(foundFund.getUser().getUserProfile().getUserImage())
                 .introduce(foundFund.getUser().getUserProfile().getIntroduce())
@@ -235,6 +239,8 @@ public class FundService {
                 .content(foundFund.getContent())
                 .myHeart(myHeartFund)
                 .followerCnt(foundFund.getUser().getFollwerCnt())
+                .bookId(foundFund.getBooks().getBookId())
+                .category(foundFund.getBooks().getCategory())
                 .build();
 
         //연관 4개
@@ -268,4 +274,51 @@ public class FundService {
         fundDetail.put("ano","디자인 하단 추천페이지용 ");
         return ResponseEntity.ok().body(fundDetail);
     }
+
+    // 펀딩상세보기 - 비회원
+    public ResponseEntity<?> detailFundNoUser(Long fundid) {
+        boolean myHeartFund;
+        Fund foundFund = fundRepository.findById(fundid).orElseThrow(
+                () -> new NullPointerException("펀딩내용을 찾을 수 없습니다."));
+
+        myHeartFund = false;
+        // 상세보기
+        FundDetailResponseDto fundDetailResponseDto = FundDetailResponseDto.builder()
+                // 저자...
+                .fundId(foundFund.getFundId())
+                .sellerId(foundFund.getUser().getId())
+                .sellerName(foundFund.getUser().getUsername())
+                .sellerImg(foundFund.getUser().getUserProfile().getUserImage())
+                .introduce(foundFund.getUser().getUserProfile().getIntroduce())
+                .bookTitle(foundFund.getBooks().getTitle())
+                .author(foundFund.getBooks().getAuthor())
+                .bookImg(foundFund.getBooks().getBookImg())
+                .fundFile(foundFund.getAudioFund().getFundFile())
+                .successFunding(foundFund.isSuccessGoals())
+                .fundingGoals(foundFund.getFundingGoals())
+                .likeCnt(foundFund.getHeartCnt())
+                .content(foundFund.getContent())
+                .myHeart(myHeartFund)
+                .followerCnt(foundFund.getUser().getFollwerCnt())
+                .bookId(foundFund.getBooks().getBookId())
+                .category(foundFund.getBooks().getCategory())
+                .build();
+
+        Map<String, Object> fundDetail = new HashMap<>();
+        fundDetail.put("content",fundDetailResponseDto);
+        fundDetail.put("ano","디자인 하단 추천페이지용 ");
+        return ResponseEntity.ok().body(fundDetail);
+    }
+
+    //펀딩 삭제하기
+    @Transactional
+  public void removeFunding(Long id){
+    Fund fund = fundRepository.findById(id).orElseThrow(
+            () -> new NullPointerException("펀딩을 찾을 수 없습니다."));
+
+        fundRepository.deleteById(id);
+        audioFundRepository.deleteById(id);
+        fundHeartRepository.deleteAllByFund(fund);
+
+  }
 }
