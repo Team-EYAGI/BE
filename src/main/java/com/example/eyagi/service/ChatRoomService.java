@@ -34,6 +34,7 @@ public class ChatRoomService {
     private final AllChatInfoRepository allChatInfoRepository;
     private final UserRepository userRepository;
     private final ChatMessageRepository chatMessageRepository;
+    private final AllChatInfoService allChatInfoService;
 
     public static final String ENTER_INFO = "ENTER_INFO";
     public static final String USER_INFO = "USER_INFO";
@@ -42,6 +43,11 @@ public class ChatRoomService {
     public ChatRoomCreateResponseDto createChatRoom(ChatRoomCreateRequestDto requestDto, User user) {
         ChatRoom chatRoom = new ChatRoom(requestDto.getChatRoomName(), requestDto.getUuid(), user);
         chatRoomRepository.save(chatRoom);
+
+        // allchatInfo
+//        AllChatInfo allChatInfo = new AllChatInfo(user, chatRoom);
+        allChatInfoService.save(user, chatRoom);
+
         ChatRoomCreateResponseDto chatRoomCreateResponseDto = ChatRoomCreateResponseDto.builder()
                 .chatRoomName(chatRoom.getChatRoomName())
                 .roomId(chatRoom.getRoomId())
@@ -90,15 +96,18 @@ public class ChatRoomService {
     public Map<String, Object> getAllChatRooms(UserDetailsImpl userDetails) {
         User user = userRepository.findById(userDetails.getUser().getId()).orElseThrow(
                 () -> new IllegalArgumentException("유저 없음."));
+        Boolean newMessage;
         List<ChatRoom> AllChatRoom = chatRoomRepository.findAll();
         List<ChatRoomListAdminResponseDto> chatRoomList = new ArrayList<>();
         for(ChatRoom cR : AllChatRoom) {
+            newMessage = true;
             ChatRoomListAdminResponseDto chatRoomListAdminResponseDto = new ChatRoomListAdminResponseDto().builder()
                     .roomId(cR.getRoomId())
                     .createdAt(formmater(cR.getCreatedAt()))
                     .nickname(cR.getOwnUser().getUsername())
                     .userRole(cR.getOwnUser().getRole())
                     .romName(cR.getChatRoomName())
+                    .newMessages(newMessage)
                     .build();
             chatRoomList.add(chatRoomListAdminResponseDto);
         }
