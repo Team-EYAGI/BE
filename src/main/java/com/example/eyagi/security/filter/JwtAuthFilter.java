@@ -38,19 +38,36 @@ public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
             HttpServletResponse response
     ) throws AuthenticationException, IOException {
 
-        // JWT 값을 담아주는 변수 TokenPayload
-        String tokenPayload = request.getHeader("Authorization");
-        if (tokenPayload == null) {
-            System.out.println("올바른 토큰 정보가 아닙니다.");
-            return null;
+        //todo : 여기서 헤더에 리프레시가 있으면 리프레시 꺼내게 하기. 1.
+        if (request.getHeader("RefreshToken") != null){
+            String tokenPayload = request.getHeader("RefreshToken");
+            if (tokenPayload == null) {
+                System.out.println("올바른 토큰 정보가 아닙니다.");
+                return null;
+            }
+
+            JwtPreProcessingToken jwtToken = new JwtPreProcessingToken(
+                    extractor.extract(tokenPayload, request));
+
+            return super
+                    .getAuthenticationManager()
+                    .authenticate(jwtToken);
+        } else {
+            // JWT 값을 담아주는 변수 TokenPayload
+            String tokenPayload = request.getHeader("Authorization");
+            if (tokenPayload == null) {
+                System.out.println("올바른 토큰 정보가 아닙니다.");
+                return null;
+            }
+
+            JwtPreProcessingToken jwtToken = new JwtPreProcessingToken(
+                    extractor.extract(tokenPayload, request));
+
+            return super
+                    .getAuthenticationManager()
+                    .authenticate(jwtToken);
         }
 
-        JwtPreProcessingToken jwtToken = new JwtPreProcessingToken(
-                extractor.extract(tokenPayload, request));
-
-        return super
-                .getAuthenticationManager()
-                .authenticate(jwtToken);
     }
 
     @Override

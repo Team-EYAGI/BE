@@ -21,14 +21,14 @@ public final class JwtTokenUtils extends JwtProperties {
         보안상 다시 로그인을 시키는것이 좋은 것일까 ?
         이문제에 대해서는 우선 로그인을 하도록 구현을 다 해놓고 조언을 구해봐도 좋을 것 같다.
      */
-    private static final RedisService redisService = null;
+//    private static final RedisService redisService = null;
     private static final int SEC = 1;
     private static final int MINUTE = 60 * SEC;
     private static final int HOUR = 60 * MINUTE;
     private static final int DAY = 24 * HOUR;
 
     // JWT 토큰의 유효기간: 1시간 (단위: seconds)
-    private static final int JWT_TOKEN_VALID_SEC = MINUTE * 5;
+    private static final int JWT_TOKEN_VALID_SEC = SEC * 30;
     // JWT 토큰의 유효기간: 1시간 (단위: milliseconds)
     private static final int JWT_TOKEN_VALID_MILLI_SEC = JWT_TOKEN_VALID_SEC * 1000;
 
@@ -65,23 +65,21 @@ public final class JwtTokenUtils extends JwtProperties {
           todo : refresh token 생성! 사용자 이메일 + 유효기간만 담아주기.
      */
     public static String generateJwtReFreshToken(UserDetailsImpl userDetails) {
-        String reFreshToken = null;
-        String username = null;
+        String RefreshToken = null;
         try {
 
-            reFreshToken = JWT.create()
+            RefreshToken = JWT.create()
                     .withIssuer("sparta")
                     .withClaim(CLAIM_USER_NAME, userDetails.getUsername())
 
                     // 토큰 만료 일시 = 현재 시간 + 토큰 유효기간) //30분 부여 .
-                    .withClaim(CLAIM_EXPIRED_DATE, new Date(System.currentTimeMillis() + MINUTE * 30 * 1000))
+                    .withClaim(CLAIM_EXPIRED_DATE, new Date(System.currentTimeMillis() + MINUTE * 10 * 1000))
                     .sign(generateAlgorithm());
-            username = userDetails.getUsername();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        redisService.setValues(username,reFreshToken);
-        return reFreshToken;
+
+        return RefreshToken;
     }
 
     /*

@@ -7,8 +7,11 @@ import com.example.eyagi.security.provider.FormLoginAuthProvider;
 import com.example.eyagi.security.filter.JwtAuthFilter;
 import com.example.eyagi.security.jwt.HeaderTokenExtractor;
 import com.example.eyagi.security.provider.JWTAuthProvider;
+import com.example.eyagi.service.RedisService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -27,6 +30,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true) // @Secured 어노테이션 활성화
@@ -34,14 +38,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JWTAuthProvider jwtAuthProvider;
     private final HeaderTokenExtractor headerTokenExtractor;
-
-    public WebSecurityConfig(
-            JWTAuthProvider jwtAuthProvider,
-            HeaderTokenExtractor headerTokenExtractor
-    ) {
-        this.jwtAuthProvider = jwtAuthProvider;
-        this.headerTokenExtractor = headerTokenExtractor;
-    }
 
     @Bean
     public BCryptPasswordEncoder encodePassword() {
@@ -101,13 +97,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 // 로그아웃 요청 처리 URL
                 .logoutUrl("/user/logout")
-                //todo : addLogoutHandler-> 로그아웃 이후 일어날 로직을 입력.
-                // CustomLogoutHandler -> LogoutHandler를 구현. 리프레시 토큰을 삭제해주는 로그아웃 핸들러 추가.
-//                .addLogoutHandler(new CustomLogoutHandler())
+//                todo : addLogoutHandler-> 로그아웃 이후 일어날 로직을 입력.
+//                 CustomLogoutHandler -> LogoutHandler를 구현. 리프레시 토큰을 삭제해주는 로그아웃 핸들러 추가.
+//                .addLogoutHandler(new CustomLogoutHandler(new RedisService(new StringRedisTemplate())))
                 .permitAll()
-                .and()
-                .exceptionHandling()
-//                .authenticationEntryPoint(new CustomAuthenticationEntryPoint()) // TODO : RT ?....
                 .and()
                 .exceptionHandling()
                 // "접근 불가" 페이지 URL 설정
@@ -175,6 +168,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 나중에 지울 파일
         skipPathList.add("GET,/webjars/**");
         skipPathList.add("POST,/webjars/**");
+
+//        skipPathList.add("POST,/re/refresh"); //엑세스 요청
 
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(

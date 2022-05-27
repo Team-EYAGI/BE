@@ -78,11 +78,6 @@ dependencies {
 
     //Log4JDBC
     implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
-
-    //그라파나
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'io.micrometer:micrometer-core'
-    implementation 'io.micrometer:micrometer-registry-prometheus'
 }
 
 tasks.named('test') {

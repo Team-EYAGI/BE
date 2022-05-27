@@ -57,7 +57,6 @@ public class JwtDecoder {
             if (expiredDate.before(now)) {
 
                 throw new IllegalArgumentException("만료된 토큰입니다.");
-//                request.setAttribute("exception", ErrorCode.EXPIRED_TOKEN);
                 //todo : 유효기간이 끝났을경우 , 재발급을 해야된다는 의미의 에러를 내려주자
             }
             String username = decodedJWT
@@ -65,30 +64,10 @@ public class JwtDecoder {
                     .asString();
             return username;
         }catch (Exception e){
-            e.printStackTrace();
-//            request.setAttribute("exception", ErrorCode.EXPIRED_TOKEN.getCode());
             response.addHeader("Authorization", "TimeOut");
-
             return e.getMessage();
         }
 
-    }
-
-    private Optional<DecodedJWT> isValidToken(String token) {
-        DecodedJWT jwt = null;
-
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(JwtTokenUtils.JWT_SECRET);
-            JWTVerifier verifier = JWT
-                    .require(algorithm)
-                    .build();
-
-            jwt = verifier.verify(token);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-
-        return Optional.ofNullable(jwt);
     }
 
     public String decodeUserRole(String token) {
@@ -135,6 +114,23 @@ public class JwtDecoder {
            return username;
 //        return username;
 
+    }
+
+    private Optional<DecodedJWT> isValidToken(String token) {
+        DecodedJWT jwt = null;
+
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(JwtTokenUtils.JWT_SECRET);
+            JWTVerifier verifier = JWT
+                    .require(algorithm)
+                    .build();
+
+            jwt = verifier.verify(token);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return Optional.ofNullable(jwt);
     }
 
 }
