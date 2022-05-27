@@ -21,6 +21,7 @@ public class JwtDecoder {
 
     public String decodeUsername(String token) {
 
+        try {
             DecodedJWT decodedJWT = isValidToken(token)
                     .orElseThrow(() -> new IllegalArgumentException("유효한 토큰이 아닙니다."));
 
@@ -40,6 +41,13 @@ public class JwtDecoder {
                     .asString();
             return username;
 
+        }catch (Exception e){
+            e.printStackTrace();
+//            request.setAttribute("exception", ErrorCode.EXPIRED_TOKEN.getCode());
+//            response.addHeader("Authorization", "TimeOut");
+
+            return e.getMessage();
+        }
     }
 
     // TODO : RT

@@ -4,6 +4,7 @@ import com.example.eyagi.model.ChatMessage;
 import com.example.eyagi.model.User;
 import com.example.eyagi.repository.UserRepository;
 import com.example.eyagi.security.jwt.JwtDecoder;
+import com.example.eyagi.service.AllChatInfoService;
 import com.example.eyagi.service.ChatMessageService;
 import com.example.eyagi.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class StompHandler implements ChannelInterceptor {
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatService;
     private final UserRepository userRepository;
+    private final AllChatInfoService allChatInfoService;
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel){
@@ -76,6 +78,9 @@ public class StompHandler implements ChannelInterceptor {
             // 퇴장한 클라이언트의 roomId 맵핑 정보를 삭제한다.
             chatRoomService.removeUserEnterInfo(sessionId);
             log.info("DISCONNECTED {}, {}", user.getEmail(), roomId);
+
+            // 유저가 퇴장할 당시의 마지막 TALK 타입 메세지 id 를 저장함
+            allChatInfoService.updateReadMessage(user,roomId);
         }
         return message;
     }

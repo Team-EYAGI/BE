@@ -32,4 +32,8 @@ public class AllChatInfo {
         this.chatRoom = chatRoom;
         this.lastMessageId = 0L;
     }
+
+    public void updateLastMessageId(Long lastMessageId){
+        this.lastMessageId = lastMessageId;
+    }
 }

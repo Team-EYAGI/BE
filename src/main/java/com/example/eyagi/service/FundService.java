@@ -312,13 +312,12 @@ public class FundService {
 
     //펀딩 삭제하기
     @Transactional
-  public void removeFunding(Long id){
-    Fund fund = fundRepository.findById(id).orElseThrow(
+    public void removeFunding(Long id){
+        Fund fund = fundRepository.findById(id).orElseThrow(
             () -> new NullPointerException("펀딩을 찾을 수 없습니다."));
 
         fundRepository.deleteById(id);
         audioFundRepository.deleteById(id);
         fundHeartRepository.deleteAllByFund(fund);
-
-  }
+    }
 }

@@ -13,4 +13,5 @@ public class ChatRoomListAdminResponseDto {
     private String nickname;
     private String createdAt;
     private UserRole userRole;
+    private boolean newMessages;
 }

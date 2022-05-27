@@ -148,16 +148,14 @@ public class AudioDetailService {
         audioFileRepository.delete(audioFile);
     }
 
- //오디오북 상세페이지 삭제
-    @Transactional
+    //오디오북 상세페이지 삭제
     public void removeAudioBook(Long audioBookId){
         AudioBook audioBook = audioBookRepository.findById(audioBookId).orElseThrow(
                 ()-> new NullPointerException("해당 오디오북이 없습니다.")
         );
-            audioBookRepository.delete(audioBook);
-            audioPreRepository.deleteById(audioBook.getPreview().getId());
-            commentRepository.deleteAllByAudioBook(audioBook);
-
+        audioBookRepository.delete(audioBook);
+        audioPreRepository.deleteById(audioBook.getPreview().getId());
+        commentRepository.deleteAllByAudioBook(audioBook);
 
     }
 
