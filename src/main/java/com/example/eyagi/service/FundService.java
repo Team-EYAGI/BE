@@ -314,10 +314,10 @@ public class FundService {
     @Transactional
     public void removeFunding(Long id){
         Fund fund = fundRepository.findById(id).orElseThrow(
-                () -> new NullPointerException("펀딩을 찾을 수 없습니다."));
+            () -> new NullPointerException("펀딩을 찾을 수 없습니다."));
 
-            fundRepository.deleteById(id);
-            audioFundRepository.deleteById(id);
-            fundHeartRepository.deleteAllByFund(fund);
+        fundRepository.deleteById(id);
+        audioFundRepository.deleteById(id);
+        fundHeartRepository.deleteAllByFund(fund);
     }
 }

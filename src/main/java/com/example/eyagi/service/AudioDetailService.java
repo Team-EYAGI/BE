@@ -30,6 +30,7 @@ public class AudioDetailService {
     private final Library_AudioRepository library_audioRepository;
     private final AudioFileRepository audioFileRepository;
     private final AudioPreRepository audioPreRepository;
+    private final UserLibraryRepository userLibraryRepository;
 
     //특정 오디오북 찾기
     public AudioBook findAudioBook(Long id) {
@@ -148,7 +149,6 @@ public class AudioDetailService {
     }
 
     //오디오북 상세페이지 삭제
-    @Transactional
     public void removeAudioBook(Long audioBookId){
         AudioBook audioBook = audioBookRepository.findById(audioBookId).orElseThrow(
                 ()-> new NullPointerException("해당 오디오북이 없습니다.")

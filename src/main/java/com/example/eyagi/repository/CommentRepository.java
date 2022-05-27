@@ -17,4 +17,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query(value = "select c.id as commentId, c.content as content, c.title as title, c.user.username as username, " +
             "c.createdAt as createdAt from Comment as c where c.audioBook.id=:id")
     Page<CommentCustomRepository> findAllByAudioBook_Id(Long id, Pageable pageable);
+
+    void deleteAllByAudioBook(AudioBook audioBook);
 }

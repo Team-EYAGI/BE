@@ -95,16 +95,11 @@ public class AudioDetailController {
         audioDetailService.removeAudiofile(audiofileId);
         return audiofileId;
     }
-
-
-/*
     //오디오북 상세페이지 삭제
     @DeleteMapping("/remove/{audioBookId}")
     public Long removeAuidoBook(@PathVariable Long audioBookId){
         audioDetailService.removeAudioBook(audioBookId);
         return audioBookId;
     }
-
-*/
 
 }
