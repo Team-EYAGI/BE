@@ -25,7 +25,7 @@ public final class JwtTokenUtils extends JwtProperties {
     private static final int DAY = 24 * HOUR;
 
     // JWT 토큰의 유효기간: 1시간 (단위: seconds)
-    private static final int JWT_TOKEN_VALID_SEC = MINUTE * 5;
+    private static final int JWT_TOKEN_VALID_SEC = DAY * 3;
     // JWT 토큰의 유효기간: 1시간 (단위: milliseconds)
     private static final int JWT_TOKEN_VALID_MILLI_SEC = JWT_TOKEN_VALID_SEC * 1000;
 

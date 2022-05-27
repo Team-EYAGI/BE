@@ -13,7 +13,7 @@ public class FormLoginSuccessHandler extends SavedRequestAwareAuthenticationSucc
 
     public static final String TOKEN_TYPE = "BEARER";
 
-    public static final String Refresh_HEADER = "RefreshToken";
+//    public static final String Refresh_HEADER = "RefreshToken"; // TODO : RT
 
 
 
@@ -30,10 +30,10 @@ public class FormLoginSuccessHandler extends SavedRequestAwareAuthenticationSucc
          */
 
         final String token = JwtTokenUtils.generateJwtToken(userDetails);
-        final String RefreshToken = JwtTokenUtils.generateJwtReFreshToken(userDetails);
+//        final String RefreshToken = JwtTokenUtils.generateJwtReFreshToken(userDetails); // TODO : RT
 
         response.addHeader(AUTH_HEADER, TOKEN_TYPE + " " + token);
-        response.addHeader(Refresh_HEADER, TOKEN_TYPE + " " + RefreshToken);
+//        response.addHeader(Refresh_HEADER, TOKEN_TYPE + " " + RefreshToken); // TODO : RT
 
 
     }

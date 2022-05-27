@@ -1,7 +1,6 @@
 package com.example.eyagi.security;
 
 
-//import com.example.eyagi.ExceptionHandler.CustomAuthenticationEntryPoint;
 import com.example.eyagi.security.filter.FormLoginFilter;
 import com.example.eyagi.security.provider.FormLoginAuthProvider;
 import com.example.eyagi.security.filter.JwtAuthFilter;
@@ -93,6 +92,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/chatting/**").permitAll()
                 .antMatchers("/sub/**").permitAll()
                 .antMatchers("/pub/**").permitAll()
+
                 .anyRequest()
                 .permitAll()
                 .and()
@@ -106,7 +106,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .exceptionHandling()
-//                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+//                .authenticationEntryPoint(new CustomAuthenticationEntryPoint()) // TODO : RT ?....
                 .and()
                 .exceptionHandling()
                 // "접근 불가" 페이지 URL 설정
