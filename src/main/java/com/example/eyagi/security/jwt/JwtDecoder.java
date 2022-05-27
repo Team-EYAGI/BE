@@ -19,7 +19,7 @@ public class JwtDecoder {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public String decodeUsername(String token, HttpServletRequest request, HttpServletResponse response) {
+    public String decodeUsername(String token) {
 
         try {
             DecodedJWT decodedJWT = isValidToken(token)
@@ -43,7 +43,7 @@ public class JwtDecoder {
         }catch (Exception e){
             e.printStackTrace();
 //            request.setAttribute("exception", ErrorCode.EXPIRED_TOKEN.getCode());
-            response.addHeader("Authorization", "TimeOut");
+//            response.addHeader("Authorization", "TimeOut");
 
             return e.getMessage();
         }

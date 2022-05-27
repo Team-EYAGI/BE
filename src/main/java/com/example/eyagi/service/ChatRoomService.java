@@ -4,6 +4,7 @@ import com.example.eyagi.dto.request.ChatRoomCreateRequestDto;
 import com.example.eyagi.dto.response.ChatRoomCreateResponseDto;
 import com.example.eyagi.dto.response.ChatRoomListAdminResponseDto;
 import com.example.eyagi.dto.response.ChatRoomListResponseDto;
+import com.example.eyagi.model.ChatMessage;
 import com.example.eyagi.model.ChatRoom;
 import com.example.eyagi.model.User;
 import com.example.eyagi.model.AllChatInfo;
@@ -35,6 +36,7 @@ public class ChatRoomService {
     private final UserRepository userRepository;
     private final ChatMessageRepository chatMessageRepository;
     private final AllChatInfoService allChatInfoService;
+    private final ChatMessageQRepository chatMessageQRepository;
 
     public static final String ENTER_INFO = "ENTER_INFO";
     public static final String USER_INFO = "USER_INFO";
@@ -100,7 +102,16 @@ public class ChatRoomService {
         List<ChatRoom> AllChatRoom = chatRoomRepository.findAll();
         List<ChatRoomListAdminResponseDto> chatRoomList = new ArrayList<>();
         for(ChatRoom cR : AllChatRoom) {
-            newMessage = true;
+            newMessage = false; // 기본 없다고 설정
+            // null일 경우가 생김
+            ChatMessage newLastMessage = chatMessageQRepository.findbyRoomIdAndTalk(cR.getRoomId().toString());
+
+            Long lastMessage = allChatInfoRepository.findByChatRoom(cR).getLastMessageId();
+            if(newLastMessage.getId() > lastMessage) {
+                System.out.println(newLastMessage.getId() + "///" +lastMessage);
+                newMessage = true;
+            }
+
             ChatRoomListAdminResponseDto chatRoomListAdminResponseDto = new ChatRoomListAdminResponseDto().builder()
                     .roomId(cR.getRoomId())
                     .createdAt(formmater(cR.getCreatedAt()))
