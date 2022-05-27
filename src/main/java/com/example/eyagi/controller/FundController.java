@@ -90,4 +90,12 @@ public class FundController {
             return fundService.detailFundNoUser(fundid);
         }
     }
+
+
+    //펀딩 삭제
+  @DeleteMapping("/fund/detail/remove/{fundid}")
+    public Long removeFunding(@PathVariable Long fundid){
+        fundService.removeFunding(fundid);
+        return fundid;
+  }
 }

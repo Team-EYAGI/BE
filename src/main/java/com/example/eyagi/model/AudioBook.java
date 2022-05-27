@@ -43,7 +43,7 @@ public class AudioBook extends Timestamped {
     private AudioPreview preview;
 
 
-    @OneToMany(mappedBy = "audioBook")
+    @OneToMany(mappedBy = "audioBook", cascade = CascadeType.REMOVE)
     private List<Library_Audio> userLibrary;  // 내가 듣고 있는 오디오북 리스트
 
 

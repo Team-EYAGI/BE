@@ -27,6 +27,8 @@ public class FundService {
     private final AwsS3Service awsS3Service;
     private final FundHeartRepository fundHeartRepository;
 
+
+
     public ResponseEntity<?> saveFund(Long BookId, MultipartFile multipartFile, FundRequestDto fundRequestDto,
                                       UserDetailsImpl userDetails) {
         // 최소 펀딩 수량 제한 체킹다시.
@@ -307,4 +309,16 @@ public class FundService {
         fundDetail.put("ano","디자인 하단 추천페이지용 ");
         return ResponseEntity.ok().body(fundDetail);
     }
+
+    //펀딩 삭제하기
+    @Transactional
+  public void removeFunding(Long id){
+    Fund fund = fundRepository.findById(id).orElseThrow(
+            () -> new NullPointerException("펀딩을 찾을 수 없습니다."));
+
+        fundRepository.deleteById(id);
+        audioFundRepository.deleteById(id);
+        fundHeartRepository.deleteAllByFund(fund);
+
+  }
 }

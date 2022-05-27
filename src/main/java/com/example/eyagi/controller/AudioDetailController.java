@@ -33,18 +33,16 @@ public class AudioDetailController {
     private final FollowService followService;
 
 
-
-
     //오디오북 상세페이지 조회 & 조회한 오디오북을 마이페이지 > 내가 듣고 있는 오디오북에 추가 + 조회 하는 유저가 해당 셀러를 팔로우햇는지 여부 추가
     @GetMapping("/{audioBookId}")
-    public ResponseEntity<Map<String, Object>> audioBookDetail (@PathVariable Long audioBookId,
-                                                           @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<Map<String, Object>> audioBookDetail(@PathVariable Long audioBookId,
+                                                               @AuthenticationPrincipal UserDetailsImpl userDetails) {
         AudioBook audioBook = audioDetailService.findAudioBook(audioBookId);
         AudioDetailDto audioDetailDto = audioDetailService.getAudioDetail(audioBook, userDetails.getUser());
         boolean b = followService.followStatus(userDetails.getUser().getId(), audioBook.getSeller().getId());
         Map<String, Object> audioBookDetail = new HashMap<>();
         audioBookDetail.put("audioBookDetail", audioDetailDto);
-        audioBookDetail.put("followStatus",b );
+        audioBookDetail.put("followStatus", b);
         return ResponseEntity.ok(audioBookDetail);
     }
 
@@ -58,15 +56,15 @@ public class AudioDetailController {
 //    }
 
     @GetMapping("/{audioBookId}/comment")
-    public ResponseEntity<?> getComment (@PathVariable Long audioBookId, Pageable pageable){
+    public ResponseEntity<?> getComment(@PathVariable Long audioBookId, Pageable pageable) {
         return audioDetailService.commentList(audioBookId, pageable);
     }
 
     //후기 등록
     @PostMapping("/{audioBookId}/comment/new")
-    public ResponseEntity newComment (@PathVariable Long audioBookId, @RequestBody CommentDto commentDto,
-                            @AuthenticationPrincipal UserDetailsImpl userDetails){
-        Long commentId = audioDetailService.newComment(audioBookId,commentDto,userDetails.getUser());
+    public ResponseEntity newComment(@PathVariable Long audioBookId, @RequestBody CommentDto commentDto,
+                                     @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Long commentId = audioDetailService.newComment(audioBookId, commentDto, userDetails.getUser());
         Map<String, Object> message = new HashMap<>();
         message.put("newCommentId", commentId);
         return new ResponseEntity(message, HttpStatus.OK);
@@ -74,9 +72,9 @@ public class AudioDetailController {
 
     //후기 수정
     @PutMapping("/comment/edit/{commentId}")
-    public ResponseEntity editComment (@PathVariable Long commentId, @RequestBody CommentDto commentDto,
-                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Long editCommentId = audioDetailService.editComment(commentId, userDetails.getUser() , commentDto);
+    public ResponseEntity editComment(@PathVariable Long commentId, @RequestBody CommentDto commentDto,
+                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Long editCommentId = audioDetailService.editComment(commentId, userDetails.getUser(), commentDto);
         Map<String, Object> message = new HashMap<>();
         message.put("editCommentId", editCommentId);
         return new ResponseEntity(message, HttpStatus.OK);
@@ -84,11 +82,26 @@ public class AudioDetailController {
 
     //후기 삭제
     @DeleteMapping("/comment/remove/{commentId}")
-    public ResponseEntity removeComment(@PathVariable Long commentId,@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity removeComment(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Long removeCommentId = audioDetailService.removeComment(commentId, userDetails.getUser());
         Map<String, Object> message = new HashMap<>();
         message.put("removeCommentId", removeCommentId);
         return new ResponseEntity(message, HttpStatus.OK);
+    }
+
+    //오디오파일 삭제
+    @DeleteMapping("audiofile/remove/{audiofileId}")
+    public Long removeAudioFile(@PathVariable Long audiofileId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        audioDetailService.removeAudiofile(audiofileId);
+        return audiofileId;
+    }
+
+
+    //오디오북 상세페이지 삭제
+    @DeleteMapping("/remove/{audioBookId}")
+    public Long removeAuidoBook(@PathVariable Long audioBookId){
+        audioDetailService.removeAudioBook(audioBookId);
+        return audioBookId;
     }
 
 
