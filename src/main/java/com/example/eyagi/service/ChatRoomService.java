@@ -59,23 +59,23 @@ public class ChatRoomService {
         return chatRoomCreateResponseDto;
     }
 
-    // 사용자별 채팅방 목록 조회
-    public List<ChatRoomListResponseDto> getOnesChatRoom(User user) {
-        // 미완. 후에 데이터 관계 맵핑 or 불러오는 기획 설정 후 변경
-        List<AllChatInfo> allChatInfoList = allChatInfoRepository.findAllByUserId(user.getId());
-        List<ChatRoomListResponseDto> responseDtoList = new ArrayList<>();
-        for ( AllChatInfo allChatInfo : allChatInfoList) {
-            ChatRoom chatRoom = allChatInfo.getChatRoom();
-            //일단 무조건 True
-            ChatRoomListResponseDto responseDto = ChatRoomListResponseDto.builder()
-                    .roomId(chatRoom.getRoomId())
-                    .ownUserId(chatRoom.getOwnUser().getId())
-                    .newMessage(true)
-                    .build();
-            responseDtoList.add(responseDto);
-        }
-        return responseDtoList;
-    }
+//    // 사용자별 채팅방 목록 조회
+//    public List<ChatRoomListResponseDto> getOnesChatRoom(User user) {
+//        // 미완. 후에 데이터 관계 맵핑 or 불러오는 기획 설정 후 변경
+//        List<AllChatInfo> allChatInfoList = allChatInfoRepository.findAllByUserId(user.getId());
+//        List<ChatRoomListResponseDto> responseDtoList = new ArrayList<>();
+//        for ( AllChatInfo allChatInfo : allChatInfoList) {
+//            ChatRoom chatRoom = allChatInfo.getChatRoom();
+//            //일단 무조건 True
+//            ChatRoomListResponseDto responseDto = ChatRoomListResponseDto.builder()
+//                    .roomId(chatRoom.getRoomId())
+//                    .ownUserId(chatRoom.getOwnUser().getId())
+//                    .newMessage(true)
+//                    .build();
+//            responseDtoList.add(responseDto);
+//        }
+//        return responseDtoList;
+//    }
 
     // redis 에 입장정보로 sessionId 와 roomId를 저장하고 해단 sessionId 와 토큰에서 받아온 userId를 저장함
     public void setUserEnterInfo(String sessionId, String roomId, Long userId) {
@@ -93,6 +93,33 @@ public class ChatRoomService {
         hashOpsUserInfo.delete(USER_INFO, sessionId);
     }
 
+    // 사용자 새로운 메시지 확인
+    public List<ChatRoomListResponseDto> findNewMessage(UserDetailsImpl userDetails) {
+        User user = userRepository.findById(userDetails.getUser().getId()).orElseThrow(
+                () -> new IllegalArgumentException("유저 없음."));
+        Boolean newMessage;
+        List<AllChatInfo> allChatInfoList = allChatInfoRepository.findAllByUserId(user.getId());
+        List<ChatRoomListResponseDto> responseDtoList = new ArrayList<>();
+        for ( AllChatInfo allChatInfo : allChatInfoList) {
+            newMessage = false; // 기본 없다고 설정
+            ChatRoom chatRoom = allChatInfo.getChatRoom();
+            Optional<ChatMessage> newLastMessage = chatMessageQRepository.findbyRoomIdAndTalk(chatRoom.getRoomId().toString());
+            Long lastMessage = allChatInfoRepository.findByChatRoom(chatRoom).getLastMessageId();
+            System.out.println(newLastMessage.get().getId() + "///" +lastMessage);
+            if(newLastMessage.get().getId() > lastMessage) {
+                newMessage = true;
+            }
+
+            ChatRoomListResponseDto responseDto = ChatRoomListResponseDto.builder()
+                    .roomId(chatRoom.getRoomId())
+                    .ownUserId(chatRoom.getOwnUser().getId())
+                    .newMessage(newMessage)
+                    .build();
+            responseDtoList.add(responseDto);
+        }
+        return responseDtoList;
+    }
+
 
     //채팅방전부찾기
     public Map<String, Object> getAllChatRooms(UserDetailsImpl userDetails) {
@@ -104,12 +131,21 @@ public class ChatRoomService {
         for(ChatRoom cR : AllChatRoom) {
             newMessage = false; // 기본 없다고 설정
             // null일 경우가 생김
-            ChatMessage newLastMessage = chatMessageQRepository.findbyRoomIdAndTalk(cR.getRoomId().toString());
-
+            Optional<ChatMessage> newLastMessage = chatMessageQRepository.findbyRoomIdAndTalk(cR.getRoomId().toString());
             Long lastMessage = allChatInfoRepository.findByChatRoom(cR).getLastMessageId();
-            if(newLastMessage.getId() > lastMessage) {
-                System.out.println(newLastMessage.getId() + "///" +lastMessage);
-                newMessage = true;
+            if(newLastMessage == null) {
+                System.out.println("널" + newLastMessage);
+                // 환영인사 자동.
+                ChatMessage chatMessage = new ChatMessage(ChatMessage.MessageType.TALK, cR.getRoomId().toString(), user.getId(), "무엇을 도와드릴까요?");
+                chatMessageRepository.save(chatMessage);
+
+                // All chat info 에 기록남기기
+//                allChatInfoService.save(user, cR);
+            } else {
+                if(newLastMessage.get().getId() > lastMessage) {
+                    System.out.println(newLastMessage.get().getId() + "///" +lastMessage);
+                    newMessage = true;
+                }
             }
 
             ChatRoomListAdminResponseDto chatRoomListAdminResponseDto = new ChatRoomListAdminResponseDto().builder()
@@ -135,6 +171,7 @@ public class ChatRoomService {
     public void quitChat(Long roomId) {
         chatRoomRepository.deleteByRoomId(roomId);
         chatMessageRepository.deleteByRoomId(roomId.toString());
+        allChatInfoRepository.deleteByChatRoom_RoomId(roomId);
     }
 
     // redis 에 저장했던 sessionId 로 userId 를 얻어오고 해당 userId 로 User 객체를 찾아 리턴함

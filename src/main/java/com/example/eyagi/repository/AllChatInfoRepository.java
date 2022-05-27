@@ -14,4 +14,6 @@ public interface AllChatInfoRepository extends JpaRepository<AllChatInfo,Long> {
     AllChatInfo findByChatRoom_RoomIdAndUserId(Long chatRoomId, Long userId);
 
     AllChatInfo findByChatRoom(ChatRoom chatRoom);
+
+    void deleteByChatRoom_RoomId(Long roomId);
 }

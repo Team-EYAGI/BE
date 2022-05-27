@@ -1,6 +1,7 @@
 package com.example.eyagi.service;
 
 import com.example.eyagi.model.AllChatInfo;
+import com.example.eyagi.model.ChatMessage;
 import com.example.eyagi.model.ChatRoom;
 import com.example.eyagi.model.User;
 import com.example.eyagi.repository.AllChatInfoRepository;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +24,8 @@ public class AllChatInfoService {
     @Transactional
     public void updateReadMessage(User user, String roomId){
         // 마지막으로 읽은 메세지
-        Long lastMessageId = chatMessageQRepository.findbyRoomIdAndTalk(roomId).getId();
+        Optional<ChatMessage> chatMessage = chatMessageQRepository.findbyRoomIdAndTalk(roomId);
+        Long lastMessageId = chatMessage.get().getId();
         AllChatInfo allChatInfo = allChatInfoRepository.findByChatRoom_RoomIdAndUserId(Long.parseLong(roomId),user.getId());
         allChatInfo.updateLastMessageId(lastMessageId);
     }

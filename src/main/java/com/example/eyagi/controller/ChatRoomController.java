@@ -38,11 +38,11 @@ public class ChatRoomController {
         return chatRoomService.createChatRoom(requestDto, userDetails.getUser());
     }
 
-    // 사용자별 채팅방 목록 조회
-    @GetMapping("/chat/rooms/mine")
-    public List<ChatRoomListResponseDto> getOnesChatRoom(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return chatRoomService.getOnesChatRoom(userDetails.getUser());
-    }
+//    // 사용자별 채팅방 목록 조회
+//    @GetMapping("/chat/rooms/mine")
+//    public List<ChatRoomListResponseDto> getOnesChatRoom(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        return chatRoomService.getOnesChatRoom(userDetails.getUser());
+//    }
 
     // 해당 채팅방의 메세지 조회
     @GetMapping("/chat/{roomId}/messages")
@@ -52,11 +52,17 @@ public class ChatRoomController {
 
     // 전체 채팅방 목록 조회 (관리자용)
     @GetMapping("/rooms")
-    public Map<String, Object> getAllChatRooms(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public Map<String, Object> getAllChatRoom(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         if(!userDetails.getUserRole().equals("ROLE_ADMIN")) {
             throw new IllegalArgumentException("이 계정은 관리자 권한이 아닙니다." + userDetails.getUsername());
         }
         return chatRoomService.getAllChatRooms(userDetails);
+    }
+
+    // 새로운 메세지 확인하기
+    @PostMapping("/finds/newMessage")
+    public List<ChatRoomListResponseDto> messageNew(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return chatRoomService.findNewMessage(userDetails);
     }
 
     //해당 채팅방 폭파!
