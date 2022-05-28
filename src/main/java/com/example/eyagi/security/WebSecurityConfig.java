@@ -104,7 +104,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // CustomLogoutHandler -> LogoutHandler를 구현. 리프레시 토큰을 삭제해주는 로그아웃 핸들러 추가.
 //                .addLogoutHandler(new CustomLogoutHandler())
                 .permitAll()
-//                .authenticationEntryPoint(new CustomAuthenticationEntryPoint()) // TODO : RT ?....
                 .and()
                 .exceptionHandling()
                 // "접근 불가" 페이지 URL 설정
