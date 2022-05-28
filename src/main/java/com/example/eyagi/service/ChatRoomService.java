@@ -46,8 +46,6 @@ public class ChatRoomService {
         ChatRoom chatRoom = new ChatRoom(requestDto.getChatRoomName(), requestDto.getUuid(), user);
         chatRoomRepository.save(chatRoom);
 
-        // allchatInfo
-//        AllChatInfo allChatInfo = new AllChatInfo(user, chatRoom);
         allChatInfoService.save(user, chatRoom);
 
         ChatRoomCreateResponseDto chatRoomCreateResponseDto = ChatRoomCreateResponseDto.builder()
@@ -105,7 +103,6 @@ public class ChatRoomService {
             ChatRoom chatRoom = allChatInfo.getChatRoom();
             Optional<ChatMessage> newLastMessage = chatMessageQRepository.findbyRoomIdAndTalk(chatRoom.getRoomId().toString());
             Long lastMessage = allChatInfoRepository.findByChatRoom(chatRoom).getLastMessageId();
-            System.out.println(newLastMessage.get().getId() + "///" +lastMessage);
             if(newLastMessage.get().getId() > lastMessage) {
                 newMessage = true;
             }
@@ -130,23 +127,23 @@ public class ChatRoomService {
         List<ChatRoomListAdminResponseDto> chatRoomList = new ArrayList<>();
         for(ChatRoom cR : AllChatRoom) {
             newMessage = false; // 기본 없다고 설정
-            // null일 경우가 생김
-            Optional<ChatMessage> newLastMessage = chatMessageQRepository.findbyRoomIdAndTalk(cR.getRoomId().toString());
-            Long lastMessage = allChatInfoRepository.findByChatRoom(cR).getLastMessageId();
-            if(newLastMessage == null) {
-                System.out.println("널" + newLastMessage);
-                // 환영인사 자동.
-                ChatMessage chatMessage = new ChatMessage(ChatMessage.MessageType.TALK, cR.getRoomId().toString(), user.getId(), "무엇을 도와드릴까요?");
-                chatMessageRepository.save(chatMessage);
-
-                // All chat info 에 기록남기기
-//                allChatInfoService.save(user, cR);
-            } else {
-                if(newLastMessage.get().getId() > lastMessage) {
-                    System.out.println(newLastMessage.get().getId() + "///" +lastMessage);
-                    newMessage = true;
-                }
-            }
+//            // null일 경우가 생김
+//            Optional<ChatMessage> newLastMessage = chatMessageQRepository.findbyRoomIdAndTalk(cR.getRoomId().toString());
+//            Long lastMessage = allChatInfoRepository.findByChatRoom(cR).getLastMessageId();
+//            if(newLastMessage == null) {
+//                System.out.println("널" + newLastMessage);
+//                // 환영인사 자동.
+//                ChatMessage chatMessage = new ChatMessage(ChatMessage.MessageType.TALK, cR.getRoomId().toString(), user.getId(), "무엇을 도와드릴까요?");
+//                chatMessageRepository.save(chatMessage);
+//
+//                // All chat info 에 기록남기기
+////                allChatInfoService.save(user, cR);
+//            } else {
+//                if(newLastMessage.get().getId() > lastMessage) {
+//                    System.out.println(newLastMessage.get().getId() + "///" +lastMessage);
+//                    newMessage = true;
+//                }
+//            }
 
             ChatRoomListAdminResponseDto chatRoomListAdminResponseDto = new ChatRoomListAdminResponseDto().builder()
                     .roomId(cR.getRoomId())
