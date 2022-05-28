@@ -45,7 +45,7 @@ public class AudioController extends JwtProperties {
 //
 //    static String path = "/home/ubuntu/eyagi/audio/";  //배포시
 
-//    @Value("{$audio_path}")
+    @Value("{$audio_path}")
     static String path= filePath;  //배포시
 
 

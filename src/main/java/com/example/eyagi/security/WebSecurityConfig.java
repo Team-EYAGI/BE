@@ -1,7 +1,7 @@
 package com.example.eyagi.security;
 
 
-import com.example.eyagi.ExceptionHandler.CustomAuthenticationEntryPoint;
+
 import com.example.eyagi.security.filter.FormLoginFilter;
 import com.example.eyagi.security.provider.FormLoginAuthProvider;
 import com.example.eyagi.security.filter.JwtAuthFilter;
