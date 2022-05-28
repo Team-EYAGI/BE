@@ -88,6 +88,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeRequests()
+                //웹소켓 접근
+                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/chatting/**").permitAll()
+                .antMatchers("/sub/**").permitAll()
+                .antMatchers("/pub/**").permitAll()
+                .antMatchers("/acturator/**").permitAll() //Acturator 권한설정 X
                 .anyRequest()
                 .permitAll()
                 .and()
@@ -159,10 +165,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/book/request"); //오디오 요청 페이지 조회 허용
         skipPathList.add("GET,/fund"); //펀드 목록 조회 허용
         skipPathList.add("POST,/fund"); //펀드 목록 조회 허용
+        skipPathList.add("POST,/fund/detail/**");
         skipPathList.add("GET,/main/fund"); //메인 펀딩 목록
         skipPathList.add("GET,/search");  //검색허용
         skipPathList.add("GET,/user/kakao/callback"); //카카오 소셜 로그인 허용
 
+        // stomp열기
+        skipPathList.add("GET,/chatting/**");
+        // 나중에 지울 파일
+        skipPathList.add("GET,/webjars/**");
+        skipPathList.add("POST,/webjars/**");
 
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(

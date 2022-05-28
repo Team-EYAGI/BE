@@ -159,6 +159,7 @@ public class UserService {
         return todayCreatorList;
     }
 
+
     public Page<UserCustomRepositiry> findSellerList (Pageable pageable){
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
         Sort sort = Sort.by(Sort.Direction.DESC, "createdAt" );
@@ -167,4 +168,12 @@ public class UserService {
         return sellerList;
     }
 
+//
+//    // 유저의 pk 값으로 유저 조회
+//    public User getUser(Long id) {
+//        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("회원이 아닙니다."));
+//    }
+
 }
+
+
