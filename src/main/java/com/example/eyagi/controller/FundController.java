@@ -77,6 +77,8 @@ public class FundController {
 //    ) {
 //        return fundService.detailFund(fundid, userDetails);
 //    }
+
+//    펀딩 상세보기
     @PostMapping("/fund/detail/{fundid}")
     public ResponseEntity<?> detailFund(
             @PathVariable Long fundid,

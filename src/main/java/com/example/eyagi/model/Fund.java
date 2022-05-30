@@ -1,10 +1,9 @@
 package com.example.eyagi.model;
 
 import com.example.eyagi.dto.FundRequestDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
+import static javax.persistence.FetchType.*;
 import javax.persistence.*;
 import java.util.List;
 
@@ -19,14 +18,14 @@ public class Fund extends Timestamped {
     @Column
     private String content;
 
-    @OneToOne
+    @OneToOne(fetch = LAZY)
     @JoinColumn(name = "fundAudioId")
     private AudioFund audioFund;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     private Books books;
 
     @Column

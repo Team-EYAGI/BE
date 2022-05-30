@@ -8,13 +8,24 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.EntityGraph;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface FundRepository extends JpaRepository<Fund, Long> {
+
+//    @EntityGraph(attributePaths = {"books","user"}, type = EntityGraph.EntityGraphType.FETCH)
+    Optional<Fund> findById(Long id);
+
+    @EntityGraph(attributePaths = {"books","user"}, type = EntityGraph.EntityGraphType.FETCH)
+//    @Query("select distinct u from Fund u left join u.user")
     List<Fund> findAllByUserIdOrderByFundIdDesc(Long user_id);
+
+    @EntityGraph(attributePaths = {"books","user"}, type = EntityGraph.EntityGraphType.FETCH)
+    @Query("select distinct u from Fund u left join u.user")
     List<Fund> findAllByOrderByFundIdDesc();
+
     Optional<Fund> findByUserAndBooks(User seller, Books books);
 
     @Query(value = "select f.fundId as fundId, f.user.username as sellerName, f.heartCnt as likeCnt, " +

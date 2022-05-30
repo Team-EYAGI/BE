@@ -28,12 +28,15 @@ public class UserProfile extends Timestamped{
 
     private String originName; //오디오 파일명.
 
-    @OneToOne //이거는 필드는 리팩토링할때 없애야함.
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AUDIOFILE_ID")
     private AudioFile userVoice; //내 보이스 - 판매자만 파일 크기 지정해줘야함
 
-    @OneToOne
-    @JoinColumn(name = "USER_ID") //유저테이블과 프로필 테이블중 프로필 테이블에 작업수행이 더 빈번할 것으로 판단되어 프로필에 외래키를 관리하도록 줌.
+//    @OneToOne
+//    @JoinColumn(name = "USER_ID") //유저테이블과 프로필 테이블중 프로필 테이블에 작업수행이 더 빈번할 것으로 판단되어 프로필에 외래키를 관리하도록 줌.
+//    private User user;
+
+    @OneToOne(mappedBy = "userProfile",fetch = FetchType.LAZY)
     private User user;
 
     public UserProfile (User user){

@@ -50,7 +50,7 @@ public class UserController {
 
 
     // 마이페이지
-    @PostMapping("/user/mypage")
+    @PostMapping("/user/mypage") // => 이거 뭥?
     public ResponseEntity<UserDto.MypageDto> viewMyPage(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return userService.viewMyPage(userDetails);
     }
@@ -80,7 +80,7 @@ public class UserController {
 //        response.addHeader(Refresh_HEADER, generateJwtReFreshToken(userDetails));
 //    }
 
-
+//      셀러 목록 조회
     @GetMapping ("/sellerList")
     public ResponseEntity sellerList(Pageable pageable) {
         return ResponseEntity.ok(userService.findSellerList(pageable));
