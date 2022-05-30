@@ -1,20 +1,18 @@
-# readme
-
 <p align="center">
-<img src="[https://user-images.githubusercontent.com/61370487/171013112-796a9d06-6b91-4012-9af7-ee9ccfb20eaf.png](https://user-images.githubusercontent.com/61370487/171013112-796a9d06-6b91-4012-9af7-ee9ccfb20eaf.png)" alt="pick-git-logo" width="220" height="220">
+<img src="https://user-images.githubusercontent.com/61370487/171013112-796a9d06-6b91-4012-9af7-ee9ccfb20eaf.png" alt="pick-git-logo" width="220" height="220">
 </p>
 <div align="center">
 💻 다양한 사람들의 목소리를 연결하는 오디오북 사이트</br>
 🌏 [이야기(eyagi)](https://www.eyagibook.shop/)
 </div>
 <br/>
-
+<div align="center">
 ![https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white&link=https://balanced-desk-3a4.notion.site/EYAGI-06e6113484324fe8ba37ec83e5e70b8d](https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white&link=https://balanced-desk-3a4.notion.site/EYAGI-06e6113484324fe8ba37ec83e5e70b8d)
 
 ![https://img.shields.io/badge/Instagram-%23E4405F.svg?style=for-the-badge&logo=Instagram&logoColor=white&link=https://www.instagram.com/_eyagi_/](https://img.shields.io/badge/Instagram-%23E4405F.svg?style=for-the-badge&logo=Instagram&logoColor=white&link=https://www.instagram.com/_eyagi_/)
-
+</div>
+<br/>
 ## 프로젝트 소개
-
 ---
 
 저희 EYAGI(이야기)에서는
@@ -27,7 +25,6 @@
 크리에이터(낭독자)로 전환 신청하여 자신의 목소리를 세상 밖에 들려주세요!
 
 ## eyagi(이야기)
-
 ---
 
 |메인 페이지|오디오북 페이지|댓글|
@@ -42,13 +39,11 @@
 |<img src=https://user-images.githubusercontent.com/61370487/171026925-7215b3f8-7369-4f58-a4f6-bd57493b21ed.gif>|<img src=https://user-images.githubusercontent.com/61370487/171030108-3e4bc940-20ff-497a-9484-e920b958cef9.gif>|<img src=https://user-images.githubusercontent.com/61370487/171030132-8b300843-90f0-4e72-8271-933c75026aff.gif>|
 
 ## 팀원 소개
-
 ---
 
 ![SS]([https://user-images.githubusercontent.com/61370487/171034504-893c0c50-c33c-47a3-b383-f03e7e454343.PNG](https://user-images.githubusercontent.com/61370487/171034504-893c0c50-c33c-47a3-b383-f03e7e454343.PNG)
 
 ## 아키텍처(Architecture)
-
 ---
 
 <p align="center">
@@ -56,7 +51,6 @@
 </p>
 
 ## 기술스택
-
 ---
 <!-- spring -->
 <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
@@ -91,5 +85,4 @@
 <img src="https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white">
 
 ### ERD
-
 ---
