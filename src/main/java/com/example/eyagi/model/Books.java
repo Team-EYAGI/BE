@@ -1,6 +1,7 @@
 package com.example.eyagi.model;
 
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -33,10 +34,12 @@ public class Books {
     @Column(nullable = false)
     private String category;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
+    @BatchSize(size = 100)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<AudioBook> audioBookList;
 
-    @OneToMany(mappedBy = "book")
+    @BatchSize(size = 100)
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     private List<Library_Books> userLibrary;
 
 

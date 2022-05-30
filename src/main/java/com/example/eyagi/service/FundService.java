@@ -26,6 +26,7 @@ public class FundService {
     private final BooksRepository booksRepository;
     private final AwsS3Service awsS3Service;
     private final FundHeartRepository fundHeartRepository;
+    private final FundQRepository fundQRepository;
 
 
 
@@ -211,8 +212,10 @@ public class FundService {
     public ResponseEntity<?> detailFund(Long fundid, FundUserRequestDto requestDto /* UserDetailsImpl userDetails */) {
         boolean myHeartFund;
         User user = userRepository.findByUsername(requestDto.getUsername()).orElseThrow(() -> new NullPointerException("유저 X"));
-        Fund foundFund = fundRepository.findById(fundid).orElseThrow(
+        Fund foundFund = fundQRepository.findNewandById(fundid).orElseThrow(
                 () -> new NullPointerException("펀딩내용을 찾을 수 없습니다."));
+//        Fund foundFund = fundRepository.findById(fundid).orElseThrow(
+//                () -> new NullPointerException("펀딩내용을 찾을 수 없습니다."));
 
         myHeartFund = false;
         boolean existsFundHeart = fundHeartRepository.existsByUserAndFund(user, foundFund);
@@ -243,32 +246,6 @@ public class FundService {
                 .category(foundFund.getBooks().getCategory())
                 .build();
 
-        //연관 4개
-//        List<Fund> fundList = fundRepository.findAll();
-//        List<FundResponseDto> fundResponse = new ArrayList<>();
-//        for(Fund f : fundList) {
-//            myHeartFund = false;
-//            existsFundHeart = fundHeartRepository.existsByUserAndFund_FundId(user, f.getFundId());
-//            if(user != null) {
-//                if(existsFundHeart) {
-//                    myHeartFund = true;
-//                }
-//            }
-//            FundResponseDto fundResponseDto = FundResponseDto.builder()
-//                    .fundId(f.getFundId())
-//                    .sellerName(f.getUser().getUsername())
-//                    .likeCnt(f.getHeartCnt())
-//                    .fundFile(f.getAudioFund().getFundFile())
-//                    .bookTitle(f.getBooks().getTitle())
-//                    .bookImg(f.getBooks().getBookImg())
-//                    .myHeart(myHeartFund)
-//                    .fundingGoals(f.getFundingGoals())
-//                    .successFunding(f.isSuccessGoals())
-//                    .build();
-//            fundResponse.add(fundResponseDto);
-//        }
-
-
         Map<String, Object> fundDetail = new HashMap<>();
         fundDetail.put("content",fundDetailResponseDto);
         fundDetail.put("ano","디자인 하단 추천페이지용 ");
@@ -278,11 +255,12 @@ public class FundService {
     // 펀딩상세보기 - 비회원
     public ResponseEntity<?> detailFundNoUser(Long fundid) {
         boolean myHeartFund;
-        Fund foundFund = fundRepository.findById(fundid).orElseThrow(
+//        Fund foundFund = fundRepository.findById(fundid).orElseThrow(
+//                () -> new NullPointerException("펀딩내용을 찾을 수 없습니다."));
+        Fund foundFund = fundQRepository.findNewandById(fundid).orElseThrow(
                 () -> new NullPointerException("펀딩내용을 찾을 수 없습니다."));
-
         myHeartFund = false;
-        // 상세보기
+//        // 상세보기
         FundDetailResponseDto fundDetailResponseDto = FundDetailResponseDto.builder()
                 // 저자...
                 .fundId(foundFund.getFundId())
