@@ -41,12 +41,11 @@
 |<img src=https://user-images.githubusercontent.com/61370487/171026925-7215b3f8-7369-4f58-a4f6-bd57493b21ed.gif>|<img src=https://user-images.githubusercontent.com/61370487/171030108-3e4bc940-20ff-497a-9484-e920b958cef9.gif>|<img src=https://user-images.githubusercontent.com/61370487/171030132-8b300843-90f0-4e72-8271-933c75026aff.gif>|
 
 ## 팀원 소개
----
+![dfdfdf](https://user-images.githubusercontent.com/61370487/171037033-2ceb89c4-5ce4-474c-99ac-5da734dcf333.PNG)
 
 ## 아키텍처(Architecture)
----
 <p align="center">
-<img src="[https://user-images.githubusercontent.com/61370487/171033795-ff2ec9f8-cbcc-4d7f-8c01-0b2360dc2dc4.png](https://user-images.githubusercontent.com/61370487/171033795-ff2ec9f8-cbcc-4d7f-8c01-0b2360dc2dc4.png)">
+<img src="https://user-images.githubusercontent.com/61370487/171033795-ff2ec9f8-cbcc-4d7f-8c01-0b2360dc2dc4.png">
 </p>
 
 ## 기술스택
