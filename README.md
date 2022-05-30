@@ -3,6 +3,6 @@
 </p>
 <div align="center">
 💻 다양한 사람들의 목소리를 연결하는 오디오북 사이트</br>
-🌏 [eyagi](https://www.eyagibook.shop/)
+🌏 [이야기(eyagi)](https://www.eyagibook.shop/)
 </div>
 <br/>
