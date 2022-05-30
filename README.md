@@ -1,4 +1,4 @@
-         ![KakaoTalk_20220527_205355751](https://user-images.githubusercontent.com/61370487/171013112-796a9d06-6b91-4012-9af7-ee9ccfb20eaf.png)
+![KakaoTalk_20220527_205355751](https://user-images.githubusercontent.com/61370487/171013112-796a9d06-6b91-4012-9af7-ee9ccfb20eaf.png)
 
                                     :computer: 다양한 사람들의 목소리를 연결하는 오디오북 사이트 
 
