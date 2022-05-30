@@ -10,9 +10,9 @@
 
 <div align="center">
   
-[![https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white&link=https://balanced-desk-3a4.notion.site/EYAGI-06e6113484324fe8ba37ec83e5e70b8d](https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white&link=https://balanced-desk-3a4.notion.site/EYAGI-06e6113484324fe8ba37ec83e5e70b8d)
-  
-[![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?style=for-the-badge&logo=Instagram&logoColor=white&link=https://www.instagram.com/_eyagi_/)](https://www.instagram.com/_eyagi_/)
+![https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white&link=https://balanced-desk-3a4.notion.site/EYAGI-06e6113484324fe8ba37ec83e5e70b8d](https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white&link=https://balanced-desk-3a4.notion.site/EYAGI-06e6113484324fe8ba37ec83e5e70b8d)
+
+![https://img.shields.io/badge/Instagram-%23E4405F.svg?style=for-the-badge&logo=Instagram&logoColor=white&link=https://www.instagram.com/_eyagi_/](https://img.shields.io/badge/Instagram-%23E4405F.svg?style=for-the-badge&logo=Instagram&logoColor=white&link=https://www.instagram.com/_eyagi_/)
   
 </div>
 <br/>
@@ -35,21 +35,16 @@
 |메인 페이지|오디오북 페이지|댓글|
 |:-:|:-:|:-:|
 |<img src=https://user-images.githubusercontent.com/61370487/171026913-adb69bee-9171-4b12-b273-8f1a5fe828f3.gif>|<img src=https://user-images.githubusercontent.com/61370487/171030696-98bbaa9e-347b-4633-956c-77462db17670.gif>|<img src=https://user-images.githubusercontent.com/61370487/171026534-71d090f4-0d17-465b-aa59-c2384232e88c.gif>|
-
 |<b>팔로우</b>|<b>오디오북요청</b>|<b>채팅</b>|
-
 |<img src=https://user-images.githubusercontent.com/61370487/171026610-b4584b86-0174-4c28-ae57-b25fe1f561f8.gif>|<img src=https://user-images.githubusercontent.com/61370487/171030045-42a40812-b807-4b52-ab75-199d88a075eb.gif>|<img src=[https://user-images.githubusercontent.com/61370487/171029947-8c62bbd1-fe94-41f6-9714-0a08e9e63151.gif](https://user-images.githubusercontent.com/61370487/171029947-8c62bbd1-fe94-41f6-9714-0a08e9e63151.gif)>|
 |<b>펀딩</b>|<b>검색</b>|<b>마이페이지</b>|
-
 |<img src=https://user-images.githubusercontent.com/61370487/171026925-7215b3f8-7369-4f58-a4f6-bd57493b21ed.gif>|<img src=https://user-images.githubusercontent.com/61370487/171030108-3e4bc940-20ff-497a-9484-e920b958cef9.gif>|<img src=https://user-images.githubusercontent.com/61370487/171030132-8b300843-90f0-4e72-8271-933c75026aff.gif>|
 
 ## 팀원 소개
 ---
-![SS]([https://user-images.githubusercontent.com/61370487/171034504-893c0c50-c33c-47a3-b383-f03e7e454343.PNG](https://user-images.githubusercontent.com/61370487/171034504-893c0c50-c33c-47a3-b383-f03e7e454343.PNG)
 
 ## 아키텍처(Architecture)
 ---
-
 <p align="center">
 <img src="[https://user-images.githubusercontent.com/61370487/171033795-ff2ec9f8-cbcc-4d7f-8c01-0b2360dc2dc4.png](https://user-images.githubusercontent.com/61370487/171033795-ff2ec9f8-cbcc-4d7f-8c01-0b2360dc2dc4.png)">
 </p>
