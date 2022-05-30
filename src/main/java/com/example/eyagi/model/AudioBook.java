@@ -42,8 +42,7 @@ public class AudioBook extends Timestamped {
     @JoinColumn(name = "PREVIEW_ID")
     private AudioPreview preview;
 
-
-    @OneToMany(mappedBy = "audioBook", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "audioBook", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Library_Audio> userLibrary;  // 내가 듣고 있는 오디오북 리스트
 
 

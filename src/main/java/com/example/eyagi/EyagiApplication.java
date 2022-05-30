@@ -9,9 +9,7 @@ import javax.annotation.PostConstruct;
 import java.util.TimeZone;
 
 @EnableJpaAuditing
-@SpringBootApplication(
-        exclude = { RedisRepositoriesAutoConfiguration.class }
-)
+@SpringBootApplication(exclude = { RedisRepositoriesAutoConfiguration.class })
 public class EyagiApplication {
 
     public static void main(String[] args) {

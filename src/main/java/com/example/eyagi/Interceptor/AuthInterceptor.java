@@ -14,17 +14,12 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {
 
-
     private  final JwtDecoder jwtDecoder;
-    private final HeaderTokenExtractor headerTokenExtractor;
-    private final UserRepository userRepository;
-
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -38,14 +33,12 @@ public class AuthInterceptor implements HandlerInterceptor {
         //어노테이션이 포함되어 있는지 검사
         HandlerMethod hm = (HandlerMethod) handler;
         Auth = ((HandlerMethod) handler).getMethodAnnotation(Auth.class);
-        // 어노테이션 없는 경우
+        // 제작한 어노테이션 없는 경우
         if (Auth == null) {
             return true;
         }
-//헤더에서 토큰을 디코딩하고 멤버에 해당하는 권한을 가지고 있는 지 검사. admin인지 체크 해야함.
-
+        //헤더에서 토큰을 꺼내옴.
         final String header = request.getHeader("Authorization");
-        log.debug("header가 뭘까"+header);
 
         final String HEADER_PREFIX = "Bearer ";
 
@@ -53,9 +46,14 @@ public class AuthInterceptor implements HandlerInterceptor {
                 HEADER_PREFIX.length(),
                 header.length()
         ));
-
+        /*
+        비회원의 경우, 시큐리티에서 토큰 유무를 따기지 때문에 굳이 만들 필요 없음.
+         user이면 예외 발생. => seller 혹은 admin만 가능.
+        제작한 어노테이션에 admin이라고 적혀있다면, 접속을 시도한 유저의 role도 admin 이여야함.
+         user와 admin권한 조건문으로 제한을 둠으로써 seller에 대한 처리가 자동으로 되었음.
+         */
         if(role.equals("ROLE_USER")){
-            throw new IllegalAccessException("권한이 없습니다."); //500에러가 뜸. 400번대 에러로 변경할 수 없을까 ?
+            throw new IllegalAccessException("권한이 없습니다.");
         }
         if(Auth.authority()==UserRole.ADMIN){
             if(!role.equals("ROLE_ADMIN")){

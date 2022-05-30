@@ -34,18 +34,24 @@ public class User extends Timestamped{
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+    //    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+//    private UserLibrary userLibrary;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "User_Library")
     private UserLibrary userLibrary;
 
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE) //프로필은 회원이 탈퇴하면 함께 사라짐.
+//    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE) //프로필은 회원이 탈퇴하면 함께 사라짐.
+//    private UserProfile userProfile;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE) //프로필은 회원이 탈퇴하면 함께 사라짐.
+    @JoinColumn(name = "USER_Profile")
     private UserProfile userProfile;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE) //회원이 단 후기는 회원이 탈퇴하면 함께 사라짐.
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE) //회원이 단 후기는 회원이 탈퇴하면 함께 사라짐.
     private List<Comment> comments;
 
 
-    @OneToMany(mappedBy = "seller", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE) //해당 셀러가 등록한 오디오북은 셀러가 탈퇴하면 함께 사라짐.
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.REMOVE) //해당 셀러가 등록한 오디오북은 셀러가 탈퇴하면 함께 사라짐.
     private List<AudioBook> audioBookList;
 
     @Column(unique = true)
@@ -68,10 +74,10 @@ public class User extends Timestamped{
     }
 
 
-    @OneToMany(mappedBy = "follower")
+    @OneToMany(mappedBy = "follower",fetch = FetchType.LAZY)
     private List<Follow>followingList = new ArrayList<>(); //내가 팔로우 하는 사람 목록
 
-    @OneToMany(mappedBy = "followed")
+    @OneToMany(mappedBy = "followed",fetch = FetchType.LAZY)
     private List<Follow>followedList = new ArrayList<>(); //나를 팔로우 하는 사람 목록
 
     //내가 follow를 하고 있는 사람들

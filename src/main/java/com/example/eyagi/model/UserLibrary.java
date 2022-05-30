@@ -23,15 +23,19 @@ public class UserLibrary {
     @Id
     private Long id;
 
-    @OneToMany(mappedBy = "userLibrary")
-    private final List<Library_Books> myBook = new ArrayList<>(); // 내 서재에 담은 책 리스트
+    @OneToMany(mappedBy = "userLibrary", fetch = FetchType.LAZY)
+    private List<Library_Books> myBook = new ArrayList<>(); // 내 서재에 담은 책 리스트
 
-    @OneToMany(mappedBy = "userLibrary")
-    private final List<Library_Audio> myAuidoBook = new ArrayList<>();  // 내가 듣고 있는 오디오북 리스트
+    @OneToMany(mappedBy = "userLibrary", fetch = FetchType.LAZY)
+    private List<Library_Audio> myAuidoBook = new ArrayList<>();  // 내가 듣고 있는 오디오북 리스트
 
-    @OneToOne
-    @JoinColumn(name = "USER_ID")
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "USER_ID")
+//    private User user;
+
+    @OneToOne(mappedBy = "userLibrary", fetch = FetchType.LAZY)
     private User user;
+
 
     public UserLibrary(User user){
         this.user = user;
