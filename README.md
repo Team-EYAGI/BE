@@ -7,7 +7,6 @@
 🌏 [이야기 (eyagi)](https://www.eyagibook.shop/)
 
 </div>
-<br/>
 <div align="center">
   
 <a href="https://balanced-desk-3a4.notion.site/EYAGI-06e6113484324fe8ba37ec83e5e70b8d"><img src="https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white&link=https://balanced-desk-3a4.notion.site/EYAGI-06e6113484324fe8ba37ec83e5e70b8d/"/></a>
@@ -27,7 +26,7 @@
 여러 사람들이 올려놓은 재밌는 오디오북도 들어보고!
 크리에이터(낭독자)로 전환 신청하여 자신의 목소리를 세상 밖에 들려주세요!
 
-## eyagi(이야기)
+## :books: eyagi(이야기)
 |메인 페이지|오디오북 페이지|댓글|
 |:-:|:-:|:-:|
 |<img src=https://user-images.githubusercontent.com/61370487/171026913-adb69bee-9171-4b12-b273-8f1a5fe828f3.gif>|<img src=https://user-images.githubusercontent.com/61370487/171030696-98bbaa9e-347b-4633-956c-77462db17670.gif>|<img src=https://user-images.githubusercontent.com/61370487/171026534-71d090f4-0d17-465b-aa59-c2384232e88c.gif>|
