@@ -1,16 +1,22 @@
 <p align="center">
 <img src="https://user-images.githubusercontent.com/61370487/171013112-796a9d06-6b91-4012-9af7-ee9ccfb20eaf.png" alt="pick-git-logo" width="220" height="220">
 </p>
+
 <div align="center">
 💻 다양한 사람들의 목소리를 연결하는 오디오북 사이트</br>
-🌏 [이야기(eyagi)](https://www.eyagibook.shop/)
+🌏 [이야기 (eyagi)](https://www.eyagibook.shop/)
 </div>
 <br/>
+
 <div align="center">
-![https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white&link=https://balanced-desk-3a4.notion.site/EYAGI-06e6113484324fe8ba37ec83e5e70b8d](https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white&link=https://balanced-desk-3a4.notion.site/EYAGI-06e6113484324fe8ba37ec83e5e70b8d)
+  
+[![https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white&link=https://balanced-desk-3a4.notion.site/EYAGI-06e6113484324fe8ba37ec83e5e70b8d](https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white&link=https://balanced-desk-3a4.notion.site/EYAGI-06e6113484324fe8ba37ec83e5e70b8d)
+  
 [![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?style=for-the-badge&logo=Instagram&logoColor=white&link=https://www.instagram.com/_eyagi_/)](https://www.instagram.com/_eyagi_/)
+  
 </div>
 <br/>
+
 ## 프로젝트 소개
 ---
 
@@ -39,7 +45,6 @@
 
 ## 팀원 소개
 ---
-
 ![SS]([https://user-images.githubusercontent.com/61370487/171034504-893c0c50-c33c-47a3-b383-f03e7e454343.PNG](https://user-images.githubusercontent.com/61370487/171034504-893c0c50-c33c-47a3-b383-f03e7e454343.PNG)
 
 ## 아키텍처(Architecture)
