@@ -19,7 +19,6 @@
 
 ## 프로젝트 소개
 ---
-
 저희 EYAGI(이야기)에서는
 책을 "듣고 싶은 사람"이 원하는 취향의 목소리와 낭독 스타일을 찾아 책을 들으며 낭독자에게 반응을 주고, 듣고싶은 책이 있다면 오디오북으로 요청글을 올릴 수도 있습니다.
 
@@ -41,7 +40,7 @@
 |<img src=https://user-images.githubusercontent.com/61370487/171026925-7215b3f8-7369-4f58-a4f6-bd57493b21ed.gif>|<img src=https://user-images.githubusercontent.com/61370487/171030108-3e4bc940-20ff-497a-9484-e920b958cef9.gif>|<img src=https://user-images.githubusercontent.com/61370487/171030132-8b300843-90f0-4e72-8271-933c75026aff.gif>|
 
 ## 팀원 소개
-![dfdfdf](https://user-images.githubusercontent.com/61370487/171037033-2ceb89c4-5ce4-474c-99ac-5da734dcf333.PNG)
+![SS](https://user-images.githubusercontent.com/61370487/171037189-b13a46f1-a018-4489-8aab-436804167d08.PNG)
 
 ## 아키텍처(Architecture)
 <p align="center">
