@@ -17,7 +17,7 @@
 </div>
 <br/>
 
-## 프로젝트 소개
+## 🙌프로젝트 소개
  저희 EYAGI(이야기)에서는
 책을 "듣고 싶은 사람"이 원하는 취향의 목소리와 낭독 스타일을 찾아 책을 들으며 낭독자에게 반응을 주고, 듣고싶은 책이 있다면 오디오북으로 요청글을 올릴 수도 있습니다.
 
@@ -36,7 +36,7 @@
 |<b>펀딩</b>|<b>검색</b>|<b>마이페이지</b>|
 |<img src=https://user-images.githubusercontent.com/61370487/171026925-7215b3f8-7369-4f58-a4f6-bd57493b21ed.gif>|<img src=https://user-images.githubusercontent.com/61370487/171030108-3e4bc940-20ff-497a-9484-e920b958cef9.gif>|<img src=https://user-images.githubusercontent.com/61370487/171030132-8b300843-90f0-4e72-8271-933c75026aff.gif>|
 
-## 팀원 소개
+## 👨‍💻👩‍💻 팀원 소개
 ![SS](https://user-images.githubusercontent.com/61370487/171037189-b13a46f1-a018-4489-8aab-436804167d08.PNG)
 
 ## 아키텍처(Architecture)
@@ -44,7 +44,7 @@
 <img src="https://user-images.githubusercontent.com/61370487/171033795-ff2ec9f8-cbcc-4d7f-8c01-0b2360dc2dc4.png">
 </p>
 
-## 기술스택
+## 🛠 기술스택
 <p align="center">
 <!-- spring -->
 <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
