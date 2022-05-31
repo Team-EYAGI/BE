@@ -10,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
+@Table(indexes = @Index(name = "i_user", columnList = "id"))
 public class User extends Timestamped{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

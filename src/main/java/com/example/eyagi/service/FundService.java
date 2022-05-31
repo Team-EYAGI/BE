@@ -138,7 +138,7 @@ public class FundService {
     @Transactional
     public FundHeartResponseDto saveFundHeart(Long fundid, FundHeartRequestDto requestDto, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
-        Fund foundFund = fundRepository.findById(fundid).orElseThrow(
+        Fund foundFund = fundRepository.findByFundId(fundid).orElseThrow(
                 () -> new NullPointerException("펀딩내용을 찾을 수 없습니다."));
 
         boolean existsFundHeart = fundHeartRepository.existsByUserAndFund(user, foundFund);
@@ -214,7 +214,7 @@ public class FundService {
         User user = userRepository.findByUsername(requestDto.getUsername()).orElseThrow(() -> new NullPointerException("유저 X"));
         Fund foundFund = fundQRepository.findNewandById(fundid).orElseThrow(
                 () -> new NullPointerException("펀딩내용을 찾을 수 없습니다."));
-//        Fund foundFund = fundRepository.findById(fundid).orElseThrow(
+//        Fund foundFund = fundRepository.findByFundId(fundid).orElseThrow(
 //                () -> new NullPointerException("펀딩내용을 찾을 수 없습니다."));
 
         myHeartFund = false;
@@ -255,7 +255,7 @@ public class FundService {
     // 펀딩상세보기 - 비회원
     public ResponseEntity<?> detailFundNoUser(Long fundid) {
         boolean myHeartFund;
-//        Fund foundFund = fundRepository.findById(fundid).orElseThrow(
+//        Fund foundFund = fundRepository.findByFundId(fundid).orElseThrow(
 //                () -> new NullPointerException("펀딩내용을 찾을 수 없습니다."));
         Fund foundFund = fundQRepository.findNewandById(fundid).orElseThrow(
                 () -> new NullPointerException("펀딩내용을 찾을 수 없습니다."));
@@ -291,7 +291,7 @@ public class FundService {
     //펀딩 삭제하기
     @Transactional
     public void removeFunding(Long id){
-        Fund fund = fundRepository.findById(id).orElseThrow(
+        Fund fund = fundRepository.findByFundId(id).orElseThrow(
             () -> new NullPointerException("펀딩을 찾을 수 없습니다."));
 
         fundRepository.deleteById(id);
