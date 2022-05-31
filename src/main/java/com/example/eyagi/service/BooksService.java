@@ -43,10 +43,10 @@ public class BooksService {
     public ResponseEntity<?> findBooksByCategory(String category, Pageable pageable) {
         //pageable
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        Sort sort = Sort.by(Sort.Direction.DESC, "bookId" );
-        pageable = PageRequest.of(page, pageable.getPageSize(), sort );
+//        Sort sort = Sort.by(Sort.Direction.DESC);
+        pageable = PageRequest.of(page, pageable.getPageSize());
 
-        Page<BooksCustomRepository> findBookPage = booksRepository.findByCategoryAndOrderByBookId(category,pageable);
+        Page<BooksCustomRepository> findBookPage = booksRepository.findByCategory(category, pageable);
         List<BooksCustomRepository> findBookList = findBookPage.getContent();
         List<BooksDto> bookList = new ArrayList<>();
 

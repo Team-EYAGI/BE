@@ -3,6 +3,7 @@ package com.example.eyagi.service;
 import com.example.eyagi.dto.FollowDto;
 import com.example.eyagi.model.Follow;
 import com.example.eyagi.model.User;
+import com.example.eyagi.repository.FollowQRepository;
 import com.example.eyagi.repository.FollowRepository;
 import com.example.eyagi.repository.UserRepository;
 import com.example.eyagi.security.UserDetailsImpl;
@@ -19,6 +20,7 @@ import java.util.*;
 @Transactional
 public class FollowService {
     private final FollowRepository followRepository;
+    private final FollowQRepository followQRepository;
     private final UserRepository userRepository;
     private final UserService userService;
 
@@ -70,10 +72,9 @@ public class FollowService {
     //나를 팔로우한 사람 리스트
     public List<FollowDto> getFollowerList(Long id) { //pk 값으로 조회하는 걸로 바꾸는 것이 낫지 않을까?
 
-        User seller = userService.findUserId(id);
-
-        List<Follow> follower = seller.getFollowedList();
-
+//        User seller = userService.findUserId(id);
+//        List<Follow> follower = seller.getFollowedList();
+        List<Follow> follower = followQRepository.findFollowedListById(id);
         List<FollowDto> followerList = new ArrayList<>();
 
         for (Follow f : follower) {
@@ -101,9 +102,9 @@ public class FollowService {
 
     //내가 팔로잉한 사람 리스트
     public List<FollowDto> getFollowingList(Long id) {
-        User user = userService.findUserId(id);
-        List<Follow> following = user.getFollowingList();
-
+//        User user = userService.findUserId(id);
+//        List<Follow> following = user.getFollowingList();
+        List<Follow> following = followQRepository.findFollowingListById(id);
         List<FollowDto> followingList = new ArrayList<>();
 
         for (Follow f : following) {
@@ -123,7 +124,6 @@ public class FollowService {
             dto.follower(f);
             followingList.add(dto);
         }
-
         return followingList;
     }
 
