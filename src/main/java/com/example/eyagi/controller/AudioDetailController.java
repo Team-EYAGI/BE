@@ -55,6 +55,7 @@ public class AudioDetailController {
 //        return new ResponseEntity(commentDtoList, HttpStatus.OK);
 //    }
 
+    //후기 조회
     @GetMapping("/{audioBookId}/comment")
     public ResponseEntity<?> getComment(@PathVariable Long audioBookId, Pageable pageable) {
         return audioDetailService.commentList(audioBookId, pageable);

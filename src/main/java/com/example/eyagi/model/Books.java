@@ -3,9 +3,7 @@ package com.example.eyagi.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -33,10 +31,10 @@ public class Books {
     @Column(nullable = false)
     private String category;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<AudioBook> audioBookList;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     private List<Library_Books> userLibrary;
 
 

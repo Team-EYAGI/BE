@@ -69,7 +69,7 @@ public class HomeController {
     }
 
 
-    // 메인화면에서 펀딩목록 보여주기
+    // 메인화면에서 펀딩목록 보여주기펀딩
     @GetMapping("/main/fund")
     public ResponseEntity<?> getFundListToMain(){
         return fundService.mainFundList();
