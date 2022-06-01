@@ -198,10 +198,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
 
 
-        configuration.addAllowedOrigin("http://localhost:8080");
         configuration.addAllowedOrigin("https://eyagi99.shop");
         configuration.setAllowCredentials(true);
-        configuration.addAllowedOrigin("https://eyagibook.shop");
+        configuration.addAllowedOrigin("https://eyagibook.shop/**");
         configuration.setAllowCredentials(true);
         configuration.addAllowedOrigin("http://localhost:3000");
         configuration.addAllowedMethod("*");
