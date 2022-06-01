@@ -51,7 +51,7 @@
  <br />
  <a href="https://github.com/hyopp" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=React&message=권효빈 &color=61dafb&style=for-the-badge&>"/></a>
  
- **[(Frontend-end github)](https://github.com/Team-EYAGI/FE)** 
+ **[(Frontend-end github)](https://github.com/Team-EYAGI/Front)** 
 
   <br />
  <br />
