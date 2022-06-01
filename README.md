@@ -36,27 +36,33 @@
 |<img src=https://user-images.githubusercontent.com/61370487/171026925-7215b3f8-7369-4f58-a4f6-bd57493b21ed.gif>|<img src=https://user-images.githubusercontent.com/61370487/171030108-3e4bc940-20ff-497a-9484-e920b958cef9.gif>|<img src=https://user-images.githubusercontent.com/61370487/171030132-8b300843-90f0-4e72-8271-933c75026aff.gif>|
 
 ## 👨‍💻👩‍💻 팀원 소개
-
 #### `Backend`
 <a href="https://github.com/EunheaSong" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Spring&message=송은혜 &color=08CE5D&style=for-the-badge&>"/></a>
 <a href="https://github.com/akrwkdrrr99" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Spring&message=김승균 &color=08CE5D&style=for-the-badge&>"/></a>
 <a href="https://github.com/yunju2" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Spring&message=권윤주 &color=08CE5D&style=for-the-badge&>"/></a>
 
- **[(Back-end github)](https://github.com/Team-EYAGI/BE)** 
 
 <br>
+
 #### `Frontend`
  <a href="https://github.com/JIEUN24" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=React&message=최지은 &color=61dafb&style=for-the-badge&>"/></a>
+
+ <br />
+ <br />
  <a href="https://github.com/hyopp" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=React&message=권효빈 &color=61dafb&style=for-the-badge&>"/></a>
  
+ **[(Frontend-end github)](https://github.com/Team-EYAGI/FE)** 
+
+  <br />
  <br />
- <br />
+
 #### `Designer`
 <a href="https://www.behance.net/lia_works" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Design&message=이아영 &color=F55C54&style=for-the-badge&>"/></a>
 <a href="https://seo-jyun-0731.tistory.com/ 
 https://blog.naver.com/seojyun0731" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Design&message=서지윤 &color=F55C54&style=for-the-badge&>"/></a>
 
 <br>
+
 
 ## 아키텍처(Architecture)
 <p align="center">
