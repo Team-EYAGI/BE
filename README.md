@@ -47,12 +47,9 @@
 <br>
 #### `Frontend`
  <a href="https://github.com/JIEUN24" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=React&message=최지은 &color=61dafb&style=for-the-badge&>"/></a>
-
- <br />
- <br />
  <a href="https://github.com/hyopp" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=React&message=권효빈 &color=61dafb&style=for-the-badge&>"/></a>
  
-  <br />
+ <br />
  <br />
 #### `Designer`
 <a href="https://www.behance.net/lia_works" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Design&message=이아영 &color=F55C54&style=for-the-badge&>"/></a>
