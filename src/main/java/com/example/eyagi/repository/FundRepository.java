@@ -15,8 +15,8 @@ import java.util.Optional;
 
 public interface FundRepository extends JpaRepository<Fund, Long> {
 
-//    @EntityGraph(attributePaths = {"books","user"}, type = EntityGraph.EntityGraphType.FETCH)
-    Optional<Fund> findById(Long id);
+    @EntityGraph(attributePaths = {"books","user"}, type = EntityGraph.EntityGraphType.FETCH)
+    Optional<Fund> findByFundId(Long id);
 
     @EntityGraph(attributePaths = {"books","user"}, type = EntityGraph.EntityGraphType.FETCH)
 //    @Query("select distinct u from Fund u left join u.user")

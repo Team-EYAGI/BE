@@ -13,7 +13,7 @@ import java.util.List;
 public class FollowQRepository {
         private final EntityManager em;
 
-//    @EntityGraph(attributePaths = {"follower, followed"}, type = EntityGraph.EntityGraphType.FETCH)
+    @EntityGraph(attributePaths = {"follower, followed"}, type = EntityGraph.EntityGraphType.FETCH)
     public List<Follow> findFollowingListById(Long userId) {
         List<Follow> followLists = em.createQuery("select fl from Follow fl " +
                         "join fetch fl.follower flf " +

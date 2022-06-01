@@ -17,6 +17,7 @@ import java.util.List;
 @Builder
 @Getter
 @Entity
+@Table(indexes = @Index(name = "i_audioBook", columnList = "id"))
 public class AudioBook extends Timestamped {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
