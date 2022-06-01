@@ -66,7 +66,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .headers();
+                .headers()
+                        .frameOptions().sameOrigin();
 
 
         // 서버에서 인증은 JWT로 인증하기 때문에 Session의 생성을 막습니다.
@@ -198,10 +199,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
 
 
-
-        configuration.addAllowedOrigin("https://eyagi99.shop");
+        configuration.addAllowedOrigin("https://eyagi99.shop/**");
         configuration.setAllowCredentials(true);
-        configuration.addAllowedOrigin("https://eyagibook.shop");
+        configuration.addAllowedOrigin("https://eyagibook.shop/**");
         configuration.setAllowCredentials(true);
         configuration.addAllowedOrigin("http://localhost:3000");
         configuration.addAllowedMethod("*");
