@@ -43,7 +43,7 @@ public class User extends Timestamped{
 
 //    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE) //프로필은 회원이 탈퇴하면 함께 사라짐.
 //    private UserProfile userProfile;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE) //프로필은 회원이 탈퇴하면 함께 사라짐.
+    @OneToOne(cascade = CascadeType.REMOVE) //프로필은 회원이 탈퇴하면 함께 사라짐.
     @JoinColumn(name = "USER_Profile")
     private UserProfile userProfile;
 
@@ -51,7 +51,7 @@ public class User extends Timestamped{
     private List<Comment> comments;
 
 
-    @OneToMany(mappedBy = "seller", cascade = CascadeType.REMOVE) //해당 셀러가 등록한 오디오북은 셀러가 탈퇴하면 함께 사라짐.
+    @OneToMany(mappedBy = "seller", fetch = FetchType.EAGER , cascade = CascadeType.REMOVE) //해당 셀러가 등록한 오디오북은 셀러가 탈퇴하면 함께 사라짐.
     private List<AudioBook> audioBookList;
 
     @Column(unique = true)

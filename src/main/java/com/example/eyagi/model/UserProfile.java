@@ -36,7 +36,7 @@ public class UserProfile extends Timestamped{
 //    @JoinColumn(name = "USER_ID") //유저테이블과 프로필 테이블중 프로필 테이블에 작업수행이 더 빈번할 것으로 판단되어 프로필에 외래키를 관리하도록 줌.
 //    private User user;
 
-    @OneToOne(mappedBy = "userProfile",fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "userProfile" , fetch = FetchType.LAZY)
     private User user;
 
     public UserProfile (User user){
