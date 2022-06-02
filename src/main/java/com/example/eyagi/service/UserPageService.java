@@ -47,7 +47,7 @@ public class UserPageService {
     //듣고 있는 오디오북에 추가
     public void listenBook (AudioBook audioBook, User user){
 
-        UserLibrary library = userLibraryRepository.findByUserId(user.getId());
+        UserLibrary library = user.getUserLibrary();
 //        if (library == null){
 //            UserLibrary userLibrary = new UserLibrary(user);
 //            Library_Audio library_audio = new Library_Audio(userLibrary,audioBook);
@@ -67,7 +67,7 @@ public class UserPageService {
     public String heartBook(String email, Long id){
         User user = userService.findUser(email);
         Books books = booksService.findBook(id);
-        UserLibrary library = userLibraryRepository.findByUserId(user.getId());
+        UserLibrary library = user.getUserLibrary();
 //        if (library == null){
 //            UserLibrary userLibrary = new UserLibrary(user);
 //            Library_Books library_books = new Library_Books(userLibrary, books);

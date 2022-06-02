@@ -33,13 +33,14 @@ public class UserLibrary {
 //    @JoinColumn(name = "USER_ID")
 //    private User user;
 
-    @OneToOne(mappedBy = "userLibrary", fetch = FetchType.LAZY)
-    private User user;
-
-
-    public UserLibrary(User user){
-        this.user = user;
-    }
+//    @OneToOne(mappedBy = "userLibrary", fetch = FetchType.LAZY)
+//    private User user;
+//
+//
+//    public UserLibrary(User user){
+//        this.user = user;
+//        System.out.println("유저라이브러리 저장");
+//    }
 
     public void addBook (Library_Books book){ //내 서재에 담기
         this.myBook.add(book);

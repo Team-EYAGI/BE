@@ -36,12 +36,14 @@ public class UserProfile extends Timestamped{
 //    @JoinColumn(name = "USER_ID") //유저테이블과 프로필 테이블중 프로필 테이블에 작업수행이 더 빈번할 것으로 판단되어 프로필에 외래키를 관리하도록 줌.
 //    private User user;
 
-    @OneToOne(mappedBy = "userProfile" , fetch = FetchType.LAZY)
-    private User user;
-
-    public UserProfile (User user){
-        this.user = user;
-    }
+//    @OneToOne(mappedBy = "userProfile", fetch = FetchType.LAZY)
+//    private User user;
+//
+//    public UserProfile (User user){
+//        this.user = user;
+//        System.out.println("유저프로파일 저장");
+//
+//    }
 
     public void editProfile(String userImage, String originImage){
         this.userImage =userImage;

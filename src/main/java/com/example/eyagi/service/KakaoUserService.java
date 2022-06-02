@@ -145,12 +145,15 @@ public class KakaoUserService {
             String email = kakaoUserInfoDto.getEmail();
             UserRole role = UserRole.USER;
 
-            kakaoUser = new User(email, nickname, password, role, kakaoId);
-            userRepository.save(kakaoUser);
-            UserLibrary userLibrary = new UserLibrary(kakaoUser);
-            UserProfile userProfile = new UserProfile(kakaoUser);
+            UserLibrary userLibrary = new UserLibrary();
+            UserProfile userProfile = new UserProfile();
             libraryRepository.save(userLibrary);
             profileRepository.save(userProfile);
+
+            kakaoUser = new User(email, nickname, password, role, kakaoId);
+            kakaoUser.newProfile(userProfile);
+            kakaoUser.newLibrary(userLibrary);
+            userRepository.save(kakaoUser);
         }
         return kakaoUser;
     }

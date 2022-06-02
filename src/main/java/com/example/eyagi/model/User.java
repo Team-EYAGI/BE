@@ -2,6 +2,7 @@ package com.example.eyagi.model;
 
 
 import lombok.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -91,7 +92,18 @@ public class User extends Timestamped{
         this.follwerCnt += num;  //파라미터로 -1이 들어오면 -1이 되겠지 ?
     }
 
+    @Transactional
+    public void newLibrary (UserLibrary library){
+        this.userLibrary = library;
+        System.out.println("유저 유저라이브러리 저장");
 
+    }
+    @Transactional
+    public void newProfile (UserProfile profile){
+        this.userProfile = profile;
+        System.out.println("유저 유저프로파일 저장");
+
+    }
 
 }
 

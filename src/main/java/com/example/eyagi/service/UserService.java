@@ -95,12 +95,14 @@ public class UserService {
         UserRole role = UserRole.USER;
 
         // 유저 생성 후 DB 저장
-        User user = new User(email, username, enPassword, role);
-        userRepository.save(user);
-        UserLibrary userLibrary = new UserLibrary(user);
-        UserProfile userProfile = new UserProfile(user);
+        UserLibrary userLibrary = new UserLibrary();
+        UserProfile userProfile = new UserProfile();
         libraryRepository.save(userLibrary);
         profileRepository.save(userProfile);
+        User user = new User(email, username, enPassword, role);
+        user.newLibrary(userLibrary);
+        user.newProfile(userProfile);
+        userRepository.save(user);
         return ResponseEntity.ok().body("회원가입 완료");
     }
 

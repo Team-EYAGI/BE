@@ -22,8 +22,8 @@ public interface FundRepository extends JpaRepository<Fund, Long> {
 //    @Query("select distinct u from Fund u left join u.user")
     List<Fund> findAllByUserIdOrderByFundIdDesc(Long user_id);
 
-    @EntityGraph(attributePaths = {"books","user"}, type = EntityGraph.EntityGraphType.FETCH)
-    @Query("select distinct u from Fund u left join u.user")
+    @EntityGraph(attributePaths = {"books","user"},type = EntityGraph.EntityGraphType.FETCH)
+    @Query("select distinct u from Fund u left join u.user")//distinct로 중복 제거
     List<Fund> findAllByOrderByFundIdDesc();
 
     Optional<Fund> findByUserAndBooks(User seller, Books books);
