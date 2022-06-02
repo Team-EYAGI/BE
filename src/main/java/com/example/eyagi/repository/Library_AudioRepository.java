@@ -14,7 +14,6 @@ public interface Library_AudioRepository extends JpaRepository<Library_Audio,Lon
 
     Optional<Library_Audio> findByAudioBook_IdAndUserLibrary_Id(Long audioBook, Long userLibrary);
 
-    @EntityGraph(attributePaths = {"follower","followed"}, type = EntityGraph.EntityGraphType.FETCH)
     List<Library_Audio> findAllByUserLibraryOrderByIdDesc(UserLibrary userLibrary);
 
     Library_Audio findByUserLibraryAndAudioBook(UserLibrary userLibrary, AudioBook audioBook);
