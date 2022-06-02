@@ -66,7 +66,7 @@ https://blog.naver.com/seojyun0731" target="_blank"><img height="40"  src="https
 
 ## 아키텍처(Architecture)
 <p align="center">
-<img src="https://user-images.githubusercontent.com/61370487/171033795-ff2ec9f8-cbcc-4d7f-8c01-0b2360dc2dc4.png">
+<img src="https://user-images.githubusercontent.com/61370487/171578575-f5fdb814-1d71-434f-9879-cc9004432ef7.png">
 </p>
 
 ## 🛠 기술스택
