@@ -111,7 +111,7 @@ public class AudioController extends JwtProperties {
                 book.addAudioBook(audioBook1);
 
 
-                Thread.sleep(1500);
+//                Thread.sleep(1500);
                 audioService.removeFile(path, audioService2.getCutFile());
                 audioService.removeFile(path, audioService2.getLocalFile());
             } catch (InterruptedException e) {

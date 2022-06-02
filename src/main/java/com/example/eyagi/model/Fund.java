@@ -10,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Entity
+@Table(indexes = @Index(name = "i_fund", columnList = "fundId"))
 public class Fund extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

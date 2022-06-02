@@ -9,6 +9,7 @@ import java.util.List;
 @Builder
 @Getter
 @Entity
+@Table(indexes = @Index(name = "i_book", columnList = "category"))
 public class Books {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long BookId;

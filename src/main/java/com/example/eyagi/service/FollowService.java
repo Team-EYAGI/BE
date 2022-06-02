@@ -103,8 +103,9 @@ public class FollowService {
     //내가 팔로잉한 사람 리스트
     public List<FollowDto> getFollowingList(Long id) {
 //        User user = userService.findUserId(id);
-//        List<Follow> following = user.getFollowingList();
-        List<Follow> following = followQRepository.findFollowingListById(id);
+//        List<Follow> following = user.getFollowingList();/**/
+//        List<Follow> following = followQRepository.findFollowingListById(id);
+        List<Follow> following =followRepository.findByFollower_Id(id);
         List<FollowDto> followingList = new ArrayList<>();
 
         for (Follow f : following) {
