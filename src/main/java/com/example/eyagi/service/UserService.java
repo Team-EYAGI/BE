@@ -120,6 +120,7 @@ public class UserService {
         return ResponseEntity.ok().body(mypageDto);
     }
 
+    @Transactional
     public List<TodayCreatorDto> showMainCreator() {
 
         List<User> userList = userRepository.findByRole(UserRole.SELLER);
@@ -161,6 +162,7 @@ public class UserService {
         return todayCreatorList;
     }
 
+    @Transactional
     public Page<UserCustomRepositiry> findSellerList (Pageable pageable){
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
         Sort sort = Sort.by(Sort.Direction.DESC, "createdAt" );

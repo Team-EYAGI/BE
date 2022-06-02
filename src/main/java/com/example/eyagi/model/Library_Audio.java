@@ -13,11 +13,11 @@ public class Library_Audio { //다대다 관계를 위한 중간 테이블
     @Id
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "UserLibrary_ID")
     private UserLibrary userLibrary;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "AudioBook_ID")
     private AudioBook audioBook;
 

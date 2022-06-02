@@ -40,6 +40,7 @@ public class AudioDetailService {
     }
 
     //오디오북 상세 페이지 조회 1. 책 정보 + 오디오 목록   ++ 셀러 닉네임, 오디오북 소개글 추가
+    @Transactional
     public AudioDetailDto getAudioDetail(AudioBook audioBook, User user) {
 //        AudioBook audioBook = findAudioBook(id);
 

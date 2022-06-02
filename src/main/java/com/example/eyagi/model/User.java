@@ -38,7 +38,7 @@ public class User extends Timestamped{
 
     //    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 //    private UserLibrary userLibrary;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "User_Library")
     private UserLibrary userLibrary;
 

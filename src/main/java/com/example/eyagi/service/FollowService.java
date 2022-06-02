@@ -72,11 +72,11 @@ public class FollowService {
     //나를 팔로우한 사람 리스트
     public List<FollowDto> getFollowerList(Long id) { //pk 값으로 조회하는 걸로 바꾸는 것이 낫지 않을까?
 
-//        User seller = userService.findUserId(id);
-//        List<Follow> follower = seller.getFollowedList();
-        List<Follow> follower = followQRepository.findFollowedListById(id);
+        User seller = userService.findUserId(id);
+        List<Follow> follower = seller.getFollowedList();
+//        List<Follow> follower = followQRepository.findFollowedListById(id);
         List<FollowDto> followerList = new ArrayList<>();
-
+//        List<Follow> follower = followRepository.findByFollowed_Id(id);
         for (Follow f : follower) {
 //            try {
 //                FollowDto followDto = FollowDto.builder()
@@ -102,10 +102,10 @@ public class FollowService {
 
     //내가 팔로잉한 사람 리스트
     public List<FollowDto> getFollowingList(Long id) {
-//        User user = userService.findUserId(id);
-//        List<Follow> following = user.getFollowingList();/**/
+        User user = userService.findUserId(id);
+        List<Follow> following = user.getFollowingList();/**/
 //        List<Follow> following = followQRepository.findFollowingListById(id);
-        List<Follow> following =followRepository.findByFollower_Id(id);
+//        List<Follow> following =followRepository.findByFollower_Id(id);
         List<FollowDto> followingList = new ArrayList<>();
 
         for (Follow f : following) {

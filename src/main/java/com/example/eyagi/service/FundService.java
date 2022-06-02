@@ -174,6 +174,7 @@ public class FundService {
 
     }
 
+    @Transactional
     public ResponseEntity<?> mainFundList() {
         //추천도서 list
         List<Fund> findAllFund = fundRepository.findAllByOrderByFundIdDesc();

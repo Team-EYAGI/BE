@@ -4,6 +4,7 @@ package com.example.eyagi.model;
 import com.example.eyagi.dto.BooksDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class UserLibrary {
     @OneToMany(mappedBy = "userLibrary", fetch = FetchType.LAZY)
     private List<Library_Books> myBook = new ArrayList<>(); // 내 서재에 담은 책 리스트
 
-    @OneToMany(mappedBy = "userLibrary", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "userLibrary")
     private List<Library_Audio> myAuidoBook = new ArrayList<>();  // 내가 듣고 있는 오디오북 리스트
 
 //    @OneToOne(fetch = FetchType.LAZY)
@@ -46,9 +47,9 @@ public class UserLibrary {
         this.myBook.add(book);
     }
 
-    public void addAuidoBook(Library_Audio audioBook){  //내 오디오북에 담기
-        this.myAuidoBook.add(audioBook);
-    }
+//    public void addAuidoBook(Library_Audio audioBook){  //내 오디오북에 담기
+//        this.myAuidoBook.add(audioBook);
+//    }
 
 
 }

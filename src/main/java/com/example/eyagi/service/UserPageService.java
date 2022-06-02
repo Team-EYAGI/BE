@@ -45,6 +45,7 @@ public class UserPageService {
     }
 
     //듣고 있는 오디오북에 추가
+    @Transactional
     public void listenBook (AudioBook audioBook, User user){
 
         UserLibrary library = user.getUserLibrary();
@@ -57,7 +58,8 @@ public class UserPageService {
 //            library_audioRepository.save(library_audio);
 //        } else {
             Library_Audio library_audio = new Library_Audio(library,audioBook);
-            library.addAuidoBook(library_audio);
+//            library.getMyAuidoBook().add(library_audio);
+//            library.addAuidoBook(library_audio);
             library_audioRepository.save(library_audio);
             userLibraryRepository.save(library);
 //        }
@@ -165,6 +167,7 @@ public class UserPageService {
     }
 
     //마이페이지 조회 .3-2 판매자 전용 버튼, 내가 등록한 펀딩 목록
+    @Transactional
     public List<SellerFundDto> myFund(User seller){
         List<Fund> myFundList = fundRepository.findAllByUserIdOrderByFundIdDesc(seller.getId());
         List<SellerFundDto> sellerFundDtoList = new ArrayList<>();
