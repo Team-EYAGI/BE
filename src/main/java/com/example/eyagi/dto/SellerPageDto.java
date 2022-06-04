@@ -20,9 +20,9 @@ public class SellerPageDto extends UserPageDto {
         this.userId = user.getId();
         this.userEmail = user.getEmail();
         this.userName = user.getUsername();
-//        this.userImage = user.getUserProfile().getUserImage();
-//        this.sellerVoice = user.getUserProfile().getS3FileName();
-//        this.introduce = user.getUserProfile().getIntroduce();
+        this.userImage = user.getUserProfile().getUserImage();
+        this.sellerVoice = user.getUserProfile().getS3FileName();
+        this.introduce = user.getUserProfile().getIntroduce();
         this.followingCnt = user.getFollowingCnt();
         this.followerCnt = user.getFollwerCnt();
 

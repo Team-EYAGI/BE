@@ -19,7 +19,7 @@ public class UserPageDto {
         this.userId = user.getId();
         this.userEmail = user.getEmail();
         this.userName = user.getUsername();
-//        this.userImage = user.getUserProfile().getUserImage();
+        this.userImage = user.getUserProfile().getUserImage();
         this.followingCnt = user.getFollowingCnt();
 
 //        this.followingList = user.getFollowingList();
