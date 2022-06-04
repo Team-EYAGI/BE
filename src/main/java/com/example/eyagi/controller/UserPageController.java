@@ -29,7 +29,7 @@ public class UserPageController {
       //마이페이지 조회 - 해야됨
 
     //마이페이지 조회 .1 페이지 로드 시 필요한 것, 판매자는 음성도 같이.- 포스트맨 테스트 완료
-    @GetMapping("")
+    @GetMapping("/")
     public ResponseEntity<UserPageDto> loadUserProfile(@AuthenticationPrincipal UserDetailsImpl userDetails){
         User user = userDetails.getUser();
         if(user.getRole()==UserRole.SELLER){
