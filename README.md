@@ -45,11 +45,8 @@
 <br>
 
 #### `Frontend`
- <a href="https://github.com/JIEUN24" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=React&message=최지은 &color=61dafb&style=for-the-badge&>"/></a>
-
- <br />
- <br />
- <a href="https://github.com/hyopp" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=React&message=권효빈 &color=61dafb&style=for-the-badge&>"/></a>
+<a href="https://github.com/JIEUN24" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=React&message=최지은 &color=61dafb&style=for-the-badge&>"/></a>
+<a href="https://github.com/hyopp" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=React&message=권효빈 &color=61dafb&style=for-the-badge&>"/></a>
  
  **[(Frontend-end github)](https://github.com/Team-EYAGI/Front)** 
 
@@ -102,4 +99,111 @@ https://blog.naver.com/seojyun0731" target="_blank"><img height="40"  src="https
 <br>
 
 ## ERD
+
+ ## :pushpin: 아키텍처 도입과정
+  
+ <details>
+<summary>springboot</summary>
+<div markdown="1">
+  spring boot는 spring을 개발자들이 좀 더 편리하게 개발에 집중할 수 있도록 개선된 프레임워크입니다.
+    
+ 기존 spring 같은 경우, 의존성을 추가해주려면 내가 사용하려는 것의 버전에 대한 정보까지 일일이 맞추어야하고 정말 긴 dependency를 작성해야했지만, boot에서는 자동으로 권장 버전을 체크해주기 때문에  starter 한 줄만으로 dependency를 설정할 수 있게 되었습니다.
+    
+톰캣도 내장이 되어 있어서 따로 설치할 필요 없이 사용이 가능하기 때문에 초기에 구축하는 시간을 단축시켜 주고, 매번 버전관리를 해야하는 수고도 덜어줍니다.
+또한 내장 된 서블릿 컨테이너 덕분에 jar 파일 하나로 쉽게 배포 서버를 구축 할 수 있습니다.
+  마지막으로 저희는 스프링 시큐리티를 이용해서 보안체계를 맞추려고 하였고, Boot에서는 이러한 프레임워크들의 요소를 쉽게 사용할 수 있기 때문에 기존의 spring이 아닌, spring Boot를 사용하였습니다.
+  boot를 사용하며 ORM이 가능한 JPA도 사용해서 SQL 사용을 보다 간편하게 하고자 하였습니다.
+
+</div>
+</details>
+
+  <details>
+<summary>jsoup</summary>
+<div markdown="1">
+
+    처음에는 크롤링을 해서 데이터를 구축해놓는 방식이 아닌, 도서 검색 api를 활용해서 도서 정보를 가져오는 방법을 생각하였습니다. 등록하고자 하는 오디오북을 검색하도록 하고 , 오디오북을 등록함과 동시에 검색한 도서의 정보를 DB에 저장 시키는 방법을 고민해보았지만 사용자 입장에서 여러 에로사항이 생길 것 같았습니다. 
+    
+    특히, 오디오를 듣고싶어하는 사용자가 유입되었을 때 서점처럼 눈에 보여지는 도서들이 없다면 , 특정 도서에 대해 오디오로 듣고싶다는 흥미를 유발 시키기 어렵다고 판단하였습니다.  
+    
+    또한, 데이터가 없는 상태라면 서비스를 처음 접하는 사용자들은 세상 수 많은 도서 중 원하는 특정 도서를 골라야만 하므로, 결국 과도한 많은 선택지를 주게 되는 것이라고 판단하였고, 그렇게 하기보단 일정 선택의 범위를 제공하여 선택의 역설에 대한 상황을 없애고자 하였습니다. 그래서 직접 웹크롤링을 통해서 인기가 있고 유명한 책들을 적당한 양의 도서들을 가져오기로 결정했습니다. 
+    
+    크롤링이라면 보통 python을 많이 이용하지만,  그래도 현재 사용하는 언어가 java이기 때문에  java를 가지고 크롤링을 해보고싶어서 HTML을 파싱해주는 JAVA 오픈 소스 라이브러리인 jsoup을 사용해서 웹 크롤링을 진행하였습니다.
+
+</div>
+</details>
+  
+<details>
+<summary>MySQL</summary>
+<div markdown="1">
+
+    제작하려고 한 서비스에는 회원관리와 도서에 대한 데이터 관리가 필수이므로 , 데이터 중복이 없는 RDBMS를 사용하고자 하였고 jpa를 사용한 테이블간의 매핑을 이용하기위해서는 역시 RDBMS를 사용해야겠다 라고 판단하였습니다.
+    
+    여러 RDBMS가 있지만, 아무래도 보편적으로 많이 사용되는 MYSQL이 눈에 띄었고, MYSQL을 기반으로 만들어진 MariaDB 또한 고민이 되었습니다. MariaDB가 MYSQL 이 점이 많다는 이야기를 많이 접했지만, 아직은 MySQL의 사용도가 더 높아, 상대적으로 좀 더 많은 레퍼런스가 존재하기 때문에 MySQL을 사용해보고자 하였고 ,
+    
+    MariaDB가 MySQL에서 파생되었기 때문에 근본이 되는 MySQL을 먼저 사용해본다면 MariaDB 역시 어렵지 않게 학습 할 수 있을 것 같다고 판단하여 MYSQL을 채택하였습니다. 
+    
+    오디오파일이나 이미지파일 같은 경우는 AWS S3에 업로드해주었습니다.
+    
+
+</div>
+</details>
+    
+<details>
+<summary>Jenkins & Docker</summary>
+<div markdown="1">
+
+    CI tool 의 다양한 선택지 중 저희가 고려했던 조건들은 
+    
+    - 적은 비용
+    - AWS EC2에 배포가능
+    - Git 과의 연동
+    - 비교적 낮은 러닝 커버
+    
+    이 었습니다.
+ 찾아보았던 것들 중 유료인 것들은 전부 배재하고 , 100%오픈소스이기에 많은 플러그인까지 갖춘 **젠킨스,**  깃헙과 연동시 좋은 퍼포먼스를 보여주는 Travis CI, 작은 프로젝트에서 사용하기 좋다는 GitActions 셋 중 고민을 하였습니다. 그 중 비교적 러닝커버가 낮아보이는건 깃 액션이였습니다. github을 사용한다면 아무래도 규모가 크지 않는 프로젝트에서는 GitActions사용하는 것도 좋은 방법이라고 생각하나  현업에서 많이 사용한다는 젠킨스에 한번 도전해보고자 하였습니다. 처음 고려했던 조건 중 비교적 낮은 러닝커버가 있었지만, 젠킨스는 오픈소스이기 때문에 사용자도 많고, 그에 따라 레퍼런스도 많아서 한 번 해보자 라는 생각이 들어 도전해보았습니다.
+    
+    도커 사용 같은 경우는 , 도커는 파일들을 모두 하나의 컨테이너에 담기 때문에 한 곳에 문제가 생겨도 서로 영향을 주지 않으며 도커만 있다면 손쉽게 관리 및 이동이 가능하여 보다 어떤 서버 환경에서도 유연한 관리가 가능하기 때문에 도커를 이용해서 Redis, 그리고 Jenkins 소프트웨어 패키지를 도커를 통해 이용해보고자 하였습니다.
+
+</div>
+</details>
+    
+  
+  <details>
+<summary><br>Redis</br></summary>
+<div markdown="1">
+
+
+    채팅의 경우 진행되면 한명에 최소 수십개, 이후 최대 수백개의 데이터가 요청되며 실시간으로 진행 될 경우 수없이 많은 mysql에 요청과 요구가 진행 될 것입니다. 그렇게 된다면 많은 SQL문의 처리 요청으로 서버에서 동시에 진행 할 수 있는 처리 한계치를 넘어서게 되고 운영업체에서는 DB서버에 많은 메모리 증가, CPU증설을 해야 하는 상황이 발생할 수 있습니다.
+    
+    MySQL 서버의 성능 문제로 서버가 중단되면 서버교체 비용과 서비스가 중단되는 지점이 생기고 임계치를 넘어갈 때마다 매번 작업을 진행해야 할 것 입니다. 하지만 캐시에 저장하는 인메모리 구조의 레디스를 사용한다면 실시간 채팅에서 mySQL로의 지속적인 SQL문 생성을 막을 수 있을 것이라고 생각했습니다.
+    
+    Redis는 다음과 같은 특징을 지닙니다.
+    
+    - In-memory 데이터 저장소: 디스크에 데이터를 저장하는 다른 데이터베이스들(PostgreSQL, MongoDB 등)과 달리 데이터를 메모리에 위치시킴으로서 속도면에서 우위를 점함.
+    - 유연한 데이터 구조: Key-Value 구조이외에도 다양한 데이터 구조를 지원함.
+    - 단순성 및 사용 편의성
+    - 복제 및 지속성
+    - 높은 가용성 및 확장성(Scale-up, Scale-out)
+    - 확장성: 오픈 소스인 만큼 공급업체 기술 종속적이지 않음 (Spring 지원)
+    
+    다음과 같은 장점들을 고려해 , 레디스를 사용하여 채팅을 개발하였습니다.
+
+</div>
+</details>
+    
+
+  <details>
+<summary>Stomp</summary>
+<div markdown="1">
+
+Stomp는 Simple Text Oriented Messaging Protocol의 약자로, Websocket 위에서 동작하는 텍스트 기반 메세징 프로토콜입니다.
+ Publish-Subscribe 매커니즘을 제공하기 때문에 Broket을 통해서 다른 사용자에게 메세지를 보내거나 서버가 특정 작업을 수행하도록 메세지를
+보낼 수 있습니다. 또한 Http와 마찬가지로 frame을 사용해 전송하는 프로토콜입니다.
+각 커넥션마다 websocketHandler를 구현하여 사용하기 보다 Controller Annotation이 적용된 객체를 이용해 조직적으로 관리할 수 있습니다.    
+예를 들어 @MessageMapping을 이용하여 Controller객체에 라우팅 시킬 수 있습니다. 또한 Stomp의 URI경로인 Destiantion을 기반으로 Spring Security를 적용해 메세지를 보호할 수 있습니다. 즉 메세징 프로토콜과 메세징 형식을 개발할 필요가 없어집니다.
+ ps) Frame은 명령과 추가적인 헤더, 바디로 구성이 됩니다. 이는 첫번째 라인에는 텍스트(Command)이고 이후 key:value형태로 헤더정보를 포함합니다.
+
+</div>
+</details>
+
 
