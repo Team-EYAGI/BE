@@ -100,8 +100,7 @@ https://blog.naver.com/seojyun0731" target="_blank"><img height="40"  src="https
 
 ## ERD
 
-
-:seedling: ## 아키텍처 도입과정
+ ## :seedling: 아키텍처 도입과정
   
  <details>
 <summary>springboo</summary>
