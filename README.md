@@ -121,7 +121,8 @@ https://blog.naver.com/seojyun0731" target="_blank"><img height="40"  src="https
 <summary>jsoup</summary>
 <div markdown="1">
 
-    처음에는 크롤링을 해서 데이터를 구축해놓는 방식이 아닌, 도서 검색 api를 활용해서 도서 정보를 가져오는 방법을 생각하였습니다. 등록하고자 하는 오디오북을 검색하도록 하고 , 오디오북을 등록함과 동시에 검색한 도서의 정보를 DB에 저장 시키는 방법을 고민해보았지만 사용자 입장에서 여러 에로사항이 생길 것 같았습니다. 
+    처음에는 크롤링을 해서 데이터를 구축해놓는 방식이 아닌, 도서 검색 api를 활용해서 도서 정보를 가져오는 방법을 생각하였습니다. 
+  등록하고자 하는 오디오북을 검색하도록 하고 , 오디오북을 등록함과 동시에 검색한 도서의 정보를 DB에 저장 시키는 방법을 고민해보았지만 사용자 입장에서 여러 에로사항이 생길 것 같았습니다. 
     
     특히, 오디오를 듣고싶어하는 사용자가 유입되었을 때 서점처럼 눈에 보여지는 도서들이 없다면 , 특정 도서에 대해 오디오로 듣고싶다는 흥미를 유발 시키기 어렵다고 판단하였습니다.  
     
@@ -138,7 +139,8 @@ https://blog.naver.com/seojyun0731" target="_blank"><img height="40"  src="https
 
     제작하려고 한 서비스에는 회원관리와 도서에 대한 데이터 관리가 필수이므로 , 데이터 중복이 없는 RDBMS를 사용하고자 하였고 jpa를 사용한 테이블간의 매핑을 이용하기위해서는 역시 RDBMS를 사용해야겠다 라고 판단하였습니다.
     
-    여러 RDBMS가 있지만, 아무래도 보편적으로 많이 사용되는 MYSQL이 눈에 띄었고, MYSQL을 기반으로 만들어진 MariaDB 또한 고민이 되었습니다. MariaDB가 MYSQL 이 점이 많다는 이야기를 많이 접했지만, 아직은 MySQL의 사용도가 더 높아, 상대적으로 좀 더 많은 레퍼런스가 존재하기 때문에 MySQL을 사용해보고자 하였고 ,
+    여러 RDBMS가 있지만, 아무래도 보편적으로 많이 사용되는 MYSQL이 눈에 띄었고, MYSQL을 기반으로 만들어진 MariaDB 또한 고민이 되었습니다. 
+  MariaDB가 MYSQL 이 점이 많다는 이야기를 많이 접했지만, 아직은 MySQL의 사용도가 더 높아, 상대적으로 좀 더 많은 레퍼런스가 존재하기 때문에 MySQL을 사용해보고자 하였고 ,
     
     MariaDB가 MySQL에서 파생되었기 때문에 근본이 되는 MySQL을 먼저 사용해본다면 MariaDB 역시 어렵지 않게 학습 할 수 있을 것 같다고 판단하여 MYSQL을 채택하였습니다. 
     
@@ -169,7 +171,7 @@ https://blog.naver.com/seojyun0731" target="_blank"><img height="40"  src="https
     
   
   <details>
-<summary><br>Redis</br></summary>
+<summary>Redis</summary>
 <div markdown="1">
 
 
@@ -196,10 +198,11 @@ https://blog.naver.com/seojyun0731" target="_blank"><img height="40"  src="https
 <summary>Stomp</summary>
 <div markdown="1">
 
-Stomp는 Simple Text Oriented Messaging Protocol의 약자로, Websocket 위에서 동작하는 텍스트 기반 메세징 프로토콜입니다.
+   Stomp는 Simple Text Oriented Messaging Protocol의 약자로, Websocket 위에서 동작하는 텍스트 기반 메세징 프로토콜입니다.
  Publish-Subscribe 매커니즘을 제공하기 때문에 Broket을 통해서 다른 사용자에게 메세지를 보내거나 서버가 특정 작업을 수행하도록 메세지를
 보낼 수 있습니다. 또한 Http와 마찬가지로 frame을 사용해 전송하는 프로토콜입니다.
-각 커넥션마다 websocketHandler를 구현하여 사용하기 보다 Controller Annotation이 적용된 객체를 이용해 조직적으로 관리할 수 있습니다.    
+  
+   각 커넥션마다 websocketHandler를 구현하여 사용하기 보다 Controller Annotation이 적용된 객체를 이용해 조직적으로 관리할 수 있습니다.    
 예를 들어 @MessageMapping을 이용하여 Controller객체에 라우팅 시킬 수 있습니다. 또한 Stomp의 URI경로인 Destiantion을 기반으로 Spring Security를 적용해 메세지를 보호할 수 있습니다. 즉 메세징 프로토콜과 메세징 형식을 개발할 필요가 없어집니다.
  ps) Frame은 명령과 추가적인 헤더, 바디로 구성이 됩니다. 이는 첫번째 라인에는 텍스트(Command)이고 이후 key:value형태로 헤더정보를 포함합니다.
 
