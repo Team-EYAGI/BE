@@ -63,10 +63,10 @@ public class HomeController {
     }
 
     // 메인화면에서 자기계발 카테고리 보여주기
-//    @GetMapping("/category")
-//    public List<BooksDto> getCategoryListToMain() {
-//        return booksService.mainSeifList();
-//    }
+    @GetMapping("/category")
+    public List<BooksDto> getCategoryListToMain() {
+        return booksService.mainSeifList();
+    }
 
 
     // 메인화면에서 펀딩목록 보여주기펀딩
