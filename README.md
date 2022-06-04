@@ -105,6 +105,8 @@ https://blog.naver.com/seojyun0731" target="_blank"><img height="40"  src="https
  <details>
 <summary>springboot</summary>
 <div markdown="1">
+  
+  
   spring boot는 spring을 개발자들이 좀 더 편리하게 개발에 집중할 수 있도록 개선된 프레임워크입니다.
     
  기존 spring 같은 경우, 의존성을 추가해주려면 내가 사용하려는 것의 버전에 대한 정보까지 일일이 맞추어야하고 정말 긴 dependency를 작성해야했지만,
@@ -125,6 +127,7 @@ boot를 사용하며 ORM이 가능한 JPA도 사용해서 SQL 사용을 보다 �
 <summary>jsoup</summary>
 <div markdown="1">
 
+  
  처음에는 크롤링을 해서 데이터를 구축해놓는 방식이 아닌, 도서 검색 api를 활용해서 도서 정보를 가져오는 방법을 생각하였습니다. 
  등록하고자 하는 오디오북을 검색하도록 하고 , 오디오북을 등록함과 동시에 검색한 도서의 정보를 DB에 저장 시키는 방법을 고민해보았지만 사용자 입장에서 여러 에로사항이 생길 것 같았습니다. 
     
@@ -144,6 +147,7 @@ boot를 사용하며 ORM이 가능한 JPA도 사용해서 SQL 사용을 보다 �
 <summary>MySQL</summary>
 <div markdown="1">
 
+  
  제작하려고 한 서비스에는 회원관리와 도서에 대한 데이터 관리가 필수이므로 , 데이터 중복이 없는 RDBMS를 사용하고자 하였고 
   jpa를 사용한 테이블간의 매핑을 이용하기위해서는 역시 RDBMS를 사용해야겠다 라고 판단하였습니다.
     
@@ -164,6 +168,7 @@ MariaDB가 MySQL에서 파생되었기 때문에 근본이 되는 MySQL을 먼�
 <summary>Jenkins & Docker</summary>
 <div markdown="1">
 
+  
  CI tool 의 다양한 선택지 중 저희가 고려했던 조건들은 
 + 적은 비용
 + AWS EC2에 배포가능
@@ -214,6 +219,7 @@ MariaDB가 MySQL에서 파생되었기 때문에 근본이 되는 MySQL을 먼�
 <summary>Stomp</summary>
 <div markdown="1">
 
+  
    Stomp는 Simple Text Oriented Messaging Protocol의 약자로, Websocket 위에서 동작하는 텍스트 기반 메세징 프로토콜입니다.
  Publish-Subscribe 매커니즘을 제공하기 때문에 Broket을 통해서 다른 사용자에게 메세지를 보내거나 서버가 특정 작업을 수행하도록 메세지를
 보낼 수 있습니다. 또한 Http와 마찬가지로 frame을 사용해 전송하는 프로토콜입니다.
