@@ -100,7 +100,6 @@ https://blog.naver.com/seojyun0731" target="_blank"><img height="40"  src="https
 
 ## ERD
 
-# readme 추가
 
 ## 아키텍처 도입과정
 
