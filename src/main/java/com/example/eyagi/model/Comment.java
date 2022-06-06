@@ -2,8 +2,6 @@ package com.example.eyagi.model;
 
 
 import com.example.eyagi.dto.CommentDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

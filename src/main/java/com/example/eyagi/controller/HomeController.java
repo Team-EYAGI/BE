@@ -5,20 +5,16 @@ import com.example.eyagi.dto.TodayCreatorDto;
 import com.example.eyagi.model.VisitCount;
 import com.example.eyagi.repository.ClientAdressRepository;
 import com.example.eyagi.repository.VisitCountRepository;
-import com.example.eyagi.service.BooksService;
-import com.example.eyagi.service.FundService;
-import com.example.eyagi.service.HomeService;
-import com.example.eyagi.service.UserService;
+import com.example.eyagi.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.List;
@@ -34,6 +30,7 @@ public class HomeController {
     private final HomeService homeService;
     private final VisitCountRepository visitCountRepository;
     private final ClientAdressRepository clientAdressRepository;
+    private final BooksCrawlingService booksCrawlingService;
 
     // 메인화면에서 추천도서 보여주기
     @GetMapping("/")
@@ -81,22 +78,11 @@ public class HomeController {
         return userService.showMainCreator();
     }
 
-      /*
-   //모든 책 불러오기
-   @GetMapping("/")
-    public ResponseEntity<?> getAllBooks(){
-        return new ResponseEntity<>(booksService.getAllBooks(), HttpStatus.OK);
-    }*/
 
-    /*  // 크롤링 등록
-    @PostMapping("/category")
-    public void getBookByCategory() throws IOException {
-       booksCrawlingService.getCategoryBooks("01");
-        booksCrawlingService.getCategoryBooks("03");
-        booksCrawlingService.getCategoryBooks("13");
-        booksCrawlingService.getCategoryBooks("41");
-        booksCrawlingService.getCategoryBooks("15");
-
-    }*/
+    // 크롤링 등록
+    @PostMapping("/crawling/category")
+    public void getBookByCategory(@PathVariable String id) throws IOException {
+       booksCrawlingService.getCategoryBooks(id);
+    }
 
 }

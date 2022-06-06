@@ -2,7 +2,6 @@ package com.example.eyagi.model;
 
 import com.example.eyagi.dto.request.ChatMessageRequestDto;
 import lombok.*;
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 

@@ -9,7 +9,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-//@Setter
 @Getter
 @Entity
 public class AudioPreview extends Timestamped {

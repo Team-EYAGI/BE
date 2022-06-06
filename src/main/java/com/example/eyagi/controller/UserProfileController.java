@@ -16,7 +16,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,31 +48,12 @@ public class UserProfileController {
     }
 
 
-    //todo:프로필 수정 -> 등록한 사진을 지우고 기본 이미지로 하고 싶으면 어떡할까 ? 정하고 하자 - FE 확인 전
-//    @PutMapping("/user/profiles/change")
-//    public ResponseEntity editUserProfile(@RequestPart(name = "image", required = false) MultipartFile file,
-//                                @RequestPart(name = "info",  required = false) SellerProfileDto dto,
-//                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
-////        UserRole role = userDetails.getUser().getRole();
-////        if(role == UserRole.SELLER) {
-////            SellerProfileDto.ResponseDto sellerDto = userPageService.newProfileSeller(file, userDetails.getUsername(), dto);
-////            return new ResponseEntity(sellerDto, HttpStatus.OK);
-////        } else {
-////            UserProfileDto userDto = userPageService.newProfile(file, userDetails.getUsername());
-////            return new ResponseEntity(userDto, HttpStatus.OK);
-////        }
-//
-//    }
 
-
-    //todo:판매자 프로필 - 나의 음성 등록 -> 음성파일 크기 제한 두기. 파일 크기 제한 잘 되는지 확인
+    //판매자 프로필 - 나의 음성 등록 -> 음성파일 크기 제한 두기. 파일 크기 제한 잘 되는지 확인
     @Auth //셀러 , 관리자만 조회 가능
     @PostMapping("/seller/new/voice")
     public ResponseEntity myVoice(@RequestPart(name = "audio") MultipartFile file,
                                   @AuthenticationPrincipal UserDetailsImpl userDetails){
-//        if (userDetails.getUser().getRole()!=UserRole.SELLER){
-//            throw new IllegalArgumentException("오디오 등록에 권한이 없습니다.");
-//        }
 //        1048576 bytes 로 약 1MB이다. -> 5MB를 주기 위해 *5 함.
 //        byte b = (byte)5242880;
         if (file.getSize() > 5242880 ) {
@@ -84,7 +64,7 @@ public class UserProfileController {
         return ResponseEntity.ok("voice 등록 완료!");
     }
 
-    //todo : 셀러 프로필 보기.  회원, 비회원 모두 볼 수 있음.
+    // 셀러 프로필 보기.  회원, 비회원 모두 볼 수 있음.
     @GetMapping("/viewer/seller/{sellerId}")
     public ResponseEntity sellerProfileViewer (@PathVariable Long sellerId, @RequestParam("username") String username) {
         User seller = userService.findUserId(sellerId);
@@ -104,16 +84,6 @@ public class UserProfileController {
         }
     }
 
-//    @PostMapping("/viewer/seller/{sellerId}")
-//    public Map<String, Object> sellerProfileViewerVer_User (@PathVariable Long sellerId,
-//                                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        SellerPageDto sellerPageDto = userPageService.loadSellerPage( userService.findUserId(sellerId));
-//        boolean b = followService.followStatus(userDetails.getUser().getId(), sellerId);
-//        Map<String , Object> sellerProfileViewer = new HashMap<>();
-//        sellerProfileViewer.put("sellerProfile",sellerPageDto);
-//        sellerProfileViewer.put("followStatus", b);
-//        return sellerProfileViewer;
-//    }
 
     //셀러 프로필 보기 - 오디오북 목록
     @GetMapping("/viewer/sellerAudioBook/{sellerId}")

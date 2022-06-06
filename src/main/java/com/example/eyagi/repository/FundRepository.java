@@ -19,7 +19,6 @@ public interface FundRepository extends JpaRepository<Fund, Long> {
     Optional<Fund> findByFundId(Long id);
 
     @EntityGraph(attributePaths = {"books","user"}, type = EntityGraph.EntityGraphType.FETCH)
-//    @Query("select distinct u from Fund u left join u.user")
     List<Fund> findAllByUserIdOrderByFundIdDesc(Long user_id);
 
     @EntityGraph(attributePaths = {"books","user"},type = EntityGraph.EntityGraphType.FETCH)

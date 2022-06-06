@@ -1,4 +1,3 @@
-package com.example.eyagi.service;/*
 package com.example.eyagi.service;
 
 import com.example.eyagi.model.Books;
@@ -31,7 +30,6 @@ public class BooksCrawlingService {
     //카테고리 별 크롤링 메서드
     public void getCategoryBooks(String linkClass)throws IOException{
 
-    //    List<Books> booksList = new ArrayList<>();
 
         String categoryValue = "";
 
@@ -46,7 +44,6 @@ public class BooksCrawlingService {
         }else if(linkClass.equals("15")){
             categoryValue = "self";
         }
-     */
 /*   //소설
         http://www.kyobobook.co.kr/categoryRenewal/categoryMain.laf?perPage=20&mallGb=KOR&linkClass=01&menuCode=002
         //시
@@ -57,7 +54,7 @@ public class BooksCrawlingService {
         http://www.kyobobook.co.kr/categoryRenewal/categoryMain.laf?perPage=20&mallGb=KOR&linkClass=41&menuCode=002
         //자기계발
         http://www.kyobobook.co.kr/categoryRenewal/categoryMain.laf?perPage=20&mallGb=KOR&linkClass=15&menuCode=002*//*
-
+*/
 
         String url = "http://www.kyobobook.co.kr/categoryRenewal/categoryMain.laf?perPage=20&mallGb=KOR&linkClass=" + linkClass + "&menuCode=002";
         Document doc = Jsoup.connect(url).get();
@@ -89,10 +86,6 @@ public class BooksCrawlingService {
                             .build();
 
             booksRepository.save(books);
-          //  booksList.add(books);
-
-
         }
     }
 }
-*/

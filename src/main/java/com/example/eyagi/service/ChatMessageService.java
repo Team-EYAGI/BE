@@ -60,13 +60,6 @@ public class ChatMessageService {
         chatMessageRepository.save(message);
     }
 
-    // 채팅방의 마지막 100개 메세지를 페이징하여 리턴함
-//    public Page<ChatMessage> getChatMessageByRoomId(String roomId, Pageable pageable) {
-//        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() -1);
-//        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt" );
-//        pageable = PageRequest.of(page, 100, sort);
-//        return chatMessageRepository.findByRoomId(roomId, pageable);
-//    }
     public List<ChatMessageAllResponseDto> getChatMessageByRoomId(String roomId) {
         List<ChatMessage> chatMessageList = chatMessageRepository.findByRoomId(roomId);
         List<ChatMessageAllResponseDto> chatMessageAllResponseList
@@ -76,7 +69,6 @@ public class ChatMessageService {
                     .createdAt(formmater(cM.getCreatedAt()))
                     .id(cM.getId())
                     .type(cM.getType())
-//                    .senderNickname(cM.getSender().getUsername())
                     .senderId(cM.getSenderId())
                     .message(cM.getMessage())
                     .build();

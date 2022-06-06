@@ -11,9 +11,7 @@ import com.example.eyagi.model.AllChatInfo;
 import com.example.eyagi.repository.*;
 import com.example.eyagi.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
 import org.springframework.data.redis.core.HashOperations;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -57,23 +55,6 @@ public class ChatRoomService {
         return chatRoomCreateResponseDto;
     }
 
-//    // 사용자별 채팅방 목록 조회
-//    public List<ChatRoomListResponseDto> getOnesChatRoom(User user) {
-//        // 미완. 후에 데이터 관계 맵핑 or 불러오는 기획 설정 후 변경
-//        List<AllChatInfo> allChatInfoList = allChatInfoRepository.findAllByUserId(user.getId());
-//        List<ChatRoomListResponseDto> responseDtoList = new ArrayList<>();
-//        for ( AllChatInfo allChatInfo : allChatInfoList) {
-//            ChatRoom chatRoom = allChatInfo.getChatRoom();
-//            //일단 무조건 True
-//            ChatRoomListResponseDto responseDto = ChatRoomListResponseDto.builder()
-//                    .roomId(chatRoom.getRoomId())
-//                    .ownUserId(chatRoom.getOwnUser().getId())
-//                    .newMessage(true)
-//                    .build();
-//            responseDtoList.add(responseDto);
-//        }
-//        return responseDtoList;
-//    }
 
     // redis 에 입장정보로 sessionId 와 roomId를 저장하고 해단 sessionId 와 토큰에서 받아온 userId를 저장함
     public void setUserEnterInfo(String sessionId, String roomId, Long userId) {
@@ -127,23 +108,6 @@ public class ChatRoomService {
         List<ChatRoomListAdminResponseDto> chatRoomList = new ArrayList<>();
         for(ChatRoom cR : AllChatRoom) {
             newMessage = false; // 기본 없다고 설정
-//            // null일 경우가 생김
-//            Optional<ChatMessage> newLastMessage = chatMessageQRepository.findbyRoomIdAndTalk(cR.getRoomId().toString());
-//            Long lastMessage = allChatInfoRepository.findByChatRoom(cR).getLastMessageId();
-//            if(newLastMessage == null) {
-//                System.out.println("널" + newLastMessage);
-//                // 환영인사 자동.
-//                ChatMessage chatMessage = new ChatMessage(ChatMessage.MessageType.TALK, cR.getRoomId().toString(), user.getId(), "무엇을 도와드릴까요?");
-//                chatMessageRepository.save(chatMessage);
-//
-//                // All chat info 에 기록남기기
-////                allChatInfoService.save(user, cR);
-//            } else {
-//                if(newLastMessage.get().getId() > lastMessage) {
-//                    System.out.println(newLastMessage.get().getId() + "///" +lastMessage);
-//                    newMessage = true;
-//                }
-//            }
 
             ChatRoomListAdminResponseDto chatRoomListAdminResponseDto = new ChatRoomListAdminResponseDto().builder()
                     .roomId(cR.getRoomId())
@@ -181,11 +145,4 @@ public class ChatRoomService {
         return DateTimeFormatter.ofPattern("yyyy.MM.dd").format(localDateTime);
     }
 
-    public ResponseEntity<?> getAllChatRoomsTest(Pageable pageable) {
-        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt" );
-        pageable = PageRequest.of(page, pageable.getPageSize(), sort );
-        Page<ChatRoomCustomRepository> AllChatRoomTest = chatRoomRepository.findAllByOrderByRoomId(pageable);
-        return ResponseEntity.ok().body(AllChatRoomTest);
-    }
 }

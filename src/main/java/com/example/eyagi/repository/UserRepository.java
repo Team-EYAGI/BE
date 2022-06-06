@@ -26,7 +26,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByKakaoId(Long kakaoId);
 
     @EntityGraph(attributePaths = {"audioBookList" , "userProfile"}, type = EntityGraph.EntityGraphType.FETCH)
-//    @EntityGraph(attributePaths = "audioBookList", type = EntityGraph.EntityGraphType.FETCH)
     List<User>findByRole(UserRole role);
 
 

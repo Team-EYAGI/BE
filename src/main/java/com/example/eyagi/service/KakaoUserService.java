@@ -30,7 +30,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
 import java.util.UUID;
 
 
@@ -132,13 +131,8 @@ public class KakaoUserService {
         Long kakaoId = kakaoUserInfoDto.getKakaoId();
         User kakaoUser = userRepository.findByKakaoId(kakaoId)
                 .orElse(null);
-        //가입된 유저 확인
-//        Optional<User>userCheck = userRepository.findByEmail(kakaoUserInfoDto.getEmail());
-//        if(userCheck.isPresent()){
-//            throw new IllegalArgumentException("이미 가입된 유저입니다.");
-//        }
+
         if(kakaoUser == null){
-// username: kakao nickname
             String nickname = kakaoUserInfoDto.getUsername();
             String password = UUID.randomUUID().toString();
             String encodedPassword = passwordEncoder.encode(password);

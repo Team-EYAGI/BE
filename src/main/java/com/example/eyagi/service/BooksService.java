@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -57,96 +56,6 @@ public class BooksService {
         PageImpl pageImpl = new PageImpl(bookList, pageable, findBookPage.getTotalElements());
         return ResponseEntity.ok().body(pageImpl);
     }
-
-//    //카테고리 별 책리스트 가져오기
-//    public List<BooksDto> findBooksByCategory(String category) {
-//        List<Books> findBookList = booksRepository.findByCategory(category);
-//        List<BooksDto> bookList = new ArrayList<>();
-//
-//        for (Books books : findBookList) {
-//            BooksDto booksDto = new BooksDto(books);
-//            bookList.add(booksDto);
-//        }
-//        return bookList;
-//    }
-
-
-//// 메인 (추천도서)+(자기계발서)
-//    public Map<String, Object> showMainBooks(){
-//
-//        //추천도서 list
-//        List<Books>findAllBook = booksRepository.findAll();
-//        List<BooksDto>randomBookList = new ArrayList<>();
-//
-//        for(Books books : findAllBook){
-//            BooksDto booksDto = BooksDto.builder()
-//                    .bookId(books.getBookId())
-//                    .title(books.getTitle())
-//                    .author(books.getAuthor())
-//                    .publisher(books.getPublisher())
-//                    .bookImg(books.getBookImg())
-//                    .category(books.getCategory())
-//                    .build();
-//            randomBookList.add(booksDto);
-//        }
-//        Collections.shuffle(randomBookList); //리스트 내 값 랜덤으로 순서 재배치
-//
-//        List<BooksDto>BestBooks = new ArrayList<>();
-//
-//        for (int i = 0; i < 10; i++) {
-//            BestBooks.add(randomBookList.get(i));
-//        }
-//
-//        // 자기계발서 책 list
-//        String category = "self";
-//        List<Books> findSelfList = booksRepository.findByCategory(category);
-//        List<BooksDto> allSelfList = new ArrayList<>();
-//        for (Books books : findSelfList) {
-//            BooksDto booksDto = BooksDto.builder()
-//                    .bookId(books.getBookId())
-//                    .title(books.getTitle())
-//                    .author(books.getAuthor())
-//                    .publisher(books.getPublisher())
-//                    .bookImg(books.getBookImg())
-//                    .category(books.getCategory())
-//                    .build();
-//            allSelfList.add(booksDto);
-//        }
-//        Collections.shuffle(allSelfList);
-//        List<BooksDto> selfList = new ArrayList<>();
-//        for (int i = 0; i < 5; i++) {
-//            selfList.add(allSelfList.get(i));
-//        }
-//        Map<String, Object> ShowBookLists = new HashMap<>();
-//        ShowBookLists.put("BestBook", BestBooks);
-//        ShowBookLists.put("self", selfList);
-//
-//        return ShowBookLists;
-//
-//    }
-
-
-//    // 메인 (추천도서)
-//    public  List<BooksDto> showMainBooks() {
-//        List<AudioBook> findAllAudioBook = audioBookRepository.findAll();
-//        //추천도서 list
-//        List<Books> findAllBook = booksRepository.findAll();
-//        List<BooksDto> randomBookList = new ArrayList<>();
-//
-//        for (Books books : findAllBook) {
-//            BooksDto booksDto = new BooksDto(books);
-//            randomBookList.add(booksDto);
-//        }
-//        Collections.shuffle(randomBookList); //리스트 내 값 랜덤으로 순서 재배치
-//
-//        List<BooksDto> bestBooks = new ArrayList<>();
-//
-//        for (int i = 0; i < 10; i++) {
-//            bestBooks.add(randomBookList.get(i));
-//        }
-//
-//        return bestBooks;
-//    }
 
     // 메인 (추천도서)
     public  List<BooksDto> showMainBooks() {

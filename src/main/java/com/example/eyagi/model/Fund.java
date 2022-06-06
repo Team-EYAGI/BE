@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import static javax.persistence.FetchType.*;
 import javax.persistence.*;
-import java.util.List;
 
 @NoArgsConstructor
 @Getter

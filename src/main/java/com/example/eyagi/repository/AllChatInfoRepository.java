@@ -2,7 +2,6 @@ package com.example.eyagi.repository;
 
 import com.example.eyagi.model.AllChatInfo;
 import com.example.eyagi.model.ChatRoom;
-import com.example.eyagi.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

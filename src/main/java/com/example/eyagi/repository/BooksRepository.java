@@ -2,7 +2,6 @@ package com.example.eyagi.repository;
 
 
 import com.example.eyagi.model.Books;
-import com.example.eyagi.model.User;
 import com.example.eyagi.repository.QRepository.BooksCustomRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

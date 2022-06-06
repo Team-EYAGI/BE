@@ -47,22 +47,10 @@ public class UserPageService {
     //듣고 있는 오디오북에 추가
     @Transactional
     public void listenBook (AudioBook audioBook, User user){
-
         UserLibrary library = user.getUserLibrary();
-//        if (library == null){
-//            UserLibrary userLibrary = new UserLibrary(user);
-//            Library_Audio library_audio = new Library_Audio(userLibrary,audioBook);
-//            userLibrary.addAuidoBook(library_audio);
-//            userLibraryRepository.save(userLibrary);
-//            user.addLibrary(userLibrary);
-//            library_audioRepository.save(library_audio);
-//        } else {
-            Library_Audio library_audio = new Library_Audio(library,audioBook);
-//            library.getMyAuidoBook().add(library_audio);
-//            library.addAuidoBook(library_audio);
-            library_audioRepository.save(library_audio);
-            userLibraryRepository.save(library);
-//        }
+        Library_Audio library_audio = new Library_Audio(library,audioBook);
+        library_audioRepository.save(library_audio);
+        userLibraryRepository.save(library);
     }
 
     //내 서재에 책 담기
@@ -70,15 +58,6 @@ public class UserPageService {
         User user = userService.findUser(email);
         Books books = booksService.findBook(id);
         UserLibrary library = user.getUserLibrary();
-//        if (library == null){
-//            UserLibrary userLibrary = new UserLibrary(user);
-//            Library_Books library_books = new Library_Books(userLibrary, books);
-//            userLibrary.addBook(library_books);
-//            userLibraryRepository.save(userLibrary);
-//            user.addLibrary(userLibrary);
-//            library_booksRepository.save(library_books);
-//
-//        } else {
         Library_Books bookCheck = library_booksRepository.findByBookAndUserLibrary(books, library);
         if(bookCheck != null){
            return "이미 등록된 도서입니다.";
@@ -95,7 +74,6 @@ public class UserPageService {
     public List<BooksDto> loadMyLibraryBooks(User user){
         //키값 역순 리스트
         List<Library_Books> library_booksList = library_booksRepository.findAllByUserLibraryOrderByIdDesc(user.getUserLibrary());
-//        List<Library_Books> library_booksList = user.getUserLibrary().getMyBook(); //담은 도서.
         List<BooksDto> booksDtoList = new ArrayList<>();
         for(Library_Books lb : library_booksList){
             BooksDto booksDto = new BooksDto(lb.getBook());
@@ -109,7 +87,6 @@ public class UserPageService {
  */
     //서재 불러오기 2. 내가 듣고 있는 오디오북
     public List<LibraryAudiosDto> loadMyLibraryAudios(User user){
-//        List<Library_Audio> library_audioList = user.getUserLibrary().getMyAuidoBook(); //듣고 있는 오디오북.
         List<Library_Audio> library_audioList =library_audioRepository.findAllByUserLibraryOrderByIdDesc(user.getUserLibrary());
         List<LibraryAudiosDto> libraryAudiosDtoList = new ArrayList<>();
             for(Library_Audio la : library_audioList){
@@ -125,7 +102,6 @@ public class UserPageService {
     public Long removeLibraryBook (Long bookId, User user){
         Books book = booksService.findBook(bookId);
         try {
-//            Library_Books library_books = library_booksRepository.findByUserLibraryAndBook(user.getUserLibrary(), book);
             Library_Books library_books = library_booksRepository.findByBookAndUserLibrary(book, user.getUserLibrary());
             library_booksRepository.delete(library_books);
         }catch (NullPointerException e){
@@ -155,14 +131,10 @@ public class UserPageService {
         List<AudioBook> audioBookList = user.getAudioBookList();
         List<SellerAudioBook> sellerAudioBookList = new ArrayList<>();
         int i = 0;   //최신순으로 뽑아주기 위한 반복문.
-        for (i = audioBookList.size() ; i > 0; i--){
-            SellerAudioBook sa = new SellerAudioBook(audioBookList.get(i-1));
+        for (i = audioBookList.size() ; i > 0; i--) {
+            SellerAudioBook sa = new SellerAudioBook(audioBookList.get(i - 1));
             sellerAudioBookList.add(sa);
         }
-//        for(AudioBook a : audioBookList){
-//            SellerAudioBook sa = new SellerAudioBook(a);
-//            sellerAudioBookList.add(sa);
-//        }
         return sellerAudioBookList;
     }
 
@@ -206,17 +178,7 @@ public class UserPageService {
     }
 
 
-    //todo:프로필 수정
-//    public void editProfile (MultipartFile file, String email, SellerProfileDto dto) {
-//        User user = userService.findUser(email);
-//
-//        if (user.getRole() == UserRole.USER){
-//            awsS3Service.removeImage();
-//        }
-//
-//    }
-
-    //todo: 판매자 음성 등록 및 수정
+    // 판매자 음성 등록 및 수정
     @Transactional
     public void sellerMyVoice(MultipartFile file, User user){
         UserProfile profile = user.getUserProfile();

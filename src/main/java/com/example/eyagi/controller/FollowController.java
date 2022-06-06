@@ -3,7 +3,6 @@ package com.example.eyagi.controller;
 import com.example.eyagi.dto.FollowDto;
 import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.FollowService;
-import com.example.eyagi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

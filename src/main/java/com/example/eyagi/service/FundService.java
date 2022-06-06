@@ -68,7 +68,6 @@ public class FundService {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
         Sort sort = Sort.by(Sort.Direction.DESC, "createdAt" );
         pageable = PageRequest.of(page, pageable.getPageSize(), sort );
-//        boolean successGoals;
 
         User user = null;
         if(requestDto != null) {
@@ -87,11 +86,6 @@ public class FundService {
                     myHeartFund = true;
                 }
             }
-            // 펀딩 성공 여부.
-//            successGoals = false;
-//            if(fund.getHeartCnt() >= fund.getFundingGoals()) {
-//                successGoals = true;
-//            }
             FundResponseDto fundResponseDto = FundResponseDto.builder()
                     .fundId(fundCustomRepository.getFundId())
                     .sellerName(fundCustomRepository.getSellerName())
@@ -185,7 +179,6 @@ public class FundService {
                     .fundId(fund.getFundId())
                     .sellerName(fund.getUser().getUsername())
                     .likeCnt(fund.getHeartCnt())
-//                    .fundFile(fund.getAudioFund().getFundFile())
                     .successFunding(fund.isSuccessGoals())
                     .bookTitle(fund.getBooks().getTitle())
                     .bookImg(fund.getBooks().getBookImg())
@@ -215,8 +208,6 @@ public class FundService {
         User user = userRepository.findByUsername(requestDto.getUsername()).orElseThrow(() -> new NullPointerException("유저 X"));
         Fund foundFund = fundQRepository.findNewandById(fundid).orElseThrow(
                 () -> new NullPointerException("펀딩내용을 찾을 수 없습니다."));
-//        Fund foundFund = fundRepository.findByFundId(fundid).orElseThrow(
-//                () -> new NullPointerException("펀딩내용을 찾을 수 없습니다."));
 
         myHeartFund = false;
         boolean existsFundHeart = fundHeartRepository.existsByUserAndFund(user, foundFund);
@@ -256,8 +247,6 @@ public class FundService {
     // 펀딩상세보기 - 비회원
     public ResponseEntity<?> detailFundNoUser(Long fundid) {
         boolean myHeartFund;
-//        Fund foundFund = fundRepository.findByFundId(fundid).orElseThrow(
-//                () -> new NullPointerException("펀딩내용을 찾을 수 없습니다."));
         Fund foundFund = fundQRepository.findNewandById(fundid).orElseThrow(
                 () -> new NullPointerException("펀딩내용을 찾을 수 없습니다."));
         myHeartFund = false;

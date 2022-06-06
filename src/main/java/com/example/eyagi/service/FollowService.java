@@ -6,7 +6,6 @@ import com.example.eyagi.model.User;
 import com.example.eyagi.repository.FollowQRepository;
 import com.example.eyagi.repository.FollowRepository;
 import com.example.eyagi.repository.UserRepository;
-import com.example.eyagi.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,10 +23,6 @@ public class FollowService {
     private final UserRepository userRepository;
     private final UserService userService;
 
-    //
-//public User findUserName(String username){
-//    return userRepository.findByUsername(username).orElse(null);
-//}
 
     public Map<String, Object> startFollow(User user, Long id) {
         //유저정보찾기
@@ -40,8 +35,6 @@ public class FollowService {
             return followONOff;
         }
 
-//        assert user != null;
-//        assert seller != null;
         List<Follow> follower = seller.getFollowedList();
         for (Follow f : follower) {
             if (f.getFollower().getId().equals(user.getId())) {
@@ -74,23 +67,8 @@ public class FollowService {
 
         User seller = userService.findUserId(id);
         List<Follow> follower = seller.getFollowedList();
-//        List<Follow> follower = followQRepository.findFollowedListById(id);
         List<FollowDto> followerList = new ArrayList<>();
-//        List<Follow> follower = followRepository.findByFollowed_Id(id);
         for (Follow f : follower) {
-//            try {
-//                FollowDto followDto = FollowDto.builder()
-//                        .img(f.getFollower().getUserProfile().getUserImage())
-//                        .name(f.getFollower().getUsername())
-//                        .build();
-//                followerList.add(followDto);
-//
-//            } catch (NullPointerException e) {
-//                FollowDto followDto = FollowDto.builder()
-//                        .name(f.getFollower().getUsername())
-//                        .build();
-//                followerList.add(followDto);
-//            }
             FollowDto dto = new FollowDto();
             dto.following(f);
             followerList.add(dto);
@@ -103,24 +81,10 @@ public class FollowService {
     //내가 팔로잉한 사람 리스트
     public List<FollowDto> getFollowingList(Long id) {
         User user = userService.findUserId(id);
-        List<Follow> following = user.getFollowingList();/**/
-//        List<Follow> following = followQRepository.findFollowingListById(id);
-//        List<Follow> following =followRepository.findByFollower_Id(id);
+        List<Follow> following = user.getFollowingList();
         List<FollowDto> followingList = new ArrayList<>();
 
         for (Follow f : following) {
-//         try{
-//             FollowDto followDto = FollowDto.builder()
-//                        .name(f.getFollowed().getUsername())
-//                        .img(f.getFollowed().getUserProfile().getUserImage())
-//                        .build();
-//                followingList.add(followDto);
-//         }catch (NullPointerException e){
-//             FollowDto followDto = FollowDto.builder()
-//                     .name(f.getFollowed().getUsername())
-//                     .build();
-//             followingList.add(followDto);
-//         }
             FollowDto dto = new FollowDto();
             dto.follower(f);
             followingList.add(dto);
