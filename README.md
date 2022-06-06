@@ -86,7 +86,6 @@ https://blog.naver.com/seojyun0731" target="_blank"><img height="40"  src="https
 <!-- git -->
 <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
 <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
-<img src="https://img.shields.io/badge/github actions-2088FF?style=for-the-badge&logo=github actions&logoColor=white">
 <!-- redis -->
 <img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">
 <img src="https://img.shields.io/badge/stomp-000000?style=for-the-badge&logo=stomp&logoColor=white">
@@ -424,7 +423,7 @@ n+1을 개선하며 , 조금 더 나은 성능 향상을 위해서 인덱싱까�
 
 그리고 jmeter를 사용하여 부하테스트를 진행하면서 n+1 과 인덱싱 작업 이후 성능 개선이 얼마나 되었는지 체크해보았습니다.
 
-+개선 전
++ 개선 전
 
 | mapping | 요청수 | Min /ms | Max /ms | Average /ms | Error % | Throughput /sec |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -432,7 +431,7 @@ n+1을 개선하며 , 조금 더 나은 성능 향상을 위해서 인덱싱까�
 | /user/todayCreator | 총 5000(500 1 10) | 1149 | 41535 | 22249 | 0.00% | 21.2 |
 | /fund/detail/1 | 총 5000(500 1 10) | 77 | 10822 | 4256 | 0.00% | 110.0 |
 
-+n + 1 개선 후
++ n + 1 개선 후
 
 | mapping | 요청수 | Min /ms | Max /ms | Average /ms | Error % | Throughput /sec |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -440,7 +439,7 @@ n+1을 개선하며 , 조금 더 나은 성능 향상을 위해서 인덱싱까�
 | /user/todayCreator | 총 5000(500 1 10) | 14 | 4453 | 966 | 0.00% | 400.7 |
 | /fund/detail/1 | 총 5000(500 1 10) | 9 | 2871 | 747 | 0.00% | 534.6 |
 
-+인덱싱 작업 후
++ 인덱싱 작업 후
 
 | mapping | 요청수 | Min /ms | Max /ms | Average /ms | Error % | Throughput /sec |
 | --- | --- | --- | --- | --- | --- | --- |
