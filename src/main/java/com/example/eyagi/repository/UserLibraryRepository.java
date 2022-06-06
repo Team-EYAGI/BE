@@ -6,8 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 
 
 public interface UserLibraryRepository extends JpaRepository<UserLibrary, Long> {
-//
-//    UserLibrary findByUserId(Long id);
 
 
 }

@@ -8,7 +8,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 @Profile("3.34.46.63")
-//@Profile("local")
 @Configuration
 public class EmbeddedRedisConfig {
 

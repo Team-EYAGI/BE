@@ -2,8 +2,6 @@
 package com.example.eyagi.Interceptor;
 
 import com.example.eyagi.model.UserRole;
-import com.example.eyagi.repository.UserRepository;
-import com.example.eyagi.security.jwt.HeaderTokenExtractor;
 import com.example.eyagi.security.jwt.JwtDecoder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

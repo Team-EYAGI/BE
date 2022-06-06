@@ -41,7 +41,6 @@ public class UserService {
     private final JwtDecoder jwtDecoder;
     private final UserProfileRepository profileRepository;
     private final UserLibraryRepository libraryRepository;
-//    private final UserCustomRepositiry userCustomRepositiry;
 
 
     public User findUserId (Long id){
@@ -114,8 +113,6 @@ public class UserService {
         UserDto.MypageDto mypageDto = UserDto.MypageDto.builder()
                 .email(userDetails.getUsername())
                 .username(user.getUsername())
-//                .userimgurl(user.getUserImage())
-//                .userimgname(user.getOriginImage())
                 .build();
         return ResponseEntity.ok().body(mypageDto);
     }
@@ -146,7 +143,6 @@ public class UserService {
                         .build();
                 todayCreatorDtoList.add(todayCreator);
             }
-//            TodayCreatorDto todayCreator = new TodayCreatorDto(u);
         }
 
         //creator가 6명보다 적다면 null값 넣기

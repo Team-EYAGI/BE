@@ -81,7 +81,6 @@ public class AudioController extends JwtProperties {
             try {
                 audioService2.join();
 
-//                String originFileS3Url = awsS3Service.fileUpload(bucket, multipartFile, audioService2.getOriginFileS3());
                 Map<String, String> fileName = awsS3Service.uploadFile(multipartFile, pathAudio);
                 String cutFileS3Url = awsS3Service.copyAudioUpload(bucket, path, audioService2.getCutFile(),
                         audioService2.getCutFileS3());
@@ -111,16 +110,11 @@ public class AudioController extends JwtProperties {
                 book.addAudioBook(audioBook1);
 
 
-//                Thread.sleep(1500);
                 audioService.removeFile(path, audioService2.getCutFile());
                 audioService.removeFile(path, audioService2.getLocalFile());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-//            finally {
-//                audioService.removeFile(path, audioService2.getCutFile());
-//                audioService.removeFile(path, audioService2.getLocalFile());
-//            }
 
             log.info("첫 오디오북 등록 성공! 등록한 셀러 : {}", seller.getId());
             return ResponseEntity.ok("오디오북 첫 개시에 성공하였습니다!");

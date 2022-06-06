@@ -15,7 +15,6 @@ public class AudioService2 extends Thread {
     private final String multipartName;
     private final String localFile;
     private final String cutFile;
-//    private final String originFileS3;
     private final String cutFileS3;
     private final String path;
     private final String bucket;
@@ -26,7 +25,6 @@ public class AudioService2 extends Thread {
         this.multipartName = multipartFile.getOriginalFilename();
         this.localFile = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartName);
         this.cutFile = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartName);
-//        this.originFileS3 = "audio" +"/" + localFile;
         this.cutFileS3 = "audioPreview" + "/" + cutFile;
         this.path = path;
         this.bucket = bucket;

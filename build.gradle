@@ -74,6 +74,8 @@ dependencies {
 
     // health check
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    implementation 'org.jsoup:jsoup:1.15.1'
 }
 
 tasks.named('test') {

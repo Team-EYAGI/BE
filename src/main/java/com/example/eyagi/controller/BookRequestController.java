@@ -22,11 +22,6 @@ public class BookRequestController {
 
     private final BookRequestService bookRequestService;
 
-//    //모든 요청 불러오기
-//    @GetMapping("/book/request")
-//    public ResponseEntity<List<BookRequestDto.ResponesDto>> findAllRequest(Pageable pageable) {
-//        return ResponseEntity.ok(bookRequestService.findAllRequest(pageable));
-//    }
     //모든 요청 불러오기
     @GetMapping("/book/request")
     public ResponseEntity<?> findAllRequest(Pageable pageable) {

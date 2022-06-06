@@ -7,7 +7,6 @@ import com.example.eyagi.model.BookRequest;
 import com.example.eyagi.model.User;
 import com.example.eyagi.repository.BookRequestRepository;
 import com.example.eyagi.repository.QRepository.BookRequestCustomRepository;
-import com.example.eyagi.repository.QRepository.FundCustomRepository;
 import com.example.eyagi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
@@ -15,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,11 +28,7 @@ public class BookRequestService {
 
 
     // 요청목록 등록순으로 불러오기
-//    public List<BookRequestDto.ResponesDto> findAllRequest(Pageable pageable){
     public ResponseEntity<?> findAllRequest(Pageable pageable){
-//        List<BookRequest> bookRequestList = bookRequestRepository.findAllByOrderByModifiedAtDesc();//최신순으로 수정함.
-//        List<BookRequest> bookRequestList = bookRequestRepository.findAllByOrderByBookRequestIdDesc(); //id 값 역순으로 ..
-        //pageable
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
         Sort sort = Sort.by(Sort.Direction.DESC, "createdAt" );
         pageable = PageRequest.of(page, pageable.getPageSize(), sort );

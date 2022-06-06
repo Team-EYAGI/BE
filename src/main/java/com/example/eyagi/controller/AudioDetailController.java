@@ -46,15 +46,6 @@ public class AudioDetailController {
         return ResponseEntity.ok(audioBookDetail);
     }
 
-    //오디오북 상세페이지 -> 후기 목록
-//    @GetMapping("/{audioBookId}/comment")
-//    public ResponseEntity getComment (@PathVariable Long audioBookId){
-//
-//        List<CommentDto> commentDtoList = audioDetailService.commentList(audioBookId);
-//
-//        return new ResponseEntity(commentDtoList, HttpStatus.OK);
-//    }
-
     //후기 조회
     @GetMapping("/{audioBookId}/comment")
     public ResponseEntity<?> getComment(@PathVariable Long audioBookId, Pageable pageable) {

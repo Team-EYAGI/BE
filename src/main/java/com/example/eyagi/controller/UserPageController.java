@@ -5,12 +5,9 @@ import com.example.eyagi.dto.*;
 import com.example.eyagi.model.User;
 import com.example.eyagi.model.UserRole;
 import com.example.eyagi.security.UserDetailsImpl;
-import com.example.eyagi.service.AwsS3Service;
 import com.example.eyagi.service.UserPageService;
-import com.example.eyagi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +19,6 @@ import java.util.List;
 public class UserPageController {
 
     private final UserPageService userPageService;
-    private final UserService userService;
-    private final AwsS3Service awsS3Service;
 
 
       //마이페이지 조회 - 해야됨
@@ -87,15 +82,5 @@ public class UserPageController {
         User seller = userDetails.getUser();
         return ResponseEntity.ok(userPageService.myFund(seller));
     }
-
-
-    //todo: Not MVP 일반 사용자 마이페이지에 내가 참여한 펀딩 목록이 있으면 좋을 것 같다.
-    @GetMapping("/joinFund")
-    public void loadUserJoinFund(){
-
-    }
-
-
-
 
 }

@@ -42,7 +42,6 @@ public class AudioDetailService {
     //오디오북 상세 페이지 조회 1. 책 정보 + 오디오 목록   ++ 셀러 닉네임, 오디오북 소개글 추가
     @Transactional
     public AudioDetailDto getAudioDetail(AudioBook audioBook, User user) {
-//        AudioBook audioBook = findAudioBook(id);
 
         List<AudioFile> audioFileList = audioBook.getAudioFile();
         List<AudioFileDto> audioFileDtoList = new ArrayList<>();
@@ -75,17 +74,6 @@ public class AudioDetailService {
     }
 
 
-    //    오디오북 상세 페이지 조회 2. 후기 목록
-//    public List<CommentDto> commentList(Long audioBookDetailId){
-//
-//        List<Comment> commentList = commentRepository.findAllByAudioBook_Id(audioBookDetailId);
-//        List<CommentDto> commentDtoList = new ArrayList<>();
-//        for (Comment c : commentList){
-//            CommentDto commentDto = new CommentDto(c);
-//            commentDtoList.add(commentDto);
-//        }
-//        return commentDtoList;
-//    }
     public ResponseEntity<?> commentList(Long audioBookDetailId, Pageable pageable) {
         //pageable
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
