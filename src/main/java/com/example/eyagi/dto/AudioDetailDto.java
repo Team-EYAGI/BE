@@ -2,7 +2,6 @@ package com.example.eyagi.dto;
 
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 
 import java.util.List;
@@ -35,7 +34,5 @@ public class AudioDetailDto {
     public static class Request {
         private String contents;
     }
-
-
 
 }

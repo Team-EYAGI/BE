@@ -2,15 +2,10 @@ package com.example.eyagi.dto;
 
 
 import com.example.eyagi.model.BookRequest;
-import com.example.eyagi.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
@@ -22,10 +17,7 @@ public class BookRequestDto {
     private String title;
     private String contents;
 
-/*    public BookRequestDto(BookRequest bookRequest){
-        this.setTitle(bookRequest.getTitle());
-        this.setContents(bookRequest.getContents());
-    }*/
+
     @NoArgsConstructor
     @Getter
     public static class ResponesDto {

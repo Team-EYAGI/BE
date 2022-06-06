@@ -1,7 +1,6 @@
 package com.example.eyagi.dto.request;
 
 import com.example.eyagi.model.ChatMessage;
-import com.example.eyagi.model.User;
 import lombok.Getter;
 import lombok.Setter;
 

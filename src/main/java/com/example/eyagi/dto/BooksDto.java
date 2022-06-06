@@ -3,11 +3,9 @@ package com.example.eyagi.dto;
 import com.example.eyagi.model.Books;
 import lombok.*;
 
-import java.util.List;
 
 @NoArgsConstructor
 @Getter
-//@Builder
 public class BooksDto {
     private Long bookId;
     private String title;
@@ -30,17 +28,7 @@ public class BooksDto {
         this.author = books.getAuthor();
         this.category = books.getCategory();
     }
-//
-//    public BooksDto(Books books, List<AudioPreDto> audioPreDtoList){
-//        this.bookId = books.getBookId();
-//        this.bookImg = books.getBookImg();
-//        this.title = books.getTitle();
-//        this.publisher = books.getPublisher();
-//        this.author = books.getAuthor();
-//        this.category = books.getCategory();
-//        this.summary = books.getSummary();
-//        this.audioPreDtoList = audioPreDtoList;
-//    }
+
 public BooksDto(Long bookId, String bookImg, String title, String publisher, String author, String category){
     this.bookId = bookId;
     this.bookImg = bookImg;
@@ -48,5 +36,5 @@ public BooksDto(Long bookId, String bookImg, String title, String publisher, Str
     this.publisher = publisher;
     this.author = author;
     this.category = category;
-}
+    }
 }
