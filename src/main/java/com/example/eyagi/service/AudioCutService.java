@@ -16,6 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import ws.schild.jave.Encoder;
+import ws.schild.jave.MultimediaObject;
+import ws.schild.jave.encode.AudioAttributes;
+import ws.schild.jave.encode.EncodingAttributes;
 
 import javax.sound.sampled.*;
 import java.io.*;
@@ -106,7 +110,8 @@ public class AudioCutService {
                         .s3FileName(fileName.get("url"))
                         .contents(contents)
                         .build();
-                String cutFileS3Url = copyAudioUpload(bucket, path, cutFile, cutFileS3);
+                String cutFileS3Url = mp3Converter(bucket, path, cutFile, cutFileS3);
+//                String cutFileS3Url = copyAudioUpload(bucket, path, cutFile, cutFileS3);
                 save(book, seller, dto, cutFileS3Url);
             });
 //            completionHandler.completed(localFile, null);
@@ -257,5 +262,36 @@ public class AudioCutService {
 
 //        dto.getBook().addAudioBook(audioBook1);
     }
+
+    public String mp3Converter (String bucket, String path, String originName, String fileCutNameS3) {
+        boolean succeeded;
+        try {
+            File source = new File(path + "/"+originName+".wav");
+            File target = new File(path + "/"+originName+"mp"+".mp3");
+
+            //Audio Attributes
+            AudioAttributes audio = new AudioAttributes();
+            audio.setCodec("libmp3lame");
+            audio.setBitRate(128000);
+            audio.setChannels(2);
+            audio.setSamplingRate(44100);
+
+            //Encoding attributes
+            EncodingAttributes attrs = new EncodingAttributes();
+            attrs.setInputFormat("mp3");
+            attrs.setAudioAttributes(audio);
+
+            //Encode
+            Encoder encoder = new Encoder();
+            encoder.encode(new MultimediaObject(source), target, attrs);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            succeeded = false;
+        }
+        return copyAudioUpload(bucket, path, originName+"mp", fileCutNameS3);
+    }
+
+
 
 }

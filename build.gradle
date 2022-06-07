@@ -76,7 +76,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
     implementation 'org.jsoup:jsoup:1.15.1'
+
+    //wav -> mp3 로 확장자 변환 오픈소스
+    implementation group: 'ws.schild', name: 'jave-all-deps', version: '3.3.1'
 }
+
 
 tasks.named('test') {
     useJUnitPlatform()

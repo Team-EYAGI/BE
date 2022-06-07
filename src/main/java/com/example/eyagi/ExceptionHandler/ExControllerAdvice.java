@@ -16,10 +16,10 @@ public class ExControllerAdvice {
         return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-//    @ExceptionHandler(NullPointerException.class)
-//    public ResponseEntity illegalExHandle(NullPointerException e){
-//        log.error(e.getMessage());
-//        return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
-//    }
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity illegalExHandle(NullPointerException e){
+        log.error(e.getMessage());
+        return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
 
 }
