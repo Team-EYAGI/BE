@@ -27,6 +27,7 @@ import java.nio.channels.CompletionHandler;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
@@ -80,6 +81,7 @@ public class AudioCutService {
             }
             log("작업 2 종료");
         }
+
         // 작업 1이 실패했을 경우 불리는 콜백
         @Override
         public void failed(Throwable exc, Void attachment) {
@@ -102,17 +104,16 @@ public class AudioCutService {
 
         log("시작!");
         try {
-            executorService.submit(()->{
+            executorService.submit(() -> {
                 run(multipartFile, path, localFile, cutFile);
                 AudioCutDto dto = AudioCutDto.builder()
-                        .cutFileS3(cutFileS3)
                         .originName(fileName.get("fileName"))
                         .s3FileName(fileName.get("url"))
                         .contents(contents)
                         .build();
-                String cutFileS3Url = mp3Converter(bucket, path, cutFile, cutFileS3);
+                Map<String, String> filesName = mp3Converter(bucket, path, cutFile, cutFileS3);
 //                String cutFileS3Url = copyAudioUpload(bucket, path, cutFile, cutFileS3);
-                save(book, seller, dto, cutFileS3Url);
+                save(book, seller, dto ,filesName.get("cutFileS3"), filesName.get("cutFileS3Url"));
             });
 //            completionHandler.completed(localFile, null);
         } catch (Exception e) {
@@ -152,7 +153,7 @@ public class AudioCutService {
     }
 
 
-//    public void run() {
+    //    public void run() {
 //        String localFile = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
 //        String cutFile = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
 //        String cutFileS3 = "audioPreview" + "/" + cutFile;
@@ -232,15 +233,15 @@ public class AudioCutService {
     }
 
     @Transactional
-    public void removeFile (String path, String originalFile) throws IOException, InterruptedException {
+    public void removeFile(String path, String originalFile) throws IOException, InterruptedException {
         Path filePath = Paths.get(path + originalFile); //로컬에 남은 오디오 삭제.
         Files.delete(filePath);
     }
 
     @Transactional
-    public void save(Books book, User seller, AudioCutDto dto, String cutFileS3Url) {
+    public void save(Books book, User seller, AudioCutDto dto, String cutFileS3, String cutFileS3Url) {
         AudioPreview audioPreview = AudioPreview.builder()
-                .originName(dto.getCutFileS3())
+                .originName(cutFileS3)
                 .s3FileName(cutFileS3Url)
                 .build();
         audioPreRepository.save(audioPreview);
@@ -263,11 +264,11 @@ public class AudioCutService {
 //        dto.getBook().addAudioBook(audioBook1);
     }
 
-    public String mp3Converter (String bucket, String path, String originName, String fileCutNameS3) {
+    public Map<String, String> mp3Converter(String bucket, String path, String originName, String fileCutNameS3) {
         boolean succeeded;
         try {
-            File source = new File(path + "/"+originName+".wav");
-            File target = new File(path + "/"+originName+"mp"+".mp3");
+            File source = new File(path + "/" + originName + ".wav");
+            File target = new File(path + "/" + originName + "mp" + ".mp3");
 
             //Audio Attributes
             AudioAttributes audio = new AudioAttributes();
@@ -289,9 +290,12 @@ public class AudioCutService {
             ex.printStackTrace();
             succeeded = false;
         }
-        return copyAudioUpload(bucket, path, originName+"mp", fileCutNameS3);
+        String cutFileS3Url = copyAudioUpload(bucket, path, originName + "mp", fileCutNameS3);
+        Map<String, String> fileName = new HashMap<>();
+        fileName.put("cutFileS3", originName + "mp");
+        fileName.put("cutFileS3Url", cutFileS3Url);
+        return fileName;
     }
-
 
 
 }
