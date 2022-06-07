@@ -35,29 +35,6 @@
 |<b>펀딩</b>|<b>검색</b>|<b>마이페이지</b>|
 |<img src=https://user-images.githubusercontent.com/61370487/171026925-7215b3f8-7369-4f58-a4f6-bd57493b21ed.gif>|<img src=https://user-images.githubusercontent.com/61370487/171030108-3e4bc940-20ff-497a-9484-e920b958cef9.gif>|<img src=https://user-images.githubusercontent.com/61370487/171030132-8b300843-90f0-4e72-8271-933c75026aff.gif>|
 
-## 👨‍💻👩‍💻 팀원 소개
-#### `Backend`
-<a href="https://github.com/EunheaSong" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Spring&message=송은혜 &color=08CE5D&style=for-the-badge&>"/></a>
-<a href="https://github.com/akrwkdrrr99" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Spring&message=김승균 &color=08CE5D&style=for-the-badge&>"/></a>
-<a href="https://github.com/yunju2" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Spring&message=권윤주 &color=08CE5D&style=for-the-badge&>"/></a>
-
-
-<br>
-
-#### `Frontend`
-<a href="https://github.com/JIEUN24" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=React&message=최지은 &color=61dafb&style=for-the-badge&>"/></a>
-<a href="https://github.com/hyopp" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=React&message=권효빈 &color=61dafb&style=for-the-badge&>"/></a>
- 
- **[(Frontend-end github)](https://github.com/Team-EYAGI/Front)** 
-
-  <br />
- <br />
-
-#### `Designer`
-<a href="https://www.behance.net/lia_works" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Design&message=이아영 &color=F55C54&style=for-the-badge&>"/></a>
-<a href="https://seo-jyun-0731.tistory.com/ 
-https://blog.naver.com/seojyun0731" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Design&message=서지윤 &color=F55C54&style=for-the-badge&>"/></a>
-
 <br>
 
 
@@ -446,6 +423,10 @@ n+1을 개선하며 , 조금 더 나은 성능 향상을 위해서 인덱싱까�
 | /main/fund | 총 5000(500 1 10) | 19 | 4937 | 1518 | 0.00% | 281.6 |
 | /user/todayCreator | 총 5000(500 1 10) | 14 | 3826 | 881 | 0.00% | 525.5 |
 | /fund/detail/1 | 총 5000(500 1 10) | 8 | 2164 | 575 | 0.00% | 831.7 |
+  
+</div>
+</details>
+
 
 <details>
 <summary>Nginx를 통한 블루 그린 배포 인프라 설정</summary>
@@ -469,4 +450,26 @@ proxy_set_header Connection "upgrade";
 </div>
 </details>
 
+## 👨‍💻👩‍💻 팀원 소개
+#### `Backend`
+<a href="https://github.com/EunheaSong" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Spring&message=송은혜 &color=08CE5D&style=for-the-badge&>"/></a>
+<a href="https://github.com/akrwkdrrr99" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Spring&message=김승균 &color=08CE5D&style=for-the-badge&>"/></a>
+<a href="https://github.com/yunju2" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Spring&message=권윤주 &color=08CE5D&style=for-the-badge&>"/></a>
+
+
+<br>
+
+#### `Frontend`
+<a href="https://github.com/JIEUN24" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=React&message=최지은 &color=61dafb&style=for-the-badge&>"/></a>
+<a href="https://github.com/hyopp" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=React&message=권효빈 &color=61dafb&style=for-the-badge&>"/></a>
+ 
+ **[(Frontend-end github)](https://github.com/Team-EYAGI/Front)** 
+
+  <br />
+ <br />
+
+#### `Designer`
+<a href="https://www.behance.net/lia_works" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Design&message=이아영 &color=F55C54&style=for-the-badge&>"/></a>
+<a href="https://seo-jyun-0731.tistory.com/ 
+https://blog.naver.com/seojyun0731" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Design&message=서지윤 &color=F55C54&style=for-the-badge&>"/></a>
 
