@@ -267,8 +267,9 @@ public class AudioCutService {
     public Map<String, String> mp3Converter(String bucket, String path, String originName, String fileCutNameS3) {
         boolean succeeded;
         try {
-            File source = new File(path + "/" + originName + ".wav");
-            File target = new File(path + "/" + originName + "mp" + ".mp3");
+            String[] a = originName.split("");
+            File source = new File(path + "/" + originName);
+            File target = new File(path + "/" + a[0] + "mp" + ".mp3");
 
             //Audio Attributes
             AudioAttributes audio = new AudioAttributes();

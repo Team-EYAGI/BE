@@ -161,43 +161,43 @@ public class AudioController extends JwtProperties {
 
     //wav를 mp3로 변환해줌. -> wav가 용량이 크니, 저장할 때 사용해도 좋을 듯하다.
 
-//    @PostMapping("/test")
-//    public void converterTest (@RequestPart(name = "audio") MultipartFile multipartFile) throws IOException, UnsupportedAudioFileException {
-//
-//        File file = new File(path + "/mp3test.mp3"); // 저장하고 싶은 경로 + 지정하고픈 새 파일 이름을 파라미터로 담아서 생성
-//        file.createNewFile();
-//        FileOutputStream fos = new FileOutputStream(file);
-//        BufferedOutputStream bos = new BufferedOutputStream(fos);  //조금 더 빠르게 파일을 읽기 위해 Buffer를 사용함.
-//        bos.write(multipartFile.getBytes());  //바이트를 불러서 읽어준다.
-//        bos.close();
-//        boolean succeeded;
-//        try {
-//            File source = new File(path + "/mp3test.wav");
-//            File target = new File(path + "/mp3test33.mp3");
-//
-//            //Audio Attributes
-//            AudioAttributes audio = new AudioAttributes();
-//            audio.setCodec("libmp3lame");
-//            audio.setBitRate(128000);
-//            audio.setChannels(2);
-//            audio.setSamplingRate(44100);
-//
-//            //Encoding attributes
-//            EncodingAttributes attrs = new EncodingAttributes();
-//            attrs.setInputFormat("mp3");
-//            attrs.setAudioAttributes(audio);
-//
-//            //Encode
-//            Encoder encoder = new Encoder();
-//            encoder.encode(new MultimediaObject(source), target, attrs);
-//
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            succeeded = false;
-//        }
-//
-//
-//    }
+    @PostMapping("/test")
+    public void converterTest (@RequestPart(name = "audio") MultipartFile multipartFile) throws IOException, UnsupportedAudioFileException {
+
+        File file = new File(path + "/mp3test.mp3"); // 저장하고 싶은 경로 + 지정하고픈 새 파일 이름을 파라미터로 담아서 생성
+        file.createNewFile();
+        FileOutputStream fos = new FileOutputStream(file);
+        BufferedOutputStream bos = new BufferedOutputStream(fos);  //조금 더 빠르게 파일을 읽기 위해 Buffer를 사용함.
+        bos.write(multipartFile.getBytes());  //바이트를 불러서 읽어준다.
+        bos.close();
+        boolean succeeded;
+        try {
+            File source = new File(path + "/mp3test.wav");
+            File target = new File(path + "/mp3test33.mp3");
+
+            //Audio Attributes
+            AudioAttributes audio = new AudioAttributes();
+            audio.setCodec("libmp3lame");
+            audio.setBitRate(128000);
+            audio.setChannels(2);
+            audio.setSamplingRate(44100);
+
+            //Encoding attributes
+            EncodingAttributes attrs = new EncodingAttributes();
+            attrs.setInputFormat("mp3");
+            attrs.setAudioAttributes(audio);
+
+            //Encode
+            Encoder encoder = new Encoder();
+            encoder.encode(new MultimediaObject(source), target, attrs);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            succeeded = false;
+        }
+
+
+    }
 }
 
 
