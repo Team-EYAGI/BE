@@ -1,9 +1,8 @@
 package com.example.eyagi.controller;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.example.eyagi.model.*;
+import com.example.eyagi.model.AudioBook;
+import com.example.eyagi.model.Books;
+import com.example.eyagi.model.User;
 import com.example.eyagi.repository.AudioBookRepository;
 import com.example.eyagi.repository.AudioFileRepository;
 import com.example.eyagi.repository.AudioPreRepository;
@@ -12,12 +11,10 @@ import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.AudioService;
 import com.example.eyagi.service.AwsS3Service;
 import com.example.eyagi.service.BooksService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,17 +28,11 @@ import ws.schild.jave.encode.AudioAttributes;
 import ws.schild.jave.encode.EncodingAttributes;
 
 import javax.sound.sampled.*;
-import java.io.*;
-import java.nio.channels.CompletionHandler;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Map;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import static com.example.eyagi.service.AwsS3Path.pathAudio;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -82,12 +73,12 @@ public class AudioController extends JwtProperties {
        }
     }
 
-    //오디오북 등록하기.
+//    //오디오북 등록하기.
 //    @PostMapping("/book/detail/newAudio/{bookId}")
 //    public ResponseEntity<String> newAudioBook(@PathVariable Long bookId,
 //                                               @AuthenticationPrincipal UserDetailsImpl userDetails,
 //                                               @RequestPart(name = "audio") MultipartFile multipartFile,
-//                                               @RequestPart(name = "contents", required = false)AudioDetailDto.Request contents) throws IOException, InterruptedException {
+//                                               @RequestPart(name = "contents", required = false) AudioDetailDto.Request contents) throws IOException, InterruptedException {
 //
 //        Books book = booksService.findBook(bookId);
 //        User seller = userDetails.getUser();
@@ -100,37 +91,37 @@ public class AudioController extends JwtProperties {
 //            try {
 //                audioService2.join();
 //
-//                Map<String, String> fileName = awsS3Service.uploadFile(multipartFile, pathAudio);
-//                String cutFileS3Url = awsS3Service.copyAudioUpload(bucket, path, audioService2.getCutFile(),
-//                        audioService2.getCutFileS3());
-//
-//
-//                AudioPreview audioPreview = AudioPreview.builder()
-//                        .originName(audioService2.getCutFileS3())
-//                        .s3FileName(cutFileS3Url)
-//                        .build();
-//                audioPreRepository.save(audioPreview);
-//
-//                AudioBook audioBook1 = AudioBook.builder()
-//                        .seller(seller)
-//                        .book(book)
-//                        .preview(audioPreview)
-//                        .contents(contents.getContents()) // 특정 도서에 오디오 개시때만 등록.
-//                        .build();
-//                audioBookRepository.save(audioBook1);
-//
-//                AudioFile audioFile = AudioFile.builder()
-//                        .originName(fileName.get("fileName"))
-//                        .s3FileName(fileName.get("url"))
-//                        .audioBook(audioBook1)
-//                        .build();
-//                audioFileRepository.save(audioFile);
-//
-//                book.addAudioBook(audioBook1);
-//
-//
-//                audioService.removeFile(path, audioService2.getCutFile());
-//                audioService.removeFile(path, audioService2.getLocalFile());
+////                Map<String, String> fileName = awsS3Service.uploadFile(multipartFile, pathAudio);
+////                String cutFileS3Url = awsS3Service.copyAudioUpload(bucket, path, audioService2.getCutFile(),
+////                        audioService2.getCutFileS3());
+////
+////
+////                AudioPreview audioPreview = AudioPreview.builder()
+////                        .originName(audioService2.getCutFileS3())
+////                        .s3FileName(cutFileS3Url)
+////                        .build();
+////                audioPreRepository.save(audioPreview);
+////
+////                AudioBook audioBook1 = AudioBook.builder()
+////                        .seller(seller)
+////                        .book(book)
+////                        .preview(audioPreview)
+////                        .contents(contents.getContents()) // 특정 도서에 오디오 개시때만 등록.
+////                        .build();
+////                audioBookRepository.save(audioBook1);
+////
+////                AudioFile audioFile = AudioFile.builder()
+////                        .originName(fileName.get("fileName"))
+////                        .s3FileName(fileName.get("url"))
+////                        .audioBook(audioBook1)
+////                        .build();
+////                audioFileRepository.save(audioFile);
+////
+//////                book.addAudioBook(audioBook1);
+////
+////
+////                audioService.removeFile(path, audioService2.getCutFile());
+////                audioService.removeFile(path, audioService2.getLocalFile());
 //            } catch (InterruptedException e) {
 //                e.printStackTrace();
 //            }
@@ -163,8 +154,13 @@ public class AudioController extends JwtProperties {
 
     @PostMapping("/test")
     public void converterTest (@RequestPart(name = "audio") MultipartFile multipartFile) throws IOException, UnsupportedAudioFileException {
+        String localFile = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
+        String [] a = localFile.split("\\.");
+        System.out.println(localFile);
+        System.out.println(a[0]);
+        System.out.println(a[1]);
 
-        File file = new File(path + "/mp3test.mp3"); // 저장하고 싶은 경로 + 지정하고픈 새 파일 이름을 파라미터로 담아서 생성
+        File file = new File(path + localFile); // 저장하고 싶은 경로 + 지정하고픈 새 파일 이름을 파라미터로 담아서 생성
         file.createNewFile();
         FileOutputStream fos = new FileOutputStream(file);
         BufferedOutputStream bos = new BufferedOutputStream(fos);  //조금 더 빠르게 파일을 읽기 위해 Buffer를 사용함.
@@ -172,8 +168,8 @@ public class AudioController extends JwtProperties {
         bos.close();
         boolean succeeded;
         try {
-            File source = new File(path + "/mp3test.wav");
-            File target = new File(path + "/mp3test33.mp3");
+            File source = new File(path + localFile);
+            File target = new File(path + a[0] + "gg");
 
             //Audio Attributes
             AudioAttributes audio = new AudioAttributes();
@@ -184,7 +180,7 @@ public class AudioController extends JwtProperties {
 
             //Encoding attributes
             EncodingAttributes attrs = new EncodingAttributes();
-            attrs.setInputFormat("mp3");
+            attrs.setInputFormat(".wav");
             attrs.setAudioAttributes(audio);
 
             //Encode
@@ -195,9 +191,11 @@ public class AudioController extends JwtProperties {
             ex.printStackTrace();
             succeeded = false;
         }
+//        cutAudio(file, "gggg", 1, 60);
 
 
     }
+
 }
 
 

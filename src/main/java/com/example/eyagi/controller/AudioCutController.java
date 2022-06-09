@@ -2,15 +2,18 @@ package com.example.eyagi.controller;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.example.eyagi.dto.AudioDetailDto;
-import com.example.eyagi.model.*;
+import com.example.eyagi.model.AudioBook;
+import com.example.eyagi.model.AudioFile;
+import com.example.eyagi.model.Books;
+import com.example.eyagi.model.User;
 import com.example.eyagi.repository.AudioBookRepository;
 import com.example.eyagi.repository.AudioFileRepository;
 import com.example.eyagi.repository.AudioPreRepository;
 import com.example.eyagi.security.UserDetailsImpl;
+import com.example.eyagi.service.AudioCutService;
 import com.example.eyagi.service.AudioService;
 import com.example.eyagi.service.AwsS3Service;
 import com.example.eyagi.service.BooksService;
-import com.example.eyagi.service.AudioCutService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,13 +37,10 @@ import static com.example.eyagi.service.AwsS3Path.pathAudio;
 @RequiredArgsConstructor
 public class AudioCutController {
 
-    private final AmazonS3 amazonS3;
     private final AwsS3Service awsS3Service;
     private final AudioBookRepository audioBookRepository;
     private final AudioFileRepository audioFileRepository;
-    private final AudioPreRepository audioPreRepository;
     private final BooksService booksService;
-    private final AudioService audioService;
     private final AudioCutService exampleService;
 
     @Value("${cloud.aws.s3.bucket}")
@@ -60,25 +60,6 @@ public class AudioCutController {
                                        @AuthenticationPrincipal UserDetailsImpl userDetails,
                                        @RequestPart(name = "audio") MultipartFile multipartFile,
                                        @RequestPart(name = "contents", required = false) AudioDetailDto.Request contents) {
-        /*
-        원본 파일은 메인 쓰레드에서 별도로 업로드.
-        오디오 편집이 끝나면 오케이 리턴, 실패하면 실패했다고 리턴. -> 실패했을시 이벤트를 걸어서 슬랙으로 메일을 전송하거나 하는 로직을 구성하고싶음.
-         */
-//        Books book = booksService.findBook(bookId);
-//        User seller = userDetails.getUser();
-//        AudioBook audioBook = audioBookRepository.findByBookAndSeller(book, seller);
-//
-//        log("여기는 메인? 1");
-//
-//        try {
-//            ExampleDto dto = exampleService.run(multipartFile, path);
-//
-//            exampleService.getCompletionHandler().completed(dto, null);
-//        } catch (Exception e) {
-//            exampleService.getCompletionHandler().failed(e, null);
-//        }
-//        log("여기는 메인? 2");
-//        exampleService.finish();
 
         return CompletableFuture.completedFuture(new ResponseEntity(exampleService.audioCutAsync(bookId,userDetails,multipartFile,contents.getContents()), HttpStatus.OK));
 
