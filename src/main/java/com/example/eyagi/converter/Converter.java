@@ -2,6 +2,7 @@ package com.example.eyagi.converter;
 
 
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ws.schild.jave.Encoder;
@@ -15,7 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 
-@Component
+@Service
 public class Converter {
 
     /*파일 이름 받고, 변환해주기 . 변환하려는 확장자도 입력으로 받을 수 있게 만들기.
@@ -30,7 +31,7 @@ private static void log(String content) {
     System.out.println(Thread.currentThread().getName() + "> " + content);
 }
 
-
+    @Transactional
     public File converter(String path, String localFile, String extension) {
         log("컨버터 시작");
         String [] a = localFile.split("\\.");
@@ -70,10 +71,11 @@ private static void log(String content) {
     @Transactional
     public File castConversion(MultipartFile multipartFile,String path,String localFile, String extension) {
         cast(multipartFile, path, localFile);
-        log("여깁니다 1");
+//        log("여깁니다 1");
         return converter(path, localFile, extension);
     }
 
+    @Transactional
     public File cast (MultipartFile multipartFile,String path,String localFile) {
         File file = new File(path + localFile); // 저장하고 싶은 경로 + 지정하고픈 새 파일 이름을 파라미터로 담아서 생성
         try {

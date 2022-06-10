@@ -1,6 +1,5 @@
 package com.example.eyagi.controller;
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.example.eyagi.dto.AudioDetailDto;
 import com.example.eyagi.model.AudioBook;
 import com.example.eyagi.model.AudioFile;
@@ -8,10 +7,8 @@ import com.example.eyagi.model.Books;
 import com.example.eyagi.model.User;
 import com.example.eyagi.repository.AudioBookRepository;
 import com.example.eyagi.repository.AudioFileRepository;
-import com.example.eyagi.repository.AudioPreRepository;
 import com.example.eyagi.security.UserDetailsImpl;
 import com.example.eyagi.service.AudioCutService;
-import com.example.eyagi.service.AudioService;
 import com.example.eyagi.service.AwsS3Service;
 import com.example.eyagi.service.BooksService;
 import lombok.RequiredArgsConstructor;
@@ -54,12 +51,12 @@ public class AudioCutController {
     //    @Value("{$audio_path}")
 //    static String path= filePath;  //배포시
 
-    @Async
+//    @Async
     @PostMapping("/test/{bookId}")
-    public CompletableFuture<ResponseEntity<?>>  test(@PathVariable Long bookId,
-                                       @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                       @RequestPart(name = "audio") MultipartFile multipartFile,
-                                       @RequestPart(name = "contents", required = false) AudioDetailDto.Request contents) {
+    public CompletableFuture<ResponseEntity> test(@PathVariable Long bookId,
+                                  @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                  @RequestPart(name = "audio") MultipartFile multipartFile,
+                                  @RequestPart(name = "contents", required = false) AudioDetailDto.Request contents) {
 
         return CompletableFuture.completedFuture(new ResponseEntity(exampleService.audioCutAsync(bookId,userDetails,multipartFile,contents.getContents()), HttpStatus.OK));
 
