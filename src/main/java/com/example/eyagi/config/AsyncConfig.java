@@ -14,7 +14,7 @@ public class AsyncConfig extends AsyncConfigurerSupport {
     @Override
     public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(5);  //스레드 풀에서 동시에 사용되는 스레드의 갯수
+        executor.setCorePoolSize(10);  //스레드 풀에서 동시에 사용되는 스레드의 갯수
         executor.setMaxPoolSize(20);  //스레드 풀의 스레드 최대 허용치 /
         executor.setQueueCapacity(30); //CorePoolSize가 모두 사용중일 경우 QueueCapacity에 작업을 적제.
         executor.setThreadNamePrefix("audio-async-");
