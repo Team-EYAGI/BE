@@ -16,10 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -71,6 +68,32 @@ public class AwsS3Service {
         result.put("fileName", fileName);
         return result;
     }
+
+    //mp3 변환 파일 업로드
+    @Transactional
+    public Map<String, String> uploadConversionFile(File file, String S3path) {
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType("audio/mp3");
+
+        //fileName에 파라미터로 들어온 파일의 이름을 할당.
+        String fileName = file.getName();
+        fileName = createFileName(S3path, fileName);
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            //amazonS3객체의 putObject 메서드로 db에 저장
+            amazonS3.putObject(new PutObjectRequest(bucket, fileName, bis, objectMetadata)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
+        }
+
+        Map<String, String> result = new HashMap<>();
+        result.put("url", String.valueOf(amazonS3.getUrl(bucket, fileName)));
+        result.put("fileName", fileName);
+        return result;
+    }
+
 
     private String createFileName(String path, String fileName) { // 먼저 파일 업로드 시, 파일명을 난수화하기 위해 random으로 돌립니다.
         return path + UUID.randomUUID().toString().concat(getFileExtension(fileName));

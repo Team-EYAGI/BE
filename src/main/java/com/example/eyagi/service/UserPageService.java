@@ -182,7 +182,7 @@ public class UserPageService {
     @Transactional
     public void sellerMyVoice(MultipartFile file, User user){
         UserProfile profile = user.getUserProfile();
-        if (profile.getS3FileName()!=null) {  //S3에 파일이 삭제가 안됨 ㅡ,.ㅡ
+        if (profile.getS3FileName()!=null) {
             awsS3Service.removeS3File(profile.getS3FileName());
         }
         Map<String, String> fileName = awsS3Service.uploadFile(file, pathInfo);

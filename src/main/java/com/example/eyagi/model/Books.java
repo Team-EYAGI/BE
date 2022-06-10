@@ -1,6 +1,7 @@
 package com.example.eyagi.model;
 
 import lombok.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.List;
@@ -32,15 +33,16 @@ public class Books {
     @Column(nullable = false)
     private String category;
 
-    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
     private List<AudioBook> audioBookList;
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     private List<Library_Books> userLibrary;
 
 
-    public void addAudioBook (AudioBook audioBook){
-        this.audioBookList.add(audioBook);
-    }
+//    @Transactional
+//    public void addAudioBook (AudioBook audioBook){
+//        this.audioBookList.add(audioBook);
+//    }
 
 }
