@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import static com.example.eyagi.security.JwtProperties.filePath;
 import static com.example.eyagi.service.AwsS3Path.pathAudio;
 
 @Slf4j
@@ -44,12 +45,12 @@ public class AudioCutController {
     private String bucket;
 
     //자른 오디오 지정 경로
-    static String path = "src/main/resources/static/"; //로컬테스트
+//    static String path = "src/main/resources/static/"; //로컬테스트
 //
 //    static String path = "/home/ubuntu/eyagi/audio/";  //배포시
 
-    //    @Value("{$audio_path}")
-//    static String path= filePath;  //배포시
+        @Value("{$audio_path}")
+    static String path= filePath;  //배포시
 
 //    @Async
     @PostMapping("/test/{bookId}")
