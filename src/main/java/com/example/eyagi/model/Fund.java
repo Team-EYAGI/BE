@@ -3,7 +3,6 @@ package com.example.eyagi.model;
 import com.example.eyagi.dto.FundRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import static javax.persistence.FetchType.*;
 import javax.persistence.*;
 
 @NoArgsConstructor
@@ -18,14 +17,14 @@ public class Fund extends Timestamped {
     @Column
     private String content;
 
-    @OneToOne(fetch = LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fundAudioId")
     private AudioFund audioFund;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Books books;
 
     @Column

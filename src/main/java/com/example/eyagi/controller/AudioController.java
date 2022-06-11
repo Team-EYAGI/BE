@@ -47,16 +47,14 @@ public class AudioController extends JwtProperties {
     private final AudioService audioService;
 
 
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
 
     //자른 오디오 지정 경로
-    static String path = "src/main/resources/static/"; //로컬테스트
+//    static String path = "src/main/resources/static/"; //로컬테스트
 //
 //    static String path = "/home/ubuntu/eyagi/audio/";  //배포시
 
-//    @Value("{$audio_path}")
-//    static String path= filePath;  //배포시
+    @Value("{$audio_path}")
+    static String path= filePath;  //배포시
 
 
 

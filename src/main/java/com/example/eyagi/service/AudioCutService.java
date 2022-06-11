@@ -50,7 +50,7 @@ public class AudioCutService {
     private final AudioPreRepository audioPreRepository;
     private final BooksService booksService;
     private final AudioService audioService;
-   private final Converter converter;
+    private final Converter converter;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -60,8 +60,8 @@ public class AudioCutService {
 //
 //    static String path = "/home/ubuntu/eyagi/audio/";  //배포시
 
-        @Value("{$audio_path}")
-    static String path= filePath;  //배포시
+    @Value("{$audio_path}")
+    static String path = filePath;  //배포시
 
     //어떤쓰레드를 사용하고 있는지 알려주는 로그 메서드.
     private static void log(String content) {
@@ -94,47 +94,8 @@ public class AudioCutService {
         }
     };
 
-//    public void finish() {
-//        executorService.shutdown();
-//    }
 
-//        public String audioCutAsync(Long bookId, UserDetailsImpl userDetails, MultipartFile multipartFile, String contents) {
-//        String localFile = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
-//        String cutFile = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
-////        String cutFileS3 = "audioPreview" + "/" + cutFile;
-//        String [] splitFileName = cutFile.split("//.");
-//
-//        Books book = booksService.findBook(bookId);
-//        User seller = userDetails.getUser();
-//        Map<String, String> fileName = awsS3Service.uploadFile(multipartFile, pathAudio);
-//
-//        log("시작!");
-//
-//        //만약 wav 파일이 아니면,
-//        if (!splitFileName[1].equals("wav")) {
-//            converter.converter(path, cutFile, "wav");
-//        }
-//        try {
-//            executorService.submit(() -> {
-//                run(multipartFile, path, localFile, cutFile);
-//                AudioCutDto dto = AudioCutDto.builder()
-//                        .originName(fileName.get("fileName"))
-//                        .s3FileName(fileName.get("url"))
-//                        .contents(contents)
-//                        .build();
-//
-//                Map<String, String> filesName = mp3Converter(bucket, path, cutFile, pathPreview + cutFile);
-////                String cutFileS3Url = copyAudioUpload(bucket, path, cutFile, cutFileS3);
-//                save(book, seller, dto ,filesName.get("cutFileS3"), filesName.get("cutFileS3Url"));
-//            });
-////            completionHandler.completed(localFile, null);
-//        } catch (Exception e) {
-//            completionHandler.failed(e, null);
-//        }
-//        log("끝!");
-//        return "첫 등록 완료";
-//    }
-    @Async
+//    @Async
     public String audioCutAsync(Long bookId, UserDetailsImpl userDetails, MultipartFile multipartFile, String contents) {
         String localFile = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
         String cutFile = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
@@ -158,7 +119,7 @@ public class AudioCutService {
                     .contents(contents)
                     .build();
             // S3업로드 전에, 컨버터를 거쳐서 파일을 mp3로 전환 후 S3에 업로드 한다.
-//                     save(book, seller, dto, converFile.get("cutFileS3"), converFile.get("cutFileS3Url"));
+            save(book, seller, dto, converFile.get("cutFileS3"), converFile.get("cutFileS3Url"));
             removeFileList.put("conversionFile", file.getName());
             removeFileList.put("originFile", localFile);
 //            });
@@ -170,24 +131,13 @@ public class AudioCutService {
         long elapsedTime = System.currentTimeMillis() - startTime;
         System.out.println("걸린시간 : " + elapsedTime);
         log("작업 끝!");
+        log.info("오디오북 첫 등록 성공! 등록한 셀러 : {}", seller.getId());
         return "첫 등록 완료";
     }
 
-    //    @Async
-//    @Transactional
-//    public void run(MultipartFile multipartFile, String localFile, String cutFile) {
-//        log("오디오편집!");
-//
-//            File file = converter.cast(multipartFile, path, localFile);
-//
-//            cutAudio(file, path + cutFile, 1, 60);
-//
-//            log("오디오편집 완료");
-//
-//    }
 
     @Transactional
-    public Map<String, String> run(MultipartFile multipartFile, String path, String localFile, String cutFile ) {
+    public Map<String, String> run(MultipartFile multipartFile, String path, String localFile, String cutFile) {
 
         log("오디오편집!");
 //        ExampleDto dto = new ExampleDto();
@@ -245,7 +195,7 @@ public class AudioCutService {
         try {
             FileInputStream fis = new FileInputStream(file);
             BufferedInputStream bis = new BufferedInputStream(fis);
-            url = "audioPreview" + "/"+ file.getName();
+            url = "audioPreview" + "/" + file.getName();
             amazonS3.putObject(new PutObjectRequest(bucket, url, bis, null)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
 
@@ -276,9 +226,8 @@ public class AudioCutService {
 //    }
 
 
-
     @Transactional
-    public void removeFile(String path, String originalFile) throws IOException, InterruptedException {
+    public void removeFile(String path, String originalFile) throws IOException {
         Path filePath = Paths.get(path + originalFile); //로컬에 남은 오디오 삭제.
         Files.delete(filePath);
     }
@@ -306,7 +255,8 @@ public class AudioCutService {
                 .build();
         audioFileRepository.save(audioFile);
 
-//        dto.getBook().addAudioBook(audioBook1);
+        audioBook1.addAudio(audioFile);
+
     }
 
 }

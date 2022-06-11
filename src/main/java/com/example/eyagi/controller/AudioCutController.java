@@ -41,19 +41,19 @@ public class AudioCutController {
     private final BooksService booksService;
     private final AudioCutService exampleService;
 
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
+//    @Value("${cloud.aws.s3.bucket}")
+//    private String bucket;
 
     //자른 오디오 지정 경로
 //    static String path = "src/main/resources/static/"; //로컬테스트
 //
 //    static String path = "/home/ubuntu/eyagi/audio/";  //배포시
 
-        @Value("{$audio_path}")
+    @Value("{$audio_path}")
     static String path= filePath;  //배포시
 
-//    @Async
-    @PostMapping("/test/{bookId}")
+    @Async
+    @PostMapping("/book/detail/newAudio/{bookId}")
     public CompletableFuture<ResponseEntity> test(@PathVariable Long bookId,
                                   @AuthenticationPrincipal UserDetailsImpl userDetails,
                                   @RequestPart(name = "audio") MultipartFile multipartFile,
@@ -64,7 +64,7 @@ public class AudioCutController {
     }
 
     //첫등록 아닐경우
-    @PostMapping("/aa/{bookId}")
+    @PostMapping("/book/detail/addAudio/{bookId}")
     public ResponseEntity<String> aa(@PathVariable Long bookId,
                                      @AuthenticationPrincipal UserDetailsImpl userDetails,
                                      @RequestPart(name = "audio") MultipartFile multipartFile) {

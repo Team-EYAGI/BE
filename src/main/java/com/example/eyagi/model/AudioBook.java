@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -34,7 +35,7 @@ public class AudioBook extends Timestamped {
 
     //챕터별 오디오북 리스트
     @OneToMany(mappedBy = "audioBook", cascade = CascadeType.ALL)// 양방향
-    private List<AudioFile> audioFile;
+    private List<AudioFile> audioFile = new ArrayList<>();
 
     //해당 셀러의 오디오북 미리듣기 . (한권의 오디오북에는 하나의 미리듣기만 존재 => oneToone)
     @OneToOne //단방향
